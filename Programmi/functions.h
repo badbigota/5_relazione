@@ -5,6 +5,7 @@
 #include <string>
 using namespace std;
 
+//Struttura dati grezzi
 struct data_torque
 {
     int data_file_number;  //numero progressivo
@@ -14,6 +15,7 @@ struct data_torque
     vector<double> forcing;
 };
 
+//Carica tutti i dati grezzi in strutture contenute in un vettore
 void load_data(string map_file, vector<data_torque> &vec_data)
 {
     ifstream f_map(map_file);
