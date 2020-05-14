@@ -9,16 +9,18 @@ using namespace std;
 int main()
 {
     vector<data_torque> torq;
+    vector<x_y> tempi;
     vector<x_y> periodi;
     string map_file = "../Dati/mappa.txt";
     load_data(map_file, torq);
-    get_zero_time(torq, periodi);
+    get_zero_time(torq, tempi);
+    get_periods(tempi, periodi);
+
+    //Stampa per prova
+    for(int i=0; i<periodi[3].time.size(); i++){
+        cout<<periodi[0].time[i]<<"\t"<<periodi[1].time[i]<<"\t"<<periodi[4].time[i]<<endl;
+    }
+
+    vector<point_regime> punti_grafico_resonance;
     
-    for (auto d : torq)//controllo per i dati
-    {
-        cout << d.time.size() << "\t" << d.forcing.size() << "\t" << d.a.size() << endl;
-    }
-    for(auto d: periodi){
-        cout<<d.time.size()<<endl;
-    }
 }
