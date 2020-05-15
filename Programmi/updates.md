@@ -16,7 +16,9 @@ struct data_torque
 ## Lettura file esterni
 - Salva per ogni torq in vettore di strutture come sopra riportato
 - Cerca in modo approssimato la presenza degli zeri, calcola l'interolazione lineare e salva la radice
-
+- Calcola tutti i periodi
+- Calcolo omega in due modi, da media omega o media tmepi
+- Fix intercette
 
 ## Stima degli zeri
 
