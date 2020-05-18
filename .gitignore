@@ -8,3 +8,5 @@ Risorse/*
 *.exe
 ~*
 *.png
+*.txt
+ROOT/*
