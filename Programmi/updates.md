@@ -19,6 +19,9 @@ struct data_torque
 - Calcola tutti i periodi
 - Calcolo omega in due modi, da media omega o media tmepi
 - Fix intercette
+- Metodo per trovare indice dei massimi
+- Interpolazione con MV parabola sui 18 punti vicino ai picchi
+- Stima di ampiezza max da coeff derivati da MV
 
 ## Stima degli zeri
 
