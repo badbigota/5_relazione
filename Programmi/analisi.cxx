@@ -106,8 +106,7 @@ int main()
     //         << "Pendolo " << i + 1 << endl;
     //    for (int j = 0; j < pos_max[i].vettore2.size(); j++)
     //    {
-    //        lout << "\t" << campione[i].time[pos_max[i].vettore2[j] - 9] << "\t"
-    //             << "," << campione[i].time[pos_max[i].vettore2[j] + 9] << "," << endl;
+    //        lout <<campione[i].time[pos_max[i].vettore2[j] - 9] << "\t" << campione[i].time[pos_max[i].vettore2[j] + 9] << endl;
     //    }
     //    cout << endl;
     //}
@@ -115,11 +114,62 @@ int main()
     //Genrea vettore con le posizioni dei massimi
     vector<vettoredoppio> indici_dei_massimi;
     get_index_maxima(campione, tempi, indici_dei_massimi);
+    for (int j = 0; j < indici_dei_massimi.size(); j++)
+    {
+        ofstream fout_maxima("../Dati/maxima_" + to_string(j) + ".txt");
+        for (auto c : indici_dei_massimi[j].vettore2)
+        {
+            fout_maxima << campione[j].time[c] << "\t" << campione[j].a[c] << endl;
+        }
+    }
 
     //Genera vettore di strutture con
     vector<punti_massimo> punti_di_massimo;
     get_maxima(campione, indici_dei_massimi, punti_di_massimo);
-    cout << punti_di_massimo[0].t_max.size() << endl;
+
+    for (int i = 0; i < punti_di_massimo.size(); i++)
+    {
+        ofstream fout_temp("../Dati/punti_max_" + to_string(punti_di_massimo[i].freq_ref) + ".txt");
+        for (int j = 0; j < punti_di_massimo[i].t_max.size(); j++)
+        {
+            fout_temp << punti_di_massimo[i].t_max[j] << "\t" << punti_di_massimo[i].ampl_max[j] << "\t" << punti_di_massimo[i].coeff_a[j] << "\t" << punti_di_massimo[i].coeff_b[j] << "\t" << punti_di_massimo[i].coeff_c[j] << endl;
+        }
+    }
+
+    vector<x_y> valutaz_offset;
+    offset(punti_di_massimo, valutaz_offset);
+    for (auto d : valutaz_offset)
+    {
+        ofstream fout_off("../Dati/offset_" + to_string(d.freq) + ".txt");
+        for (auto c : d.offset)
+        {
+            fout_off << c << endl;
+        }
+    }
+
+    vector<x_y> picchi_picchi_assoluti;
+    vector<x_y> picchi_picchi_mv;
+
+    picco_picco_ass(punti_di_massimo, picchi_picchi_assoluti);
+    picco_picco_mv(punti_di_massimo, picchi_picchi_mv);
+
+    //cout << picchi_picchi_assoluti.size() << endl;
+    for (auto d : picchi_picchi_assoluti)
+    {
+        ofstream fout_picco("../Dati/pic_pic_mezz_ass_" + to_string(d.freq) + ".txt");
+        for (auto c : d.picco_picco)
+        {
+            fout_picco << c << endl;
+        }
+    }
+
+    vector<punto_regime> campana_lorentziana_assoluta;
+    vector<punto_regime> campana_lorentziana_mv;
+
+    add_picco_medio(picchi_picchi_assoluti, campana_lorentziana_assoluta);
+    add_picco_medio(picchi_picchi_mv, campana_lorentziana_mv);
+
+    add_omega_2(periodi, campana_lorentziana_assoluta);
 
     return 0;
 }
