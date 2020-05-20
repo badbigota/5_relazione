@@ -53,6 +53,9 @@ struct punti_massimo
     vector<double> coeff_a;
     vector<double> coeff_b;
     vector<double> coeff_c;
+    vector<double> err_coeff_a;
+    vector<double> err_coeff_b;
+    vector<double> err_coeff_c;
 };
 
 struct vettoredoppio
@@ -90,6 +93,43 @@ void load_data(string map_file, vector<data_campione> &vec_data)
             temp.forcing.push_back(forcing * 1000. * 2. * M_PI);
         }
         vec_data.push_back(temp);
+    }
+}
+
+void load_data_decay(vector<data_campione> &vec_data)
+{
+    for (int i = 0; i < 3; i++)
+    {
+        data_campione temp_data;
+        ifstream fin_smorz("../Dati/s_" + to_string(i + 1) + ".txt");
+        double time, forcing, amp;
+        while (fin_smorz >> time >> forcing >> amp)
+        {
+            temp_data.time.push_back(time);
+            temp_data.forcing.push_back(forcing);
+            temp_data.a.push_back(amp);
+        }
+        vec_data.push_back(temp_data);
+    }
+}
+
+void lettura_parametri(vector<punti_massimo> &parametri)
+{
+    for (int i = 0; i < 20; i++)
+    {
+        punti_massimo temp_p_max;
+        double a, b, c, d, e, f, g, h;
+        ifstream fin_param("../Dati/parameters" + to_string(i + 1) + ".txt");
+        while (fin_param >> a >> b >> c >> d >> e >> f >> g >> h)
+        {
+            temp_p_max.coeff_c.push_back(c);
+            temp_p_max.err_coeff_c.push_back(d);
+            temp_p_max.coeff_b.push_back(e);
+            temp_p_max.err_coeff_b.push_back(f);
+            temp_p_max.coeff_a.push_back(g);
+            temp_p_max.err_coeff_a.push_back(h);
+        }
+        parametri.push_back(temp_p_max);
     }
 }
 
@@ -201,7 +241,7 @@ void get_periodi_medi(vector<x_y> &periodi, vector<x_y> &media_periodi) //genra 
 //Adattato interamente da quello di marc e fab in analisi cxx
 void get_index_maxima(vector<data_campione> &dati_grezzi, vector<x_y> &tempi, vector<vettoredoppio> &indici_max_per_campioni)
 {
-    for (int i = 0; i < dati_grezzi.size(); i++) //per ogni cmapione
+    for (int i = 0; i < dati_grezzi.size(); i++) //per ogni campione
     {
         vector<double> &ampiezze_grezze = dati_grezzi[i].a;
         vector<int> &tempi_zero = tempi[i].closest_index_zero;
@@ -321,6 +361,24 @@ void get_maxima(vector<data_campione> &raw_data, vector<vettoredoppio> &index_ma
     }
 }
 
+//Funzione che genera i massimi con i valori di Fabio generati da root
+void get_maxima_root(vector<punti_massimo> parametri, vector<punti_massimo> &maxima)
+{
+    for (int i = 0; i < parametri.size(); i++)
+    {
+        punti_massimo temp_punti_max;
+        for (int j = 0; j < parametri[i].coeff_a.size(); j++)
+        {
+            double par_a = parametri[i].coeff_a[j];
+            double par_b = parametri[i].coeff_b[j];
+            double par_c = parametri[i].coeff_c[j];
+            temp_punti_max.t_max.push_back(max_x_fit({par_a, par_b, par_c}));
+            temp_punti_max.ampl_max.push_back(max_y_fit({par_a, par_b, par_c}));
+        }
+        maxima.push_back(temp_punti_max);
+    }
+}
+
 void offset(vector<punti_massimo> vec_punti_max, vector<x_y> &vec_picco_picco)
 {
     for (int i = 0; i < vec_punti_max.size(); i++)
@@ -371,7 +429,11 @@ void picco_picco_mv(vector<punti_massimo> vec_punti_max, vector<x_y> &vec_picco_
     }
 }
 
-void picco_picco_chi() {}
+//Stesso nome perchè il procedimento è lo stesso: leggono gli stessi paramteri
+void picco_picco_chi(vector<punti_massimo> vec_punti_max, vector<x_y> &vec_picco_picco)
+{
+    picco_picco_mv(vec_punti_max, vec_picco_picco);
+}
 
 //Calcola la media e la dstd dei picco picco mezzi
 void add_picco_medio(vector<x_y> picchi, vector<punto_regime> &punti_regime)
@@ -391,9 +453,9 @@ void add_omega_2(vector<x_y> periodi, vector<punto_regime> &punti_regime)
     for (int i = 0; i < periodi.size(); i++)
     {
         vector<double> temp_omega;
-        for (auto d : periodi[i].time)
+        for (int j = 0; j < periodi[i].time.size(); j++) //sono già indipendenti, perchè i tempi venivano presi indipendenti
         {
-            temp_omega.push_back(2. * M_PI / d);
+            temp_omega.push_back(2. * M_PI / periodi[i].time[j]);
         }
 
         punti_regime[i].omega = media(temp_omega);
