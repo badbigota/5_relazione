@@ -328,7 +328,27 @@ double max_y_fit(vector<double> parametri_fit)
 }
 
 //Genera un vettore di punti_massimo struct con tutti i punti di massimo e minimo per ciascun campione
-void get_maxima(vector<data_campione> &raw_data, vector<vettoredoppio> &index_maxima, vector<punti_massimo> &maxima)
+void get_maxima_ass(vector<data_campione> &raw_data, vector<vettoredoppio> &index_maxima, vector<punti_massimo> &maxima)
+{
+    for (int i = 0; i < raw_data.size(); i++)
+    {
+        punti_massimo temp_punti_max;
+        vector<double> &tempi_grezzi = raw_data[i].time;
+        vector<double> &ampiezze_grezze = raw_data[i].a;
+        vector<double> &indici_massimi = index_maxima[i].vettore2;
+        for (int k = 0; k < indici_massimi.size(); k++) //per ogni indice masimo
+        {
+            double pivot = indici_massimi[k];                    //effettivo punto di massimo
+            temp_punti_max.index.push_back(pivot);               //per un traceback accurato
+            temp_punti_max.t_max.push_back(tempi_grezzi[pivot]); //per un traceback accurato
+            temp_punti_max.ampl_max.push_back(ampiezze_grezze[pivot]);
+            temp_punti_max.freq_ref = raw_data[i].data_file_freq; //per un traceback
+        }
+        maxima.push_back(temp_punti_max);
+    }
+}
+
+void get_maxima_mv(vector<data_campione> &raw_data, vector<vettoredoppio> &index_maxima, vector<punti_massimo> &maxima)
 {
     for (int i = 0; i < raw_data.size(); i++)
     {
@@ -349,10 +369,7 @@ void get_maxima(vector<data_campione> &raw_data, vector<vettoredoppio> &index_ma
             best_fit_mv(x, y, best_fitting_par);                            //genera i valori di interpolazione parabola
             temp_punti_max.t_max.push_back(max_x_fit(best_fitting_par));    //trova punto di max
             temp_punti_max.ampl_max.push_back(max_y_fit(best_fitting_par)); //trova valore punto di max
-            temp_punti_max.index.push_back(pivot);                          //per un traceback accurato
-            temp_punti_max.t_ref.push_back(tempi_grezzi[pivot]);            //per un traceback accurato
-            temp_punti_max.a_ref.push_back(ampiezze_grezze[pivot]);
-            temp_punti_max.freq_ref = raw_data[i].data_file_freq; //per un traceback
+            temp_punti_max.freq_ref = raw_data[i].data_file_freq;           //per un traceback
             temp_punti_max.coeff_a.push_back(best_fitting_par[0]);
             temp_punti_max.coeff_b.push_back(best_fitting_par[1]);
             temp_punti_max.coeff_c.push_back(best_fitting_par[2]);
@@ -382,8 +399,8 @@ void get_maxima_root(vector<punti_massimo> parametri, vector<punti_massimo> &max
 void offset(vector<punti_massimo> vec_punti_max, vector<x_y> &vec_picco_picco)
 {
     for (int i = 0; i < vec_punti_max.size(); i++)
-    {                                                          //per ogni campione
-        vector<double> &ampiezze_max = vec_punti_max[i].a_ref; //su i punti grezzi
+    {                                                             //per ogni campione
+        vector<double> &ampiezze_max = vec_punti_max[i].ampl_max; //su i punti grezzi
         x_y temp_picchi;
         for (int j = 0; j < ampiezze_max.size() - 1; j = j + 2) //altirmenti core dumped
         {
@@ -399,8 +416,8 @@ void offset(vector<punti_massimo> vec_punti_max, vector<x_y> &vec_picco_picco)
 void picco_picco_ass(vector<punti_massimo> vec_punti_max, vector<x_y> &vec_picco_picco)
 {
     for (int i = 0; i < vec_punti_max.size(); i++)
-    {                                                          //per ogni campione
-        vector<double> &ampiezze_max = vec_punti_max[i].a_ref; //su i punti grezzi
+    {                                                             //per ogni campione
+        vector<double> &ampiezze_max = vec_punti_max[i].ampl_max; //su i punti grezzi
         x_y temp_picchi;
         for (int j = 0; j < ampiezze_max.size() - 1; j = j + 2) //altirmenti core dumped
         {
@@ -460,5 +477,47 @@ void add_omega_2(vector<x_y> periodi, vector<punto_regime> &punti_regime)
 
         punti_regime[i].omega = media(temp_omega);
         punti_regime[i].err_omega = dstd_media(temp_omega);
+    }
+}
+
+void gauss_hist_root(vector<punti_massimo> &punti_max, vector<vettoredoppio> &hist, vector<double> bins)
+{
+    for (int i = 0; i < punti_max.size(); i++)
+    {
+        vettoredoppio temp_hist;
+        double intervals = bins[i];
+        vector<double> max_ass;
+        vector<double> &massimi = punti_max[i].ampl_max;
+        vector<int> counts(intervals, 0);
+        for (auto d : massimi)
+        {
+            max_ass.push_back(abs(d));
+        }
+        double max_val = *max_element(max_ass.begin(), max_ass.end());
+        double min_val = *min_element(max_ass.begin(), max_ass.end());
+        double ampiezza_bin = (max_val - min_val) / intervals;
+        vector<double> assex;
+        for (int j = 0; j < intervals; j++)
+        {
+            assex.push_back(min_val + ampiezza_bin * j);
+        }
+
+        for (auto c : max_ass)
+        {
+            for (int j = 0; j < intervals; j++)
+            {
+                if ((c <= min_val + ampiezza_bin * (j + 1)) && (c > min_val + ampiezza_bin * (j)))
+                {
+                    counts[j] = counts[j] + 1;
+                }
+            }
+        }
+        counts[0] += 1; //per tenere conto del minimo che non viene contato nel if sopra
+        for (int k = 0; k < counts.size(); k++)
+        {
+            temp_hist.vettore2.push_back(assex[k]);
+            temp_hist.vettore3.push_back(counts[k]);
+        }
+        hist.push_back(temp_hist);
     }
 }
