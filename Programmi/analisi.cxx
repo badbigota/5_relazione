@@ -124,13 +124,15 @@ int main()
     //    }
     //}
     //Genera vettore di strutture con
-    vector<punti_massimo> punti_di_massimo;      //usati sia per mv che per assoluta
+    vector<punti_massimo> punti_di_massimo_mv;
+    vector<punti_massimo> punti_di_massimo_ass;  //usati sia per mv che per assoluta
     vector<punti_massimo> punti_di_massimo_root; //solo per root
-    get_maxima(campione, indici_dei_massimi, punti_di_massimo);
-    lettura_parametri(parametri);
-    //cout << parametri[0].coeff_c.size();
+    get_maxima_mv(campione, indici_dei_massimi, punti_di_massimo_mv);
+    get_maxima_ass(campione, indici_dei_massimi, punti_di_massimo_ass);
 
+    lettura_parametri(parametri);
     get_maxima_root(parametri, punti_di_massimo_root);
+    //cout << parametri[0].coeff_c.size();
 
     //for (int i = 0; i < punti_di_massimo.size(); i++)
     //{
@@ -141,8 +143,8 @@ int main()
     //    }
     //}
 
-    vector<x_y> valutaz_offset;
-    offset(punti_di_massimo, valutaz_offset);
+    vector<x_y> valutaz_offset_ass;
+    offset(punti_di_massimo_ass, valutaz_offset_ass);
     //for (auto d : valutaz_offset)
     //{
     //    ofstream fout_off("../Dati/offset_" + to_string(d.freq) + ".txt");
@@ -156,8 +158,8 @@ int main()
     vector<x_y> picchi_picchi_mv;
     vector<x_y> picchi_picchi_root;
 
-    picco_picco_ass(punti_di_massimo, picchi_picchi_assoluti);
-    picco_picco_mv(punti_di_massimo, picchi_picchi_mv);
+    picco_picco_ass(punti_di_massimo_ass, picchi_picchi_assoluti);
+    picco_picco_mv(punti_di_massimo_mv, picchi_picchi_mv);
     picco_picco_chi(punti_di_massimo_root, picchi_picchi_root);
 
     //cout << picchi_picchi_assoluti.size() << endl;
@@ -200,7 +202,19 @@ int main()
 
     for (int i = 0; i < campana_lorentziana_root.size(); i++)
     {
-        fout_lor_root << campana_lorentziana_root[i].omega << "\t" << campana_lorentziana_root[i].theta * 2. * M_PI << "\t" << campana_lorentziana_root[i].err_omega << "\t" << campana_lorentziana_root[i].err_theta << endl;
+        fout_lor_root << campana_lorentziana_root[i].omega << "\t" << campana_lorentziana_root[i].theta * 2. * M_PI << "\t" << campana_lorentziana_root[i].err_omega << "\t" << campana_lorentziana_root[i].err_theta * 2. * M_PI << endl;
+    }
+
+    vector<vettoredoppio> hist_root;
+    vector<double> n_bin(20, 20.0); //definisce il numero di bin, cambia il secondo valore
+    gauss_hist_root(punti_di_massimo_root, hist_root, n_bin);
+    for (int j = 0; j < hist_root.size(); j++)
+    {
+        ofstream fout_hist("../Histogram/" + to_string(j+10) + "-hist.txt");
+        for (int k = 0; k < hist_root[j].vettore2.size(); k++)
+        {
+            fout_hist << hist_root[j].vettore2[k] << "\t" << hist_root[j].vettore3[k] << endl;
+        }
     }
 
     return 0;
