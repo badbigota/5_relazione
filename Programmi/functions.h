@@ -101,13 +101,13 @@ void load_data_decay(vector<data_campione> &vec_data)
     for (int i = 0; i < 3; i++)
     {
         data_campione temp_data;
-        ifstream fin_smorz("../Dati/s_" + to_string(i + 1) + ".txt");
+        ifstream fin_smorz("../Dati/s_" + to_string(i + 1) + ".csv");
         double time, forcing, amp;
         while (fin_smorz >> time >> forcing >> amp)
         {
             temp_data.time.push_back(time);
-            temp_data.forcing.push_back(forcing);
-            temp_data.a.push_back(amp);
+            temp_data.forcing.push_back(forcing * 1000. * 2. * M_PI);
+            temp_data.a.push_back(amp * 2. * M_PI);
         }
         vec_data.push_back(temp_data);
     }
@@ -519,5 +519,23 @@ void gauss_hist_root(vector<punti_massimo> &punti_max, vector<vettoredoppio> &hi
             temp_hist.vettore3.push_back(counts[k]);
         }
         hist.push_back(temp_hist);
+    }
+}
+
+//Calcolo di omega per smorzamento
+void omega_s_scamorza(vector<x_y> periodi, vector<x_y> &omega_s_smorzamento)
+{
+    for (int i = 0; i < periodi.size(); i++)
+    {
+        x_y temp_omega_str;
+        vector<double> temp_omega;
+        for (int j = 0; j < periodi[i].time.size(); j++) //sono già indipendenti, perchè i tempi venivano presi indipendenti
+        {
+            temp_omega.push_back(2. * M_PI / periodi[i].time[j]);
+        }
+
+        temp_omega_str.omega_media2 = media(temp_omega);
+        temp_omega_str.err_omega_media2 = dstd_media(temp_omega);
+        omega_s_smorzamento.push_back(temp_omega_str);
     }
 }
