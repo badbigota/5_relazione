@@ -16,11 +16,15 @@ int main()
     vector<data_campione> campione;
     vector<data_campione> campione_decadimento;
     vector<x_y> tempi;
+    vector<x_y> tempi_decay;
     vector<x_y> periodi;
+    vector<x_y> periodi_decadimento;
     vector<x_y> media_periodi;
+    vector<x_y> media_periodi_decadimento;
     vector<x_y> omega1;
     vector<x_y> omega2;
     vector<punti_massimo> parametri;
+    vector<x_y> omega_s_smorzamento;
 
     string map_file = "../Dati/mappa.txt";
     load_data(map_file, campione);
@@ -30,16 +34,16 @@ int main()
     get_periodi_medi(periodi, media_periodi); //calcola media dei periodi con errore
 
     //Stampa file per verifica corrispondenza punti interpolazione con effettiva intercetta con asse x
-    //int num_file = 0;
-    //for (int j = 0; j < tempi.size() - 1; j++)
-    //{
-    //    ofstream fout_time("../Dati/zeroes_" + to_string(num_file) + ".csv");
-    //    for (int i = 0; i < tempi[j].time.size(); i++)
-    //    {
-    //        fout_time << tempi[j].time[i] << "\t" << tempi[j].amplitude[i] << "\t0" << endl;
-    //    }
-    //    num_file++;
-    //}
+    int num_file = 0;
+    for (int j = 0; j < tempi.size(); j++)
+    {
+        ofstream fout_time("../Dati/Zeros_Regime/zeroes_" + to_string(num_file) + ".csv");
+        for (int i = 0; i < tempi[j].time.size(); i++)
+        {
+            fout_time << tempi[j].time[i] << "\t" << tempi[j].amplitude[i] << "\t0" << endl;
+        }
+        num_file++;
+    }
 
     //Stampa tempi
     //for(int i=0;i<tempi.size();i++)
@@ -208,14 +212,35 @@ int main()
     vector<vettoredoppio> hist_root;
     vector<double> n_bin(20, 20.0); //definisce il numero di bin, cambia il secondo valore
     gauss_hist_root(punti_di_massimo_root, hist_root, n_bin);
-    for (int j = 0; j < hist_root.size(); j++)
-    {
-        ofstream fout_hist("../Histogram/" + to_string(j+10) + "-hist.txt");
-        for (int k = 0; k < hist_root[j].vettore2.size(); k++)
-        {
-            fout_hist << hist_root[j].vettore2[k] << "\t" << hist_root[j].vettore3[k] << endl;
-        }
-    }
+    //for (int j = 0; j < hist_root.size(); j++)
+    //{
+    //    ofstream fout_hist("../Histogram/" + to_string(j + 10) + "-hist.txt");
+    //    for (int k = 0; k < hist_root[j].vettore2.size(); k++)
+    //    {
+    //        fout_hist << hist_root[j].vettore2[k] << "\t" << hist_root[j].vettore3[k] << endl;
+    //    }
+    //}
 
+    //*******************************************************SMORZAMENTO*****************************************************************************************************
+    get_zero_time(campione_decadimento, tempi_decay);
+
+    //int num_file_d = 0;
+    //for (int p = 0; p < tempi_decay.size(); p++)
+    //{
+    //    ofstream fout_time_smorzamento("../Dati/Zeros_smorzamento/zeroes_d_" + to_string(num_file_d) + ".csv");
+    //    for (int i = 0; i < tempi_decay[p].time.size(); i++)
+    //    {
+    //        fout_time_smorzamento << tempi_decay[p].time[i] << "\t 0" << endl;
+    //    }
+    //    num_file_d++;
+    //}
+
+    get_periods(tempi_decay, periodi_decadimento);
+    get_periodi_medi(periodi_decadimento, media_periodi_decadimento); //#cavallo
+
+    vector<vettoredoppio> indici_dei_massimi_decadimento;
+    get_index_maxima(campione_decadimento, tempi_decay, indici_dei_massimi_decadimento);
+    omega_s_scamorza(periodi_decadimento, omega_s_smorzamento);
+    //da controllare il cout per vedere se è fatto bene per riga (tutto) 241 - 242 - 238 - 239
     return 0;
 }
