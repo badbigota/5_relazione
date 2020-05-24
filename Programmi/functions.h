@@ -72,6 +72,22 @@ struct punto_regime //perchè useremo questa per avere tutti i puti per il grafi
     double err_theta;
 };
 
+struct interpolazione_gamma
+{
+    double a_intercetta_gamma_max;
+    double b_angolare_gamma_max;
+    double a_intercetta_gamma_min;
+    double b_angolare_gamma_min;
+    double r_max;
+    double r_min;
+    double t_max;
+    double t_min;
+    double err_a_post_max;
+    double err_b_post_max;
+    double err_a_post_min;
+    double err_b_post_min;
+};
+
 //Carica tutti i dati grezzi in strutture contenute in un vettore
 void load_data(string map_file, vector<data_campione> &vec_data)
 {
@@ -96,6 +112,7 @@ void load_data(string map_file, vector<data_campione> &vec_data)
     }
 }
 
+//Carica i dati grezzi del decadimento
 void load_data_decay(vector<data_campione> &vec_data)
 {
     for (int i = 0; i < 3; i++)
@@ -113,6 +130,7 @@ void load_data_decay(vector<data_campione> &vec_data)
     }
 }
 
+//Legge i parametri di root per la fase a regime
 void lettura_parametri(vector<punti_massimo> &parametri)
 {
     for (int i = 0; i < 20; i++)
@@ -120,6 +138,27 @@ void lettura_parametri(vector<punti_massimo> &parametri)
         punti_massimo temp_p_max;
         double a, b, c, d, e, f, g, h;
         ifstream fin_param("../Dati/parameters" + to_string(i + 1) + ".txt");
+        while (fin_param >> a >> b >> c >> d >> e >> f >> g >> h)
+        {
+            temp_p_max.coeff_c.push_back(c);
+            temp_p_max.err_coeff_c.push_back(d);
+            temp_p_max.coeff_b.push_back(e);
+            temp_p_max.err_coeff_b.push_back(f);
+            temp_p_max.coeff_a.push_back(g);
+            temp_p_max.err_coeff_a.push_back(h);
+        }
+        parametri.push_back(temp_p_max);
+    }
+}
+
+//Legge i parametri di smorzamento da root
+void lettura_parametri_smorz(vector<punti_massimo> &parametri)
+{
+    for (int i = 0; i < 3; i++)
+    {
+        punti_massimo temp_p_max;
+        double a, b, c, d, e, f, g, h;
+        ifstream fin_param("../Dati/parameters_smorz_" + to_string(i) + ".txt");
         while (fin_param >> a >> b >> c >> d >> e >> f >> g >> h)
         {
             temp_p_max.coeff_c.push_back(c);
@@ -161,6 +200,7 @@ double get_root_per_0(int &i, data_campione &d)
     double root = -a_intercetta_err_uguali(x, y) / b_angolare_err_uguali(x, y); //trova intersezione retta con asse x
     return root;
 }
+
 //Genera il vettore di struttura (una per campione) dove ciascuna strutura ha il vettore con il momento di intercetta della sinusoide con lo zero
 void get_zero_time(vector<data_campione> &vec_data, vector<x_y> &time_amp)
 {
@@ -226,7 +266,8 @@ void get_periods(vector<x_y> &times, vector<x_y> &periods)
     }
 }
 
-void get_periodi_medi(vector<x_y> &periodi, vector<x_y> &media_periodi) //genra la media dei tempi e errore
+//genera la media dei tempi e errore
+void get_periodi_medi(vector<x_y> &periodi, vector<x_y> &media_periodi) 
 {
     for (auto d : periodi)
     {
@@ -238,7 +279,6 @@ void get_periodi_medi(vector<x_y> &periodi, vector<x_y> &media_periodi) //genra 
 }
 
 //Trova gli indici di massimo in assoluto, utili anche poi per fare picco picco automaticamente senza approx
-//Adattato interamente da quello di marc e fab in analisi cxx
 void get_index_maxima(vector<data_campione> &dati_grezzi, vector<x_y> &tempi, vector<vettoredoppio> &indici_max_per_campioni)
 {
     for (int i = 0; i < dati_grezzi.size(); i++) //per ogni campione
@@ -306,7 +346,7 @@ void best_fit_mv(vector<double> x, vector<double> y, vector<double> &best_fit)
     best_fit.push_back(-num_c / den);
 }
 
-////Punto di massimo per fit
+//Punto di massimo per fit
 double max_x_fit(vector<double> parametri_fit)
 {
     long double a = parametri_fit[0];
@@ -316,7 +356,7 @@ double max_x_fit(vector<double> parametri_fit)
     return max_val;
 }
 
-//////Valore punto di massimo per fit
+//Valore punto di massimo per fit
 double max_y_fit(vector<double> parametri_fit)
 {
     long double a = parametri_fit[0];
@@ -348,6 +388,8 @@ void get_maxima_ass(vector<data_campione> &raw_data, vector<vettoredoppio> &inde
     }
 }
 
+
+//Genera i massimi tramite massima verosimiglianza intorno agli indici di massimo
 void get_maxima_mv(vector<data_campione> &raw_data, vector<vettoredoppio> &index_maxima, vector<punti_massimo> &maxima)
 {
     for (int i = 0; i < raw_data.size(); i++)
@@ -396,6 +438,7 @@ void get_maxima_root(vector<punti_massimo> parametri, vector<punti_massimo> &max
     }
 }
 
+//Rapido controllo di andamento di offset per andamento a regime, per genrare grafico
 void offset(vector<punti_massimo> vec_punti_max, vector<x_y> &vec_picco_picco)
 {
     for (int i = 0; i < vec_punti_max.size(); i++)
@@ -480,6 +523,7 @@ void add_omega_2(vector<x_y> periodi, vector<punto_regime> &punti_regime)
     }
 }
 
+//Genera grafico istogrmma disperisioni misurazioni di theta in risonanza, usa il valore assoluto di tutti i theta
 void gauss_hist_root(vector<punti_massimo> &punti_max, vector<vettoredoppio> &hist, vector<double> bins)
 {
     for (int i = 0; i < punti_max.size(); i++)
@@ -537,5 +581,83 @@ void omega_s_scamorza(vector<x_y> periodi, vector<x_y> &omega_s_smorzamento)
         temp_omega_str.omega_media2 = media(temp_omega);
         temp_omega_str.err_omega_media2 = dstd_media(temp_omega);
         omega_s_smorzamento.push_back(temp_omega_str);
+    }
+}
+
+//Calcolo di compatibiità fra omega sperimentale e omega regime per fase di risonanza
+void compatibilita_omega(vector<punto_regime> &camp_lorent, vector<data_campione> freq_camp, vector<double> &compatib_omega)
+{
+    for (int i = 0; i < freq_camp.size(); i++)
+    {
+        double omega_th = freq_camp[i].data_file_freq * 2. * M_PI / 1000.; //convertita in Hz da mHz e in omega da freq
+        double omega_sper = camp_lorent[i].omega;
+        double err_omega_sper = camp_lorent[i].err_omega;
+        double err_omega_th = sigma_dist_uni(0.001, 1); //dist uniforme su più piccola cifra degli Hz
+        compatib_omega.push_back(comp_3(omega_th, omega_sper, err_omega_th, err_omega_sper));
+    }
+}
+
+//Funzione checalcola la linearizzazione sui punti di massimo
+void linearize_max(vector<punti_massimo> &theta_generiche, vector<punti_massimo> &ln_theta)
+{
+    for (auto d : theta_generiche)
+    {
+        punti_massimo temp_ln_maxima;
+        for (int j = 0; j < d.ampl_max.size(); j++)
+        {
+            if (d.ampl_max[j] > 0)
+            {
+                temp_ln_maxima.t_max.push_back(d.t_max[j]);
+                temp_ln_maxima.ampl_max.push_back(log(d.ampl_max[j]));
+            }
+        }
+
+        ln_theta.push_back(temp_ln_maxima);
+    }
+}
+
+//Funzione checalcola la linearizzazione sui punti di minimo
+void linearize_min(vector<punti_massimo> &theta_generiche, vector<punti_massimo> &ln_theta)
+{
+    for (auto d : theta_generiche)
+    {
+        punti_massimo temp_ln_maxima;
+        for (int j = 0; j < d.ampl_max.size(); j++)
+        {
+            if (d.ampl_max[j] < 0)
+            {
+                temp_ln_maxima.t_max.push_back(d.t_max[j]);
+                temp_ln_maxima.ampl_max.push_back(-log(-d.ampl_max[j])); //usa il meno com vole la cinzia ;)
+            }
+        }
+        ln_theta.push_back(temp_ln_maxima);
+    }
+}
+
+//Calcola i parametri del fit per gamma dopo aver fatto il log naturale
+//SERVONO GLI ERRORI A POSTERIORI DEL FIT DELLA PARABOLA
+void return_angolari(vector<punti_massimo> &ln_theta_max, vector<punti_massimo> &ln_theta_min, vector<interpolazione_gamma> &parametri_intepolazioni)
+{
+    for (int i = 0; i < ln_theta_max.size(); i++)
+    {
+        interpolazione_gamma temp_gamma;
+        //per i massimi
+        temp_gamma.a_intercetta_gamma_max = a_intercetta_err_uguali(ln_theta_max[i].t_max, ln_theta_max[i].ampl_max);
+        temp_gamma.b_angolare_gamma_max = b_angolare_err_uguali(ln_theta_max[i].t_max, ln_theta_max[i].ampl_max);
+        temp_gamma.r_max = pearson(ln_theta_max[i].t_max, ln_theta_max[i].ampl_max);
+        temp_gamma.t_max = student(ln_theta_max[i].t_max, ln_theta_max[i].ampl_max);
+        temp_gamma.err_a_post_max = sigma_a_posteriori(ln_theta_max[i].t_max, ln_theta_max[i].ampl_max);
+        temp_gamma.err_b_post_max = sigma_b_posteriori(ln_theta_max[i].t_max, ln_theta_max[i].ampl_max);
+
+        //per i minimi
+        temp_gamma.a_intercetta_gamma_min = a_intercetta_err_uguali(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max);
+        temp_gamma.b_angolare_gamma_min = b_angolare_err_uguali(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max);
+        temp_gamma.r_min = pearson(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max);
+        temp_gamma.t_min = student(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max);
+        temp_gamma.err_a_post_min = sigma_a_posteriori(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max);
+        temp_gamma.err_b_post_min = sigma_b_posteriori(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max);
+
+        //salva tutto in vec
+        parametri_intepolazioni.push_back(temp_gamma);
     }
 }
