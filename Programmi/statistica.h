@@ -120,6 +120,12 @@ double comp(double a, double b, double sigma_a, double sigma_b)
     return abs(a - b) / sqrt(pow(sigma_a, 2) + pow(sigma_b, 2));
 }
 
+//Errore distribuzione uniforme
+double sigma_dist_uni(double ptl, double coeff_aff)
+{
+    return abs(ptl / coeff_aff) / sqrt(12); //ptl con il suo coeff aff è il doppio di err max
+}
+
 //Media ponderata con errori
 double media_ponderata(vector<double> valori, vector<double> errori, int inizio = 0, int fine = 0)
 {
@@ -390,4 +396,11 @@ double student(vector<double> x, vector<double> y)
     double pearson_1 = pearson(x, y);
     double t = pearson_1 * sqrt(y.size() - 2) / sqrt(1. - pow(pearson_1, 2));
     return t;
+}
+
+
+//Compatibilità avendo due valori medi e i sigma relativi
+double comp_3(double a, double b, double sigma_a, double sigma_b)
+{
+    return abs(a - b) / sqrt(pow(sigma_a, 2) + pow(sigma_b, 2));
 }
