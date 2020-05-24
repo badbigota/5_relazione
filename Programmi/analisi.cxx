@@ -28,7 +28,6 @@ int main()
 
     string map_file = "../Dati/mappa.txt";
     load_data(map_file, campione);
-    load_data_decay(campione_decadimento);
     get_zero_time(campione, tempi);           //calcolo di tutti tempi con interpolazione a 4 punti
     get_periods(tempi, periodi);              //calcolo di tutti i periodi
     get_periodi_medi(periodi, media_periodi); //calcola media dei periodi con errore
@@ -221,7 +220,23 @@ int main()
     //    }
     //}
 
+    vector<double> compatibilty_ass;
+    vector<double> compatibilty_mv;
+    vector<double> compatibilty_root;
+    compatibilita_omega(campana_lorentziana_assoluta, campione, compatibilty_ass);
+    compatibilita_omega(campana_lorentziana_assoluta, campione, compatibilty_mv);
+    compatibilita_omega(campana_lorentziana_assoluta, campione, compatibilty_root);
+
+    //cout << "Compatiblità omega sper root con omega th";
+
+    ofstream fout_com("../Dati/Compatib/comp.txt");
+    for (int i = 0; i < campana_lorentziana_root.size(); i++) //sono tutte uguali, non cambia un cazzo con le altre
+    {
+        fout_com << i + 1 << "\t" << campana_lorentziana_root[i].omega << "\t" << campana_lorentziana_root[i].err_omega << "\t" << campione[i].data_file_freq * 2. * M_PI / 1000. << "\t" << sigma_dist_uni(0.001, 1) << "\t" << compatibilty_root[i] << endl;
+    }
+
     //*******************************************************SMORZAMENTO*****************************************************************************************************
+    load_data_decay(campione_decadimento);
     get_zero_time(campione_decadimento, tempi_decay);
 
     //int num_file_d = 0;
@@ -239,8 +254,111 @@ int main()
     get_periodi_medi(periodi_decadimento, media_periodi_decadimento); //#cavallo
 
     vector<vettoredoppio> indici_dei_massimi_decadimento;
+    vector<punti_massimo> massimi_decadimento_ass;
+    vector<punti_massimo> massimi_decadimento_mv;
     get_index_maxima(campione_decadimento, tempi_decay, indici_dei_massimi_decadimento);
     omega_s_scamorza(periodi_decadimento, omega_s_smorzamento);
-    //da controllare il cout per vedere se è fatto bene per riga (tutto) 241 - 242 - 238 - 239
+    get_maxima_ass(campione_decadimento, indici_dei_massimi_decadimento, massimi_decadimento_ass);
+    get_maxima_mv(campione_decadimento, indici_dei_massimi_decadimento, massimi_decadimento_mv);
+
+    vector<punti_massimo> parametri_smorzamento_root;
+    vector<punti_massimo> massimi_decadimento_root;
+    lettura_parametri_smorz(parametri_smorzamento_root);
+    get_maxima_root(parametri_smorzamento_root, massimi_decadimento_root);
+
+    //Stampa i punti max di smorzamento
+    for (int i = 0; i < massimi_decadimento_ass.size(); i++)
+    {
+        ofstream fout_smor_max("../Dati/Maxmin_smorzamento/smorz_" + to_string(i) + "_ass.txt");
+        for (int j = 0; j < massimi_decadimento_ass[i].t_max.size(); j++)
+        {
+            fout_smor_max << massimi_decadimento_ass[i].t_max[j] << "\t" << massimi_decadimento_ass[i].ampl_max[j] << endl;
+        }
+    }
+
+    for (int i = 0; i < massimi_decadimento_root.size(); i++)
+    {
+        ofstream fout_smor_max("../Dati/Maxmin_smorzamento/smorz_" + to_string(i) + "_root.txt");
+        for (int j = 0; j < massimi_decadimento_root[i].t_max.size(); j++)
+        {
+            fout_smor_max << massimi_decadimento_root[i].t_max[j] << "\t" << massimi_decadimento_root[i].ampl_max[j] << endl;
+        }
+    }
+    for (int i = 0; i < massimi_decadimento_mv.size(); i++)
+    {
+        ofstream fout_smor_max("../Dati/Maxmin_smorzamento/smorz_" + to_string(i) + "_mv.txt");
+        for (int j = 0; j < massimi_decadimento_mv[i].t_max.size(); j++)
+        {
+            fout_smor_max << massimi_decadimento_mv[i].t_max[j] << "\t" << massimi_decadimento_mv[i].ampl_max[j] << endl;
+        }
+    }
+
+    //Stampa/controllo righe precendenti
+    /*int h = 1;
+    for (int j = 0; j < periodi_decadimento.size(); j++)
+    {
+        cout << h << endl;
+        h++;
+        for (int i = 0; i < periodi_decadimento[j].time.size(); i++)
+        {
+            cout << periodi_decadimento[j].time[i] << endl;
+        }
+        cout << "Periodo medio: " << media_periodi_decadimento[j].avg_time << "+/-" << media_periodi_decadimento[j].err_avg_time << endl;
+    }*/
+
+    //TUTTA ROBA CHE SERVE A FABIO - intervalli per max root
+    for (int j = 0; j < indici_dei_massimi_decadimento.size(); j++)
+    {
+        ofstream smorz("../Dati/periodo_smorzamento" + to_string(j) + ".txt");
+
+        for (int i = 0; i < indici_dei_massimi_decadimento[j].vettore2.size(); i++)
+        {
+            smorz << campione_decadimento[j].time[indici_dei_massimi_decadimento[j].vettore2[i] - 9] << ",\t" << campione_decadimento[j].time[indici_dei_massimi_decadimento[j].vettore2[i] + 9] << ",\t" << endl;
+        }
+        smorz << endl;
+    }
+
+    /*int h = 1;
+    for (auto c : omega_s_smorzamento)
+    {
+        cout << h << endl;
+        h++;
+        cout << c.omega_media2 << "+/-" << c.err_omega_media2 << endl;
+    }*/
+
+    vector<punti_massimo> punti_max_ln_root;
+    vector<punti_massimo> punti_min_ln_root;
+    linearize_max(massimi_decadimento_root, punti_max_ln_root);
+    linearize_min(massimi_decadimento_root, punti_min_ln_root);
+
+    for (int i = 0; i < punti_max_ln_root.size(); i++)
+    {
+        ofstream fout_ln_max("../Dati/Linearize/ln_max_" + to_string(i) + ".txt");
+        for (int j = 0; j < punti_max_ln_root[i].ampl_max.size(); j++)
+        {
+            fout_ln_max << punti_max_ln_root[i].t_max[j] << "\t" << punti_max_ln_root[i].ampl_max[j] << endl;
+        }
+    }
+
+    for (int i = 0; i < punti_min_ln_root.size(); i++)
+    {
+        ofstream fout_ln_min("../Dati/Linearize/ln_min_" + to_string(i) + ".txt");
+        for (int j = 0; j < punti_min_ln_root[i].ampl_max.size(); j++)
+        {
+            fout_ln_min << punti_min_ln_root[i].t_max[j] << "\t" << punti_min_ln_root[i].ampl_max[j] << endl;
+        }
+    }
+
+    vector<interpolazione_gamma> parametri_interpolazioni;
+    return_angolari(punti_max_ln_root, punti_min_ln_root, parametri_interpolazioni);
+
+    for (int i = 0; i < parametri_interpolazioni.size(); i++)
+    {
+        cout<<"Massimi "<<i+1<<endl;
+        cout << parametri_interpolazioni[i].a_intercetta_gamma_max<<"\t"<< parametri_interpolazioni[i].b_angolare_gamma_max<<endl;
+        cout<< "Minimi "<<i+1 <<endl;
+        cout << parametri_interpolazioni[i].a_intercetta_gamma_min<<"\t"<< parametri_interpolazioni[i].b_angolare_gamma_min<<endl;
+    }
+
     return 0;
 }
