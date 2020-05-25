@@ -22,6 +22,21 @@ struct data_torque
 - Metodo per trovare indice dei massimi
 - Interpolazione con MV parabola sui 18 punti vicino ai picchi
 - Stima di ampiezza max da coeff derivati da MV
+- Idem con root
+- Idem con max ass
+- Stima periodo con intercette di ampiezza
+- stima di ampiezza media da tutti e 3 i metodi
+- Plot lorenziana
+- Stima di err a post su lorentz
+- Check offset
+- Check gaussiane ampiezze theta
+
+
+- Decadimento, trova zeri
+- Trova max
+- Plot max  elinearizzzione
+- Uso err di theta post di lorenz
+- Fit stima di gamma
 
 ## Stima degli zeri
 
