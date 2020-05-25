@@ -57,7 +57,7 @@ int main()
     //Stampa per prova dei periodi
     //for (int k = 0; k < periodi.size(); k++)
     //{
-    //    ofstream fout("../Test/periodi_" + to_string(k + 1) + ".txt");
+    //    ofstream fout("../Dati/Periodi/periodi_" + to_string(k + 1) + ".txt");
     //    for (int i = 0; i < periodi[k].time.size(); i++)
     //    {
     //        fout << periodi[k].time[i] << endl;
@@ -110,7 +110,7 @@ int main()
     get_index_maxima(campione, tempi, indici_dei_massimi);
     //for (int j = 0; j < indici_dei_massimi.size(); j++)
     //{
-    //    ofstream fout_maxima("../Dati/maxima_" + to_string(j) + ".txt");
+    //    ofstream fout_maxima("../Dati/Maxima/maxima_" + to_string(j) + ".txt");
     //    for (auto c : indici_dei_massimi[j].vettore2)
     //    {
     //        fout_maxima << campione[j].time[c] << "\t" << campione[j].a[c] << endl;
@@ -139,7 +139,7 @@ int main()
 
     //for (int i = 0; i < punti_di_massimo.size(); i++)
     //{
-    //    ofstream fout_temp("../Dati/punti_max_" + to_string(punti_di_massimo[i].freq_ref) + ".txt");
+    //    ofstream fout_temp("../Dati/Punti_max/punti_max_" + to_string(punti_di_massimo[i].freq_ref) + ".txt");
     //    for (int j = 0; j < punti_di_massimo[i].t_max.size(); j++)
     //    {
     //        fout_temp << punti_di_massimo[i].t_max[j] << "\t" << punti_di_massimo[i].ampl_max[j] << "\t" << punti_di_massimo[i].coeff_a[j] << "\t" << punti_di_massimo[i].coeff_b[j] << "\t" << punti_di_massimo[i].coeff_c[j] << endl;
@@ -150,7 +150,7 @@ int main()
     offset(punti_di_massimo_ass, valutaz_offset_ass);
     //for (auto d : valutaz_offset)
     //{
-    //    ofstream fout_off("../Dati/offset_" + to_string(d.freq) + ".txt");
+    //    ofstream fout_off("../Dati/Offset_regime/offset_" + to_string(d.freq) + ".txt");
     //    for (auto c : d.offset)
     //    {
     //        fout_off << c << endl;
@@ -168,7 +168,7 @@ int main()
     //cout << picchi_picchi_assoluti.size() << endl;
     //for (auto d : picchi_picchi_assoluti)
     //{
-    //    ofstream fout_picco("../Dati/pic_pic_mezz_ass_" + to_string(d.freq) + ".txt");
+    //    ofstream fout_picco("../Dati/Picchi_ass/pic_pic_mezz_ass_" + to_string(d.freq) + ".txt");
     //    for (auto c : d.picco_picco)
     //    {
     //        fout_picco << c << endl;
