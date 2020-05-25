@@ -195,17 +195,17 @@ int main()
 
     for (int i = 0; i < campana_lorentziana_mv.size(); i++)
     {
-        fout_lor_mv << campana_lorentziana_mv[i].omega << "\t" << campana_lorentziana_mv[i].theta << "\t" << campana_lorentziana_mv[i].err_omega << "\t" << campana_lorentziana_mv[i].err_theta << endl;
+        fout_lor_mv << campana_lorentziana_mv[i].omega << "\t" << campana_lorentziana_mv[i].theta << "\t" << campana_lorentziana_mv[i].err_omega << "\t" << campana_lorentziana_mv[i].err_theta << "\t 1" << endl;
     }
 
     for (int i = 0; i < campana_lorentziana_assoluta.size(); i++)
     {
-        fout_lor_ass << campana_lorentziana_assoluta[i].omega << "\t" << campana_lorentziana_assoluta[i].theta << "\t" << campana_lorentziana_assoluta[i].err_omega << "\t" << campana_lorentziana_assoluta[i].err_theta << endl;
+        fout_lor_ass << campana_lorentziana_assoluta[i].omega << "\t" << campana_lorentziana_assoluta[i].theta << "\t" << campana_lorentziana_assoluta[i].err_omega << "\t" << campana_lorentziana_assoluta[i].err_theta << "\t 1" << endl;
     }
 
     for (int i = 0; i < campana_lorentziana_root.size(); i++)
     {
-        fout_lor_root << campana_lorentziana_root[i].omega << "\t" << campana_lorentziana_root[i].theta * 2. * M_PI << "\t" << campana_lorentziana_root[i].err_omega << "\t" << campana_lorentziana_root[i].err_theta * 2. * M_PI << endl;
+        fout_lor_root << campana_lorentziana_root[i].omega << "\t" << campana_lorentziana_root[i].theta  << "\t" << campana_lorentziana_root[i].err_omega << "\t" << campana_lorentziana_root[i].err_theta << "\t 1" << endl;
     }
 
     vector<vettoredoppio> hist_root;
@@ -307,16 +307,16 @@ int main()
     }*/
 
     //TUTTA ROBA CHE SERVE A FABIO - intervalli per max root
-    for (int j = 0; j < indici_dei_massimi_decadimento.size(); j++)
-    {
-        ofstream smorz("../Dati/periodo_smorzamento" + to_string(j) + ".txt");
-
-        for (int i = 0; i < indici_dei_massimi_decadimento[j].vettore2.size(); i++)
-        {
-            smorz << campione_decadimento[j].time[indici_dei_massimi_decadimento[j].vettore2[i] - 9] << ",\t" << campione_decadimento[j].time[indici_dei_massimi_decadimento[j].vettore2[i] + 9] << ",\t" << endl;
-        }
-        smorz << endl;
-    }
+    //for (int j = 0; j < indici_dei_massimi_decadimento.size(); j++)
+    //{
+    //    ofstream smorz("../Dati/periodo_smorzamento" + to_string(j) + ".txt");
+    //
+    //    for (int i = 0; i < indici_dei_massimi_decadimento[j].vettore2.size(); i++)
+    //    {
+    //        smorz << campione_decadimento[j].time[indici_dei_massimi_decadimento[j].vettore2[i] - 9] << ",\t" << campione_decadimento[j].time[indici_dei_massimi_decadimento[j].vettore2[i] + 9] << ",\t" << endl;
+    //    }
+    //    smorz << endl;
+    //}
 
     /*int h = 1;
     for (auto c : omega_s_smorzamento)
@@ -328,15 +328,22 @@ int main()
 
     vector<punti_massimo> punti_max_ln_root;
     vector<punti_massimo> punti_min_ln_root;
-    linearize_max(massimi_decadimento_root, punti_max_ln_root);
-    linearize_min(massimi_decadimento_root, punti_min_ln_root);
+    vector<double> par_root={1.82653,6.06287,-0.0558678,-0.026352};
+    vector<double> par_ass={1.84435,6.0624,-0.0566001,0.002301};
+    vector<double> par_mv={1.82795,6.06275,-0.0559494,-0.0265116};
+
+	double err_post_root = post_lor(campana_lorentziana_root, par_root);
+	double err_post_ass = post_lor(campana_lorentziana_assoluta, par_ass);
+	double err_post_mv = post_lor(campana_lorentziana_mv, par_mv);
+    linearize_max(massimi_decadimento_root, punti_max_ln_root, err_post_root);
+    linearize_min(massimi_decadimento_root, punti_min_ln_root, err_post_root);
 
     for (int i = 0; i < punti_max_ln_root.size(); i++)
     {
         ofstream fout_ln_max("../Dati/Linearize/ln_max_" + to_string(i) + ".txt");
         for (int j = 0; j < punti_max_ln_root[i].ampl_max.size(); j++)
         {
-            fout_ln_max << punti_max_ln_root[i].t_max[j] << "\t" << punti_max_ln_root[i].ampl_max[j] << endl;
+            fout_ln_max << punti_max_ln_root[i].t_max[j] << "\t" << punti_max_ln_root[i].ampl_max[j] <<"\t"<<punti_max_ln_root[i].err_ampl_max[j]<< endl;
         }
     }
 
@@ -345,20 +352,20 @@ int main()
         ofstream fout_ln_min("../Dati/Linearize/ln_min_" + to_string(i) + ".txt");
         for (int j = 0; j < punti_min_ln_root[i].ampl_max.size(); j++)
         {
-            fout_ln_min << punti_min_ln_root[i].t_max[j] << "\t" << punti_min_ln_root[i].ampl_max[j] << endl;
+            fout_ln_min << punti_min_ln_root[i].t_max[j] << "\t" << punti_min_ln_root[i].ampl_max[j] << "\t"<< punti_min_ln_root[i].err_ampl_max[j]<<endl;
         }
     }
 
     vector<interpolazione_gamma> parametri_interpolazioni;
     return_angolari(punti_max_ln_root, punti_min_ln_root, parametri_interpolazioni);
 
-    for (int i = 0; i < parametri_interpolazioni.size(); i++)
-    {
-        cout<<"Massimi "<<i+1<<endl;
-        cout << parametri_interpolazioni[i].a_intercetta_gamma_max<<"\t"<< parametri_interpolazioni[i].b_angolare_gamma_max<<endl;
-        cout<< "Minimi "<<i+1 <<endl;
-        cout << parametri_interpolazioni[i].a_intercetta_gamma_min<<"\t"<< parametri_interpolazioni[i].b_angolare_gamma_min<<endl;
-    }
+   // for (int i = 0; i < parametri_interpolazioni.size(); i++)
+   // {
+   //     cout<<"Massimi "<<i+1<<endl;
+   //     cout << parametri_interpolazioni[i].a_intercetta_gamma_max<<"\t"<< parametri_interpolazioni[i].b_angolare_gamma_max<<endl;
+   //     cout<< "Minimi "<<i+1 <<endl;
+   //     cout << parametri_interpolazioni[i].a_intercetta_gamma_min<<"\t"<< parametri_interpolazioni[i].b_angolare_gamma_min<<endl;
+   // }
 
     return 0;
 }
