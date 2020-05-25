@@ -56,6 +56,7 @@ struct punti_massimo
     vector<double> err_coeff_a;
     vector<double> err_coeff_b;
     vector<double> err_coeff_c;
+    vector<double> err_ampl_max;//solo per la linearizzazione
 };
 
 struct vettoredoppio
@@ -267,7 +268,7 @@ void get_periods(vector<x_y> &times, vector<x_y> &periods)
 }
 
 //genera la media dei tempi e errore
-void get_periodi_medi(vector<x_y> &periodi, vector<x_y> &media_periodi) 
+void get_periodi_medi(vector<x_y> &periodi, vector<x_y> &media_periodi)
 {
     for (auto d : periodi)
     {
@@ -388,7 +389,6 @@ void get_maxima_ass(vector<data_campione> &raw_data, vector<vettoredoppio> &inde
     }
 }
 
-
 //Genera i massimi tramite massima verosimiglianza intorno agli indici di massimo
 void get_maxima_mv(vector<data_campione> &raw_data, vector<vettoredoppio> &index_maxima, vector<punti_massimo> &maxima)
 {
@@ -432,7 +432,7 @@ void get_maxima_root(vector<punti_massimo> parametri, vector<punti_massimo> &max
             double par_b = parametri[i].coeff_b[j];
             double par_c = parametri[i].coeff_c[j];
             temp_punti_max.t_max.push_back(max_x_fit({par_a, par_b, par_c}));
-            temp_punti_max.ampl_max.push_back(max_y_fit({par_a, par_b, par_c}));
+            temp_punti_max.ampl_max.push_back(2.*M_PI*max_y_fit({par_a, par_b, par_c}));//così da uniformare e non dover più mettere il 2 pigreco dopo
         }
         maxima.push_back(temp_punti_max);
     }
@@ -597,8 +597,32 @@ void compatibilita_omega(vector<punto_regime> &camp_lorent, vector<data_campione
     }
 }
 
+
+
+double y_th(double x, vector<double> parms){
+	double a, b, c, d;
+    a = parms[0];
+	b = parms[1];
+	c = parms[2];
+    d = parms[3];
+	return a/sqrt(  pow( (pow(b,2)+2*pow(c,2)-pow(x,2)),2)  +4*pow((c*x),2)   )+d;
+}	
+
+double post_lor(vector<punto_regime> & campana_lor, vector<double> parametri_fit_gnuplot)
+{
+    double sum_scarto_quad=0;
+	double gdl = campana_lor.size() - parametri_fit_gnuplot.size();
+	for (int i = 0; i < campana_lor.size(); i++) //per tutti i punti della lorenziana
+	{
+        //y_i-y_i,th
+		double scarto = campana_lor[i].theta - y_th(campana_lor[i].omega, parametri_fit_gnuplot);
+		sum_scarto_quad += pow(scarto, 2);
+     }
+    return sqrt(sum_scarto_quad/gdl);
+}
+
 //Funzione checalcola la linearizzazione sui punti di massimo
-void linearize_max(vector<punti_massimo> &theta_generiche, vector<punti_massimo> &ln_theta)
+void linearize_max(vector<punti_massimo> &theta_generiche, vector<punti_massimo> &ln_theta, double err_post)
 {
     for (auto d : theta_generiche)
     {
@@ -609,6 +633,7 @@ void linearize_max(vector<punti_massimo> &theta_generiche, vector<punti_massimo>
             {
                 temp_ln_maxima.t_max.push_back(d.t_max[j]);
                 temp_ln_maxima.ampl_max.push_back(log(d.ampl_max[j]));
+                temp_ln_maxima.err_ampl_max.push_back(sqrt(pow(1./d.ampl_max[j]*err_post,2)));
             }
         }
 
@@ -617,7 +642,7 @@ void linearize_max(vector<punti_massimo> &theta_generiche, vector<punti_massimo>
 }
 
 //Funzione checalcola la linearizzazione sui punti di minimo
-void linearize_min(vector<punti_massimo> &theta_generiche, vector<punti_massimo> &ln_theta)
+void linearize_min(vector<punti_massimo> &theta_generiche, vector<punti_massimo> &ln_theta, double err_post)
 {
     for (auto d : theta_generiche)
     {
@@ -628,8 +653,9 @@ void linearize_min(vector<punti_massimo> &theta_generiche, vector<punti_massimo>
             {
                 temp_ln_maxima.t_max.push_back(d.t_max[j]);
                 temp_ln_maxima.ampl_max.push_back(-log(-d.ampl_max[j])); //usa il meno com vole la cinzia ;)
-            }
-        }
+				temp_ln_maxima.err_ampl_max.push_back(sqrt(pow(1./d.ampl_max[j]*err_post,2)));
+			}
+		}
         ln_theta.push_back(temp_ln_maxima);
     }
 }
