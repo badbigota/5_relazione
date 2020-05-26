@@ -379,3 +379,27 @@ int main()
 
     return 0;
 }
+
+
+/*
+COSE DA STAMPARE
+
+Miglior stima di
+- T_f (regime) -> media periodi scorrelati
+- omega_f sperimentale -> media di omega scorrelate, ex secondo metodo
+- theta_part_sper -> media mezzo picco-picco scorrelati
+- Lorentziana
+- paramteri fit con attenzione a omega_reisonanza ed errore
+
+- T_s (smorzamento)
+- omega_s smorazmanto
+- Gamma da linearizzazione -> errori a posteriori su lorentz
+- omega_0=sqrt(omega_s^2+gamma^2)
+- omega_r=sqrt(omega_s^2-gammma^2) <->
+- confronto omega_r con omega_r risonanza fit lorentz
+
+
+
+
+
+*/
