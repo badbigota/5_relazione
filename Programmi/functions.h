@@ -56,13 +56,14 @@ struct punti_massimo
     vector<double> err_coeff_a;
     vector<double> err_coeff_b;
     vector<double> err_coeff_c;
-    vector<double> err_ampl_max;//solo per la linearizzazione
+    vector<double> err_ampl_max; //solo per la linearizzazione
 };
 
 struct vettoredoppio
 {
     vector<double> vettore2; //per l'indice del massimo
     vector<double> vettore3; //per il valore del massimo
+    double dispersione_amp;
 };
 
 struct punto_regime //perchè useremo questa per avere tutti i puti per il grafico
@@ -432,7 +433,7 @@ void get_maxima_root(vector<punti_massimo> parametri, vector<punti_massimo> &max
             double par_b = parametri[i].coeff_b[j];
             double par_c = parametri[i].coeff_c[j];
             temp_punti_max.t_max.push_back(max_x_fit({par_a, par_b, par_c}));
-            temp_punti_max.ampl_max.push_back(2.*M_PI*max_y_fit({par_a, par_b, par_c}));//così da uniformare e non dover più mettere il 2 pigreco dopo
+            temp_punti_max.ampl_max.push_back(2. * M_PI * max_y_fit({par_a, par_b, par_c})); //così da uniformare e non dover più mettere il 2 pigreco dopo
         }
         maxima.push_back(temp_punti_max);
     }
@@ -479,7 +480,7 @@ void picco_picco_mv(vector<punti_massimo> vec_punti_max, vector<x_y> &vec_picco_
     {                                                             //per ogni campione
         vector<double> &ampiezze_max = vec_punti_max[i].ampl_max; //su i punti grezzi
         x_y temp_picchi;
-        for (int j = 0; j < ampiezze_max.size() - 1; j = j + 2) //altirmenti core dumped
+        for (int j = 0; j < ampiezze_max.size() - 1; j = j + 2) //altirmenti core dumped, evita la correlazione con il +2
         {
             double picco_picco_ = abs(ampiezze_max[j] - ampiezze_max[j + 1]);
             temp_picchi.picco_picco.push_back(picco_picco_ / 2.);
@@ -535,7 +536,10 @@ void gauss_hist_root(vector<punti_massimo> &punti_max, vector<vettoredoppio> &hi
         vector<int> counts(intervals, 0);
         for (auto d : massimi)
         {
-            max_ass.push_back(abs(d));
+            if (d > 0)
+            {
+                max_ass.push_back(d);
+            }
         }
         double max_val = *max_element(max_ass.begin(), max_ass.end());
         double min_val = *min_element(max_ass.begin(), max_ass.end());
@@ -561,6 +565,7 @@ void gauss_hist_root(vector<punti_massimo> &punti_max, vector<vettoredoppio> &hi
         {
             temp_hist.vettore2.push_back(assex[k]);
             temp_hist.vettore3.push_back(counts[k]);
+            temp_hist.dispersione_amp=dstd(max_ass)/media(max_ass)*100.;
         }
         hist.push_back(temp_hist);
     }
@@ -597,28 +602,27 @@ void compatibilita_omega(vector<punto_regime> &camp_lorent, vector<data_campione
     }
 }
 
-
-
-double y_th(double x, vector<double> parms){
-	double a, b, c, d;
-    a = parms[0];
-	b = parms[1];
-	c = parms[2];
-    d = parms[3];
-	return a/sqrt(  pow( (pow(b,2)+2*pow(c,2)-pow(x,2)),2)  +4*pow((c*x),2)   )+d;
-}	
-
-double post_lor(vector<punto_regime> & campana_lor, vector<double> parametri_fit_gnuplot)
+double y_th(double x, vector<double> parms)
 {
-    double sum_scarto_quad=0;
-	double gdl = campana_lor.size() - parametri_fit_gnuplot.size();
-	for (int i = 0; i < campana_lor.size(); i++) //per tutti i punti della lorenziana
-	{
+    double a, b, c, d;
+    a = parms[0];
+    b = parms[1];
+    c = parms[2];
+    d = parms[3];
+    return a / sqrt(pow((pow(b, 2) + 2 * pow(c, 2) - pow(x, 2)), 2) + 4 * pow((c * x), 2)) + d;
+}
+
+double post_lor(vector<punto_regime> &campana_lor, vector<double> parametri_fit_gnuplot)
+{
+    double sum_scarto_quad = 0;
+    double gdl = campana_lor.size() - parametri_fit_gnuplot.size();
+    for (int i = 0; i < campana_lor.size(); i++) //per tutti i punti della lorenziana
+    {
         //y_i-y_i,th
-		double scarto = campana_lor[i].theta - y_th(campana_lor[i].omega, parametri_fit_gnuplot);
-		sum_scarto_quad += pow(scarto, 2);
-     }
-    return sqrt(sum_scarto_quad/gdl);
+        double scarto = campana_lor[i].theta - y_th(campana_lor[i].omega, parametri_fit_gnuplot);
+        sum_scarto_quad += pow(scarto, 2);
+    }
+    return sqrt(sum_scarto_quad / gdl);
 }
 
 //Funzione checalcola la linearizzazione sui punti di massimo
@@ -633,7 +637,7 @@ void linearize_max(vector<punti_massimo> &theta_generiche, vector<punti_massimo>
             {
                 temp_ln_maxima.t_max.push_back(d.t_max[j]);
                 temp_ln_maxima.ampl_max.push_back(log(d.ampl_max[j]));
-                temp_ln_maxima.err_ampl_max.push_back(sqrt(pow(1./d.ampl_max[j]*err_post,2)));
+                temp_ln_maxima.err_ampl_max.push_back(sqrt(pow(1. / d.ampl_max[j] * err_post, 2)));
             }
         }
 
@@ -653,31 +657,30 @@ void linearize_min(vector<punti_massimo> &theta_generiche, vector<punti_massimo>
             {
                 temp_ln_maxima.t_max.push_back(d.t_max[j]);
                 temp_ln_maxima.ampl_max.push_back(-log(-d.ampl_max[j])); //usa il meno com vole la cinzia ;)
-				temp_ln_maxima.err_ampl_max.push_back(sqrt(pow(1./d.ampl_max[j]*err_post,2)));
-			}
-		}
+                temp_ln_maxima.err_ampl_max.push_back(sqrt(pow(1. / d.ampl_max[j] * err_post, 2)));
+            }
+        }
         ln_theta.push_back(temp_ln_maxima);
     }
 }
 
-//Calcola i parametri del fit per gamma dopo aver fatto il log naturale
-//SERVONO GLI ERRORI A POSTERIORI DEL FIT DELLA PARABOLA
+//Calcola i parametri del fit per gamma dopo aver fatto il log naturale, usa err a posteriori derivanti da lorenz
 void return_angolari(vector<punti_massimo> &ln_theta_max, vector<punti_massimo> &ln_theta_min, vector<interpolazione_gamma> &parametri_intepolazioni)
 {
     for (int i = 0; i < ln_theta_max.size(); i++)
     {
         interpolazione_gamma temp_gamma;
         //per i massimi
-        temp_gamma.a_intercetta_gamma_max = a_intercetta_err_uguali(ln_theta_max[i].t_max, ln_theta_max[i].ampl_max);
-        temp_gamma.b_angolare_gamma_max = b_angolare_err_uguali(ln_theta_max[i].t_max, ln_theta_max[i].ampl_max);
+        temp_gamma.a_intercetta_gamma_max = a_intercetta(ln_theta_max[i].t_max, ln_theta_max[i].ampl_max, ln_theta_max[i].err_ampl_max);
+        temp_gamma.b_angolare_gamma_max = b_angolare(ln_theta_max[i].t_max, ln_theta_max[i].ampl_max, ln_theta_max[i].err_ampl_max);
         temp_gamma.r_max = pearson(ln_theta_max[i].t_max, ln_theta_max[i].ampl_max);
         temp_gamma.t_max = student(ln_theta_max[i].t_max, ln_theta_max[i].ampl_max);
         temp_gamma.err_a_post_max = sigma_a_posteriori(ln_theta_max[i].t_max, ln_theta_max[i].ampl_max);
         temp_gamma.err_b_post_max = sigma_b_posteriori(ln_theta_max[i].t_max, ln_theta_max[i].ampl_max);
 
         //per i minimi
-        temp_gamma.a_intercetta_gamma_min = a_intercetta_err_uguali(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max);
-        temp_gamma.b_angolare_gamma_min = b_angolare_err_uguali(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max);
+        temp_gamma.a_intercetta_gamma_min = a_intercetta(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max, ln_theta_min[i].err_ampl_max);
+        temp_gamma.b_angolare_gamma_min = b_angolare(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max, ln_theta_min[i].err_ampl_max);
         temp_gamma.r_min = pearson(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max);
         temp_gamma.t_min = student(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max);
         temp_gamma.err_a_post_min = sigma_a_posteriori(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max);
