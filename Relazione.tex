@@ -1,0 +1,279 @@
+% Marco l'Eccellente Dio della Modestia
+% !TeX encoding = utf8
+% !TeX program = pdflatex
+% !TeXpellcheck = it_IT
+
+\documentclass[a4paper,11pt,oneside]{article} 
+\usepackage{relazioni}
+\usepackage{imakeidx}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{blindtext}
+\usepackage{titletoc}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{subfig}
+\usepackage{geometry}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{rccol}
+\usepackage[export]{adjustbox}
+\usepackage[export]{adjustbox}
+\hypersetup{
+%    colorlinks=false,
+} 
+
+\graphicspath{{Figure/}} 
+%https://www.overleaf.com/learn/latex/Indices
+%\makeindex[columns=3, title=Alphabetical Index, intoc]
+
+\setlength{\parindent}{0em}
+
+\begin{document}
+\input{Front-matter/Frontespizio}
+\clearpage
+\tableofcontents
+\addtocontents{toc}{~\hfill{Pagina}\par}
+\contentsmargin{6em}
+\dottedcontents{section}[1em]{\bigskip}{2em}{1pc}
+\dottedcontents{subsection}[3em]{\smallskip}{3em}{1pc}
+\dottedcontents{subsubsection}[5em]{\smallskip}{4em}{1pc}
+
+
+\newpage
+
+
+\section{Obiettivo esperienza}
+L'obiettivo dell'esperienza è la stima
+
+\section{Apparato Sperimentale}
+
+
+\begin{wrapfigure}[13]{l}{4.5cm}  
+    \includegraphics[width=4.5cm]{ApparatoSperimentale.pdf}
+    \caption{Apparato \\Sperimentale}
+    \label{fig:apparato_sperimentale}
+\end{wrapfigure}
+
+
+L'apparato sperimentale risultava così composto:
+\begin{itemize}
+    \item Cilindro trasparente chiuso cavo di supporto
+    \item Piastra girevole di supporto fra filo, motore e cilindro immerso
+    \item Motore servo comandato
+    \item Strumentazione di rilevamento dati e impostazione della frequenza di oscillazione del motore servo
+    \item Filo metallico di collegamento tra supporto e cilindro immerso
+    \item Cilindro metallico immerso in acqua distillata
+    \item Acqua distillata
+\end{itemize}
+
+Non sono state specificate le grandezze caratteristiche delle componenti della strumentazione in quanto lo studio del moto prende in analisi solo le grandezze relative al moto di oscillazione del motore servo e del cilindro immerso.
+\section{Presa Dati}
+Tutti i dati sono stati acquisiti dallo stesso pendolo a torsione, variando accuratamente i parametri del moto del motore servo tramite un'apposita interfaccia software. Si specifica che non è stato possibili eseguire una diretta acquisizione di dati da parte di alcun operatore e che tutti i dati necessari sono stati forniti tramite file.\newline
+
+Le grandezze fornite rappresentano il tempo di acquisizione, l'ampiezza di oscillazione del motore servo, da qui in poi chiamata l'ampiezza della forzante, e l'ampiezza di oscillazione del cilindro immerso. Si specifica che i tempi di acquisizione sono in secondi, le ampiezze della forzante in millesimi di giro e le ampiezze del cilindro in giri.\\
+Si sono realizzati in totale 20 campioni differenti per impostazioni di moto fornite al  motore servo. Ciascun campione ha immagazzinato dati per un periodo di circa $\approx \SI{40}{\second}$.\\
+Si sono inoltre raccolti dati per 3 campioni di misurazioni riferiti ad un moto in assenza dell'effetto del momento forzante. Tali misurazioni sono state compiute per un intervallo di $\approx  \SI{35}{\second}$.
+
+
+%sistemare tabella con numero cmapione e freq associata, fare la trasposta
+1 910.0
+2 920.0
+3  930.0
+4 940.0
+5 950.0
+6 961.0
+7 962.0
+8 963.0
+9 964.0
+10 964.5
+11 965.0
+12 966.0
+13 967.0
+14 968.0
+15 969.0
+16 975.0
+17 980.0
+18 990.0
+19 1000.0
+20 1100.0
+
+\section{Analisi e Discussione}
+Al fine di realizzare una miglior caratterizzazione del moto del pendolo a torsione, si è compiuta un'analisi del moto nelle sue diverse fasi.\\
+In primo luogo si è studiato il moto nella fase di risonanza a forzante attiva e successivamente il moto nella fase di smorzamento, in seguito all'interruzione del motore servo.
+
+\subsection{Analisi a regime}
+Si è dapprima proceduto ad una rapida visualizzazione dei dati a disposizione.
+Per alcuni campioni, in particolar modo quelli a frequenze più basse e più alte, si nota che i dati discostano maggiormente dalla sinusoide attesa in eccesso o in difetto rispetto ai campioni riferiti a frequenze intermedie.
+Questi fenomeni osservabili in Figura \ref{fig:esempio_buono} e \ref{fig:esempio_brutto} sono probabilmente imputabili ad errori casuali maggiormente percepiti dalla strumentazione di acquisizione dati in quanto l'ampiezza massima di oscillazione risulta globalmente minore per le frequenze lontane dalla risonanza.
+In ogni caso la componente di errore casuale dovuta ad errori casuali indotti da perturbazioni esterne come in particolar modo vibrazioni del piano di appoggio non possono essere in alcun modo escluse. È inoltre possibile che tali vibrazioni influiscano maggiormente nei campioni più lontani dalla risonanza ovvero quelli che oscillano con ampiezza minore.
+
+\begin{figure}
+    \centering
+    \includegraphics{}
+    \caption{Caption}
+    \label{fig:esempio_buono}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics{}
+    \caption{Caption}
+    \label{fig:esempio_brutto}
+\end{figure}
+
+
+Per questa variabilità osservabile in alcuni campioni, si è optato di stimare i periodi di oscillazione non partendo dal punto più ragionevolmente vicino all'asse delle x corrispondente all'intersezione, bensì da una stima di tale istante a partire da alcuni punti in prossimità di essa. Si è optato infatti di eseguire un'interpolazione lineare sull'insieme di 2 punti sia precedenti che successivi al punto di ampiezza minore per ciascuna intersezione con lasse delle ascisse.
+
+Tale scelta deriva dall'esigenza di evitare un erroneo riconoscimento di uno zero in corrispondenza di alcuni casi osservati, come multipli zeri consecutivi o oscillazioni dovute a fluttuazioni statistiche in prossimità dello zero.
+
+Il motivo di tale scelta risiede nell'esigenza di 
+La scelta di stimare l'intersezione con l'asse delle ascisse tramite l'intersezione della retta ricavata da questi 5 punti è stata necessaria per ridurre l'effetto della variabilità indotta dagli errori sopra citati. 
+
+La scelta di considerare esattamente cinque punti si è basata sul fatto che la funzione teorica associata ai dati, $A \sin (Bx+\phi)$, presenta uno sviluppo in serie di Taylor al primo ordine di una retta $y=m x$. Si è stimato che entro quell'intervallo l'approssimazione non comportasse errori nella stima anche a causa della simmetria della curva in questione.
+%NON LO FACCIAMO PURE CON LA FORZANTE LA STIMA DEL PERIODO
+
+
+
+
+
+%grafici
+%tabella 
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        $1$ & $1.096\pm0.003$\\ \hline
+        $2$ & $1.090\pm0.003$\\ \hline
+        $3$ & $1.073\pm0.003$\\ \hline
+        $4$ & $1.063\pm0.002$\\ \hline
+        $5$ & $1.057\pm0.003$\\ \hline
+        $6$ & $1.040\pm0.001$\\ \hline
+        $7$ & $1.038\pm0.002$\\ \hline
+        $8$ & $1.037\pm0.002$\\ \hline
+        $9$ & $1.037\pm0.001$\\ \hline
+        $10$ & $1.037\pm0.002$\\ \hline
+        $11$ & $1.034\pm0.003$\\ \hline
+        $12$ & $1.0356\pm0.0002$\\ \hline
+        $13$ & $1.0349\pm0.0002$\\ \hline
+        $14$ & $1.038\pm0.003$\\ \hline
+        $15$ & $1.029\pm0.002$\\ \hline
+        $16$ & $1.027\pm0.003$\\ \hline
+        $17$ & $1.024\pm0.003$\\ \hline
+        $18$ & $1.012\pm0.003$\\ \hline
+        $19$ & $0.999\pm0.006$\\ \hline
+        $20$ & $0.911\pm0.004$\\ \hline
+    \end{tabular}
+    \caption{Periodi medi}
+    \label{tab:periodi_medi}
+\end{table}
+
+%        $1$ & $2$ & $3$ & $4$ & $5$ \\ \hline
+%        $1.096\pm0.003$ & $1.090\pm0.003$ & $1.073\pm0.003$ & $1.063\pm0.002$ & $1.057\pm0.003$ \\ \hline \hline
+%        $6$ & $7$ & $8$ & $9$ & $10$ \\ \hline
+%        $1.040\pm0.001$ & $1.038\pm0.002$ & $1.037\pm0.002$ & $1.037\pm0.001$ & $1.037\pm0.002$ \\ \hline \hline
+%        $11$ & $12$ & $13$ & $14$ & $15$ \\ \hline
+%        $1.034\pm0.003$ & $1.0356\pm0.0002$ & $1.0349\pm0.0002$ & $1.038\pm0.003$ & $1.029\pm0.002$ \\ \hline \hline
+%        $16$ & $17$ & $18$ & $19$ & $20$ \\ \hline
+%        $1.027\pm0.003$ & $1.024\pm0.003$ & $1.012\pm0.003$ & $0.999\pm0.006$ & $0.911\pm0.004$\\ \hline 
+
+\subsubsection{Stima Periodi}
+Avendo stimato le intersezioni della sinusoide si sono ricavati i periodi delle oscillazioni. 
+
+Al fine di ottenere una stima del periodo di oscillazione per ciascun campione, si sono considerate le differenze tra coppie non consecutive di zeri che distano tra loro un'oscillazione completa, in modo da eliminare ogni dipendenza statistica.
+Si è poi calcolata la media tra i periodi ottenuti, alla quale è stata associato un errore calcolato tramite deviazione standard della media.
+
+
+
+\subsubsection{Stima Omega f, sperimentale e confronto con quella teorica}
+\subsubsection{Stima theta particolare (omega sperimentale)}
+\subsubsection{Lorentziana e suo fit -> stima di omega risonanza con errore da fit}
+
+\subsection{Analisi in smorzamento}
+\subsubsection{Stima pseudoperiodi}
+\subsubsection{Stima omega s }
+\subsubsection{Stima coefficinte di smorzamento $\gamma$ tramite linearizzazione}
+\subsubsection{Ricavare omega risonanza da omega s e gamma e confronto con quella della prima parte}
+\subsubsection{Ricavare omega 0 da omega s e gamma e confronto con la prima parte}
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Margini Miglioramento}
+\section{Conclusioni}
+\section{Appendice}
+\subsection{Formulario}
+\textbf{Media, deviazione standard, deviazione standard della media}
+\begin{align*}
+   % \begin{aligned}
+        \overline{x}&=\sum\limits_{i=1}^{N} \frac{x_{i}}{N}&
+        \sigma&=\sqrt{\frac{\sum\limits_{i=1}^{N} (x_{i}-\overline{x})}{N-1}}&
+        \sigma_{\overline{x}}&=\frac{\sigma}{\sqrt{N}}
+   % \end{aligned}
+\end{align*}\\
+
+\textbf{Media Ponderata}
+\begin{equation*}
+\label{eq:media_pond}
+    x_i=\frac{\sum_{i=1}^{N}\frac{x_i}{\sigma_{x_i}}}{\sum_{i=1}^{N}\frac{1}{\sigma_{x_i}}}
+\end{equation*}
+
+\textbf{Errore Media Ponderata}
+\begin{equation*}
+\label{eq:errore_media_pond}
+     \sigma_{x_i}=\sqrt{\frac{1}{\sum_{i=1}^{N}\frac{1}{\sigma_{i}^{2}}}}
+\end{equation*}
+
+\textbf{Formule per il metodo del minimo ${\chi}^{(2)}$}
+\begin{equation*}
+        \begin{cases}
+    a=&\frac{1}{\Delta}[(\sum\limits_{i=1}^{N}{x_{i}^{2}})\cdot(\sum\limits_{i=1}^{N}{y_{i}})-(\sum\limits_{i=1}^{N}{x_{i}})\cdot(\sum\limits_{i=1}^{N}{x_{i}y_{i}})] \\ 
+    b=&\frac{1}{\Delta }\cdot \left [N\cdot \left ( \sum\limits_{i=1}^{N}x_i y_i \right )-\left ( \sum\limits_{i=1}^{N}x_i \right )\cdot \left ( \sum\limits_{i=1}^{N}y_i \right )  \right ]\\
+    \Delta=& N\cdot \sum\limits_{i=1}^{N} x_i^{2} - \left ( \sum\limits_{i=1}^{N}x_i \right )^{2}\\
+    \end{cases}
+\end{equation*}
+\begin{equation*}
+    \begin{cases}
+    \sigma_{a}=&\sigma_{y}\cdot\sqrt{\frac{\sum_{i=1}^{N}{x_{i}^{2}}}{\Delta}} \\
+    \sigma_{b}=&\sigma_y\cdot \sqrt{\frac{N}{\Delta }}\\
+    \end{cases}
+    \label{equation:err_chi_quadro}
+\end{equation*}
+\\
+\textbf{Formula di propagazione degli errori casuali}\\
+
+Sia z=($x_1$,...;$x_N$) funzione di N variabili casuali $x_1$,...,$x_N$ e sia ${x_i^\ast}$=($x_1^\ast$,...,$x_N^{\ast}$) l'insieme di tutti i valori veri associati a tali variabili, si ha 
+
+\begin{equation*}
+    \sigma_z^{2}\approx  \sum_{i=j=1}^{N}\left ( \frac{\partial z}{\partial x_i}\Big|_{x_i^{\ast}} \right )^{2}\cdot\sigma_{x_i}^{2} +\sum_{i=1,j=1,i\neq j}^{N}\left (\frac{\partial z }{\partial x_i}\Big|_{x_i^{\ast}} \right ) \cdot \left ( \frac{\partial z}{\partial x_j} \Big|_{x_j^{\ast}} \right )\cdot cov(x_i,x_j)\label{eq:prop_errori}
+\end{equation*}
+E' stato utilizzato il simbolo $\approx$ in quanto si è scelto di troncare al primo termine lo sviluppo in serie di Taylor.\\
+
+
+\textbf{Formula calcolo compatibilità}\\
+\begin{equation*}
+    \lambda=\frac{\left|a-b\right|}{\sqrt{\sigma^{2}_{a}+\sigma^{2}_{b}}}
+\end{equation*}\\
+\textbf{Coefficiente di correlazione di Pearson}\\
+\begin{equation*}
+    \rho=  \frac{\sum_{i=1}^{N}(x_i - \overline{x}
+    )(y_i - \overline{y})}{\sqrt{\sum_{i=1}^{N}(x_i -\overline{x})^2}\sqrt{\sum_{i=1}^{N}(y_i - \overline{y})^2}}
+\end{equation*}
+
+\textbf{t-Student su stima di $r$ di Pearson}\\
+\begin{equation*}
+    t=\frac{r \cdot \sqrt{N-2} }{\sqrt{1- r^2}}
+\end{equation*}
+
+\end{document}
