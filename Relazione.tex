@@ -1,0 +1,373 @@
+% Marco l'Eccellente Dio della Modestia
+% !TeX encoding = utf8
+% !TeX program = pdflatex
+% !TeXpellcheck = it_IT
+
+\documentclass[a4paper,11pt,oneside]{article} 
+\usepackage{relazioni}
+\usepackage{imakeidx}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{blindtext}
+\usepackage{titletoc}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{subfig}
+\usepackage{geometry}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{rccol}
+\usepackage[export]{adjustbox}
+\usepackage[export]{adjustbox}
+\hypersetup{
+%    colorlinks=false,
+} 
+
+\graphicspath{{Figure/}} 
+%https://www.overleaf.com/learn/latex/Indices
+%\makeindex[columns=3, title=Alphabetical Index, intoc]
+
+\setlength{\parindent}{0em}
+
+\begin{document}
+\input{Front-matter/Frontespizio}
+\clearpage
+\tableofcontents
+\addtocontents{toc}{~\hfill{Pagina}\par}
+\contentsmargin{6em}
+\dottedcontents{section}[1em]{\bigskip}{2em}{1pc}
+\dottedcontents{subsection}[3em]{\smallskip}{3em}{1pc}
+\dottedcontents{subsubsection}[5em]{\smallskip}{4em}{1pc}
+
+
+\newpage
+
+
+\section{Obiettivo esperienza}
+L'obiettivo dell'esperienza è la stima
+
+\section{Apparato Sperimentale}
+
+
+\begin{wrapfigure}[13]{l}{4.5cm}  
+    \includegraphics[width=4.5cm]{ApparatoSperimentale.pdf}
+    \caption{Apparato \\Sperimentale}
+    \label{fig:apparato_sperimentale}
+\end{wrapfigure}
+
+
+L'apparato sperimentale risultava così composto:
+\begin{itemize}
+    \item Cilindro trasparente chiuso cavo di supporto
+    \item Piastra girevole di supporto fra filo, motore e cilindro immerso
+    \item Motore servo comandato
+    \item Strumentazione di rilevamento dati e impostazione della frequenza di oscillazione del motore servo
+    \item Filo metallico di collegamento tra supporto e cilindro immerso
+    \item Cilindro metallico immerso in acqua distillata
+    \item Acqua distillata
+\end{itemize}
+
+Non sono state specificate le grandezze caratteristiche delle componenti della strumentazione in quanto lo studio del moto prende in analisi solo le grandezze relative al moto di oscillazione del motore servo e del cilindro immerso.
+\section{Presa Dati}
+Tutti i dati sono stati acquisiti dallo stesso pendolo a torsione, variando accuratamente i parametri del moto del motore servo tramite un'apposita interfaccia software. Si specifica che non è stato possibili eseguire una diretta acquisizione di dati da parte di alcun operatore e che tutti i dati necessari sono stati forniti tramite file.\newline
+
+Le grandezze fornite rappresentano il tempo di acquisizione, l'ampiezza di oscillazione del motore servo, da qui in poi chiamata l'ampiezza della forzante, e l'ampiezza di oscillazione del cilindro immerso. Si specifica che i tempi di acquisizione sono in secondi, le ampiezze della forzante in millesimi di giro e le ampiezze del cilindro in giri, poi oppotunamente modificate per l'analisi dati e la realizzazione dei grafici.\\
+Si sono realizzati in totale 20 campioni differenti per impostazioni di moto fornite al  motore servo. Ciascun campione ha immagazzinato dati per un periodo di circa $\approx \SI{40}{\second}$.\\
+Si sono inoltre raccolti dati per 3 campioni di misurazioni riferiti ad un moto in assenza dell'effetto del momento forzante. Tali misurazioni sono state compiute per un intervallo di $\approx  \SI{35}{\second}$.
+
+
+%sistemare tabella con numero campione e freq associata, fare la trasposta
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        \textbf{N Campione} & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$ & $9$ & $10$ \\ \hline
+        \textbf{Frequenza} & $910.0$ & $920.0$ & $930.0$ & $940.0$ & $950.0$ & $961.0$ & $962.0$ & $963.0$ & $964.0$ & $964.5$\\ \hline \hline
+        \textbf{N Campione} & $11$ & $12$ & $13$ & $14$ & $15$ & $16$ & $17$ & $18$ & $19$ & $20$\\ \hline
+        \textbf{Frequenza} & $965.0$ & $966.0$ & $967.0$ & $968.0$ & $969.0$ & $975.0$ & $980.0$ & $990.0$ & $1000.0$ & $1100.0$\\ \hline
+    \end{tabular}
+    \caption{Corrispondenza Campione-Frequenza}
+    \label{tab:corrispondenza_campione_frequenza}
+\end{table}
+
+
+\section{Analisi e Discussione}
+Al fine di realizzare una miglior caratterizzazione del moto del pendolo a torsione, si è compiuta un'analisi del moto nelle sue diverse fasi.\\
+In primo luogo si è studiato il moto nella fase di risonanza a forzante attiva e successivamente il moto nella fase di smorzamento, in seguito all'interruzione del motore servo.
+
+\subsection{Analisi a regime}
+Si è dapprima proceduto ad una rapida visualizzazione dei dati a disposizione.
+Per alcuni campioni, in particolar modo quelli a frequenze più basse e più alte, si nota che i dati discostano maggiormente dalla sinusoide attesa in eccesso o in difetto rispetto ai campioni riferiti a frequenze intermedie.
+Questi fenomeni osservabili in Figura \ref{fig:esempio_buono} e \ref{fig:esempio_brutto} sono probabilmente imputabili ad errori casuali maggiormente percepiti dalla strumentazione di acquisizione dati in quanto l'ampiezza massima di oscillazione risulta globalmente minore per le frequenze lontane dalla risonanza.
+In ogni caso la componente di errore casuale dovuta ad errori casuali indotti da perturbazioni esterne come in particolar modo vibrazioni del piano di appoggio non possono essere in alcun modo escluse. È inoltre possibile che tali vibrazioni influiscano maggiormente nei campioni più lontani dalla risonanza ovvero quelli che oscillano con ampiezza minore.
+
+
+
+\begin{figure}[h!]
+    \centering
+    
+    %\captionsetup[subfloat]{labelformat=empty}
+    \caption*{}
+    \makebox[\textwidth]{
+    \subfloat[\small Grafico 964 mHz]{
+    \label{fig:esempio_brutto}
+    \includegraphics[width=10cm]{964_zoom_primi_due_periodi_PERFETTO.pdf}
+    }
+    
+    \subfloat[\small Grafico 1100 mHz]{
+    \label{fig:esempio_brutto}
+    \includegraphics[width=10cm]{1100_zoom_primi_due_periodi_BUGGUTO.pdf}
+    }}
+\end{figure}
+
+
+
+Per questa variabilità osservabile in alcuni campioni, si è optato di stimare i periodi di oscillazione non partendo dal punto più ragionevolmente vicino all'asse delle x corrispondente all'intersezione, bensì da una stima di tale istante a partire da alcuni punti in prossimità di essa. Si è optato infatti di eseguire un'interpolazione lineare sull'insieme di 2 punti sia precedenti che successivi al punto di ampiezza più prossimo a zero per ciascuna intersezione con l'asse delle ascisse.
+
+%Tale scelta deriva dall'esigenza di evitare un erroneo riconoscimento di uno zero in corrispondenza di alcuni casi osservati, come multipli zeri consecutivi o oscillazioni dovute a fluttuazioni statistiche in prossimità dello zero.
+
+%Il motivo di tale scelta risiede nell'esigenza di 
+
+La scelta di applicare questo \textit{smoothing} è risultata necessaria per ridurre l'effetto della fluttuazione ztatisctica indotta dagli errori sopra citati. 
+
+Il motivo per cui sono stati scelti esattamente cinque punti si basa sul fatto che entro quell'intervallo temporale la funzione teorica associata ai dati, $A \sin (Bx+\phi)$, è ben approssimabile da una retta, come si verifica con uno sviluppo in serie di Taylor al primo ordine.
+
+%La scelta di considerare esattamente cinque punti si è basata sul fatto che la funzione teorica associata ai dati, $A \sin (Bx+\phi)$, presenta uno sviluppo in serie di Taylor al primo ordine di una retta $y=m x$. Si è stimato che entro quell'intervallo l'approssimazione non comportasse errori nella stima anche a causa della simmetria della curva in questione.
+
+%NON LO FACCIAMO PURE CON LA FORZANTE LA STIMA DEL PERIODO
+
+
+
+
+
+%grafici
+%tabella 
+
+
+%        $1$ & $2$ & $3$ & $4$ & $5$ \\ \hline
+%        $1.096\pm0.003$ & $1.090\pm0.003$ & $1.073\pm0.003$ & $1.063\pm0.002$ & $1.057\pm0.003$ \\ \hline \hline
+%        $6$ & $7$ & $8$ & $9$ & $10$ \\ \hline
+%        $1.040\pm0.001$ & $1.038\pm0.002$ & $1.037\pm0.002$ & $1.037\pm0.001$ & $1.037\pm0.002$ \\ \hline \hline
+%        $11$ & $12$ & $13$ & $14$ & $15$ \\ \hline
+%        $1.034\pm0.003$ & $1.0356\pm0.0002$ & $1.0349\pm0.0002$ & $1.038\pm0.003$ & $1.029\pm0.002$ \\ \hline \hline
+%        $16$ & $17$ & $18$ & $19$ & $20$ \\ \hline
+%        $1.027\pm0.003$ & $1.024\pm0.003$ & $1.012\pm0.003$ & $0.999\pm0.006$ & $0.911\pm0.004$\\ \hline 
+
+\subsubsection{Stima Periodi}
+Avendo stimato gli zeri della sinusoide si sono ricavati i periodi delle singole oscillazioni, considerando le differenze fra coppie non consecutive di zeri che distano tra loro un'oscillazione completa, in modo da eliminare ogni correlazione statistica.
+
+Sono poi state calcolate le medie dei periodi ottenuti, associandovi come errore la deviazione standard della media, come si riporta in Tabella \ref{tab:periodi_medi}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c||c|c|c|}
+        \hline
+        \multirow{2}{*}{Campione} & $\overline{T}\pm\sigma_{\overline{T}}$ & $\sigma_{T}$ & \multirow{2}{*}{Campione} & $\overline{T}\pm\sigma_{\overline{T}}$ & $\sigma_{T}$\\
+         & $[\si{\second}]$&$[\si{\second}]$ & & $[\si{\second}]$&$[\si{\second}]$\\
+        \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$1$ & $1.096\pm0.003$& $0.01  $ & $11$ & $1.034\pm0.003$& $0.01  $\\ \hline
+        $2$ & $1.090\pm0.003$& $0.01$ & $12$ & $1.0356\pm0.0002$& $0.0009$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$3$ & $1.073\pm0.003$& $0.01$ & $13$ & $1.0349\pm0.0002$& $0.0009$\\ \hline
+        $4$ & $1.063\pm0.002$& $0.01$ & $14$ & $1.038\pm0.003$& $0.02$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$5$ & $1.057\pm0.003$& $0.02$ & $15$ & $1.029\pm0.002$& $0.009$\\ \hline
+        $6$ & $1.040\pm0.001$& $0.006$ & $16$ & $1.027\pm0.003$& $0.01$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$7$ & $1.038\pm0.002$& $0.01$ & $17$ & $1.024\pm0.003$& $0.02$\\ \hline
+        $8$ & $1.037\pm0.002$& $0.009$ & $18$ & $1.012\pm0.003$& $0.02$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$9$ & $1.037\pm0.001$& $0.006$ & $19$ & $0.999\pm0.006$& $0.03$\\ \hline
+        $10$ & $1.037\pm0.002$& $0.01$ & $20$ & $0.911\pm0.004$& $0.02$\\ \hline
+    \end{tabular}
+    \caption{Periodi medi}
+    \label{tab:periodi_medi}
+\end{table}
+
+Come si può osservare nella Tabella \ref{tab:periodi_medi} il dodicesimo e tredicesimo campione presentano un'incertezza sul periodo significativamente minore rispetto agli altri campioni. Ciò è ragionevolmente attribuibile al fatto che la stima di questi periodi sia stata di poco influenzata dalle fluttuazioni casuali citate. 
+
+Sono inoltre stati realizzati gli istogrammi dei periodi, qui omessi, per verificare la loro distribuzione. Si è osservato che generalmente tali valori si distribuivano ben compatti intorno al valor medio rendendo superflua un'eventuale reiezione a $3 \sigma$.
+
+\subsubsection{Stima $\omega_{f, sperimentale}$ e confronto con quella teorica}
+Si è proceduto al computo della pulsazione media $\omega_{f, sperimentale}$ per ciascun campione. Avendo a disposizione il campione di singoli periodi, si sono dapprima stimate le singole pulsazioni $\omega_{f, i}$ ad essi associate per poi stimare $\overline{\omega_{f}}\pm \sigma_{\overline{\omega_{f}}}$.
+
+Le pulsazioni risultanti sono state confrontate con quelle teoriche attese relative all'oscillazione della forzante. Assumendo che l'errore di omega attesa derivasse dalla distribuzione uniforme, e utilizzando come PTL $\SI{0.001}{mHz}$  si è eseguito un test del $\chi^{2}$ su tutte le $\omega_{f, sper}$ e $\omega_{f, th}$.
+I risultati ottenuti da tale test rivelano che con un livello di confidenza pari al $99\%$ viene rigettata l'ipotesi di compatibilità.
+
+
+Questo fatto non implica necessariamente una non appartenenza del campione delle $\omega_{f, sper}$ a quelle teoriche, ma potrebbe suggerire la presenza di un errore nella stima della sigma per le misure sperimentali e/o di quelle attese.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c||c|c|c|c|}
+        \hline
+        \multirow{2}{*}{Campione} & $\omega_{f,sper}$ & $\omega_{f,th}$ & \multirow{2}{*}{$\lambda$} & \multirow{2}{*}{Campione} & $\omega_{f,sper}$ & $\omega_{f,th}$ & \multirow{2}{*}{$\lambda$}\\
+         & $[\si{\per\second}]$&$[\si{\per\second}]$ &  & & $[\si{\per\second}]$&$[\si{\per\second}]$ &\\
+        \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$1$ & $5.74\pm0.01$ & $5.72$ & $1.3$ & $11$ & $6.08\pm0.02$ & $6.06$ & $0.8$\\ \hline
+        $2$ & $5.76\pm0.01$ & $5.78$ & $1.7$ & $12$ & $6.067\pm0.001$ & $6.070$ & $2.0$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$3$ & $5.86\pm0.02$ & $5.84$ & $0.8$ & $13$ & $6.071\pm0.001$ & $6.076$ & $4.4$\\ \hline
+        $4$ & $5.91\pm0.01$ & $5.91$ & $0.4$ & $14$ & $6.05\pm0.02$ & $6.08$ & $1.4$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$5$ & $5.95\pm0.02$ & $5.97$ & $1.3$ & $15$ & $6.10\pm0.01$ & $6.09$ & $1.4$\\ \hline
+        $6$ & $6.044\pm0.008$ & $6.038$ & $0.8$ & $16$ & $6.12\pm0.02$ & $6.13$ & $0.4$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$7$ & $6.05\pm0.01$ & $6.04$ & $0.5$ & $17$ & $6.14\pm0.02$ & $6.16$ & $1.0$\\ \hline
+        $8$ & $6.06\pm0.01$ & $6.05$ & $0.6$ & $18$ & $6.21\pm0.02$ & $6.22$ & $0.5$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$9$ & $6.058\pm0.007$ & $6.057$ & $0.1$ & $19$ & $6.29\pm0.04$ & $6.28$ & $0.3$\\ \hline
+        $10$ & $6.06\pm0.01$ & $6.06$ & $0.3$ & $20$ & $6.90\pm0.03$ & $6.91$ & $0.2$\\ \hline
+    \end{tabular}
+    \caption{Periodi medi}
+    \label{tab:periodi_medi}
+\end{table}
+
+Per un confronto diretto dei dati precedentemente ottenuti, si sono stimate nuovamente le $\omega_{f, sper}$ impiegando per la stima dei periodi i dati forniti dalle oscillazioni della forzante. Secondo quanto previsto dalla teoria, nella fase del moto a regime, la pulsazione della forzante coincide con quella di oscillazione del cilindro immerso nel fluido. Essendo i dati delle ampiezze della forzante molto meno influenzati da errori casuali e presentando un andamento molto più regolare, è stato possibile stimare i periodi con maggior precisione. Si è ripetuta l'analisi dati precedentemente descritta, valutando nuovamente la compatibilità tra i valori così ottenuti e i valori attesi.\\
+Il valore della variabile $\chi^{2}$ per i valori ottenuti dalla forzante risultava di molti ordini di grandezza maggiore rispetto a quanto ottenuto utilizzando le $\omega_{f, sper}$. Ciò è imputabile al fatto che gli errori della  $\omega_{f, forzante}$ risultano molti minori rispetto a quelli di $\omega_{f, sper}$, facendo così aumentare notevolmente il valore delle singole compatibilità e dunque del test del $\chi^2$. in quanto avente un errore molto inferiore rispetto a quella calcolata con l'oscillazione del cilindro.
+
+
+
+\subsubsection{Stima $\theta_{part, 0}(\omega_{sper})$}
+Avendo osservato una forte irregolarità nell'andamento delle ampiezze, in particolare per alcuni campioni, si è stimata la massima ampiezza dell'oscillazione impiegando due diverse metodologie. 
+
+%metodo root
+Il primo metodo se è avvalso di uno smoothing dei dati impiegando un fit parabolico in corrispondenza dei punti stazionari di ciascun semi-periodo. Questa scelta si è resa necessaria poiché in alcuni campioni si assiste ad un andamento a zig-zag dei dati (cfr. Figura \ref{fig:esempio_brutto}). Si sono dapprima valutati gli intervalli entro i quali la sinusoide teorica potesse essere approssimata dalla parabola. Tale assunzione è giustificata dall'espansione in serie di Taylor della funzione seno in corrispondenza del suo massimo.
+Tali intervalli sono stati stimati entro 9 punti a destra e 9 a sinistra rispetto al punto di ampiezza massima in ciascun semi-periodo. 
+
+Per la stima dei parametri delle parabole si è impiegato un algoritmo di minimizzazione del $\chi^{2}$ implementato nel software di analisi dati ROOT. In figura vengono presentati alcuni dei fit ottenuti tramite tale procedura (Figura \ref{fig:zoom_fit_root}).
+Dai coefficienti restituiti si sono valutati i valori dei punti di massimo di ciascuna parabola, corrispondenti all'ampiezza massima stimata per ciascuna oscillazione. 
+Per valutare l'effettiva ampiezza $\theta_{part,0}$, evitando eventuali errori di offset dei dati causati da errori sistematici, si è valutata la distanza picco-picco media definita come media aritmetica fra coppie di valori consecutivi di massimi precedentemente calcolati, prestando attenzione ad evitare eventuali correlazioni statistiche.
+La scelta di stimare l'ampiezza $\theta{part, 0}$ mediante la media fra picchi consecutivi si è rivelata efficace nel contrastare gli effetti di distorsione della stima altrimenti introdotti dall'offset generato durante l'acquisizione del segnale. Sebbene l'operatore durante l'acquisizione dati abbia provveduto alla riduzione di offset tramite l'interfaccia di controllo, una piccola componente rimane comunque presente. In particolare per i campioni 5, 14, 15, 19 è possibile riscontrare un andamento dell'offset costante nel segno e mai maggiore in modulo di $\SI{0,1}{\radian}$
+
+In modo analogo si è scelto di ricalcolare le stime di $\theta_{part, 0}$ usando le ampiezze massime in valore assoluto per ciascun semi-periodo. Si sono ricalcolate queste grandezze per avere un campione simile con cui confrontare i dati precedentemente ottenuti e verificare quale dei due metodi avrebbe dato risultati migliori.
+Come atteso, l'andamento dell'offset è risultato analogo a quello dei campioni ottenuti tramite smoothing. La sostanziale differenza tra i metodi è il fatto che i massimi ricavati da ROOT risultano sempre inferiori in valore assoluto rispetto a quelli ricavati dal metodo che considera i massimi. Questo fenomeno è facilmente spiegabile osservando che il fit parabolico considera un maggior numero di punti per ricavare una stima del massimo, mentre questo secondo metodo valuta il contributo di un solo punto.
+
+Come ulteriore analisi, prima di fornire un'unica stima di $\theta_{part}$ si è valutata la dispersione dei valori massimi positivi dei campioni di $\theta_{part}$ derivati da questi due metodi, dapprima osservando il loro errore percentuale ed successivamente tracciando un istogramma. Di tutte le misure delle ampiezze massime per entrambi i metodi si riscontrano mediamente errori percentuali sempre inferiori al 4\% ad eccezione dei primi quattro e degli ultimi tre campioni dove l'errore percentuale arriva ad un massimo di $\approx 15,5\%$. Questi valori che si discostano dalla tendenza generale sono sia l'effetto della variabilità del segnale che ha reso necessario l'impiego della tecnica dello smoothing sia la lontananza dalla frequenza di risonanza che comporta un ampiezza di oscillazione inferiore e parità di $\sigma$ un maggior errore percentuale. 
+
+%metodo assoluto
+Il primo metodo è consistito nella stima di $\theta_{part,0}$ considerando le ampiezze massime appartenenti a ciascun semi-periodo.  
+%offset SPIEGARE  fanno schifo questi -> 4 13 14 18 
+%picco picco medio e perchè  SOLUZIONE OFFSET
+%istogrammi 
+%err % ampiezze 
+
+
+
+
+\subsubsection{Lorentziana e suo fit -> stima di $\omega_{risonanza}$ con errore da fit}
+%fit posteriori
+%perchè no parabola
+%commento ad errori di parametri
+%mostrare assoluti sono maggiori di root
+%compatibilità omega risonanza root con ass
+
+\subsection{Analisi in smorzamento}
+\subsubsection{Stima pseudoperiodi}
+\subsubsection{Stima $\omega_s$ }
+\subsubsection{Stima coefficinte di smorzamento $\gamma$ tramite linearizzazione}
+\subsubsection{Ricavare $\omega_{risonanza}$ da $\omega_s$ e $\gamma$ e confronto con quella della prima parte}
+\subsubsection{Ricavare $\omega_o$ da $\omega_s$ e $\gamma$ e confronto con la prima parte}
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Margini Miglioramento}
+\section{Conclusioni}
+\section{Appendice}
+\subsection{Formulario}
+\textbf{Media, deviazione standard, deviazione standard della media}
+\begin{align*}
+   % \begin{aligned}
+        \overline{x}&=\sum\limits_{i=1}^{N} \frac{x_{i}}{N}&
+        \sigma&=\sqrt{\frac{\sum\limits_{i=1}^{N} (x_{i}-\overline{x})^2}{N-1}}&
+        \sigma_{\overline{x}}&=\frac{\sigma}{\sqrt{N}}
+   % \end{aligned}
+\end{align*}\\
+
+\textbf{Media Ponderata}
+\begin{equation*}
+\label{eq:media_pond}
+    x_i=\frac{\sum_{i=1}^{N}\frac{x_i}{\sigma_{x_i}}}{\sum_{i=1}^{N}\frac{1}{\sigma_{x_i}}}
+\end{equation*}
+
+\textbf{Errore Media Ponderata}
+\begin{equation*}
+\label{eq:errore_media_pond}
+     \sigma_{x_i}=\sqrt{\frac{1}{\sum_{i=1}^{N}\frac{1}{\sigma_{i}^{2}}}}
+\end{equation*}
+
+\textbf{Formule per il metodo del minimo ${\chi}^{(2)}$}
+\begin{equation*}
+        \begin{cases}
+    a=&\frac{1}{\Delta}[(\sum\limits_{i=1}^{N}{x_{i}^{2}})\cdot(\sum\limits_{i=1}^{N}{y_{i}})-(\sum\limits_{i=1}^{N}{x_{i}})\cdot(\sum\limits_{i=1}^{N}{x_{i}y_{i}})] \\ 
+    b=&\frac{1}{\Delta }\cdot \left [N\cdot \left ( \sum\limits_{i=1}^{N}x_i y_i \right )-\left ( \sum\limits_{i=1}^{N}x_i \right )\cdot \left ( \sum\limits_{i=1}^{N}y_i \right )  \right ]\\
+    \Delta=& N\cdot \sum\limits_{i=1}^{N} x_i^{2} - \left ( \sum\limits_{i=1}^{N}x_i \right )^{2}\\
+    \end{cases}
+\end{equation*}
+\begin{equation*}
+    \begin{cases}
+    \sigma_{a}=&\sigma_{y}\cdot\sqrt{\frac{\sum_{i=1}^{N}{x_{i}^{2}}}{\Delta}} \\
+    \sigma_{b}=&\sigma_y\cdot \sqrt{\frac{N}{\Delta }}\\
+    \end{cases}
+    \label{equation:err_chi_quadro}
+\end{equation*}
+\\
+\textbf{Formula di propagazione degli errori casuali}\\
+
+Sia z=($x_1$,...;$x_N$) funzione di N variabili casuali $x_1$,...,$x_N$ e sia ${x_i^\ast}$=($x_1^\ast$,...,$x_N^{\ast}$) l'insieme di tutti i valori veri associati a tali variabili, si ha 
+
+\begin{equation*}
+    \sigma_z^{2}\approx  \sum_{i=j=1}^{N}\left ( \frac{\partial z}{\partial x_i}\Big|_{x_i^{\ast}} \right )^{2}\cdot\sigma_{x_i}^{2} +\sum_{i=1,j=1,i\neq j}^{N}\left (\frac{\partial z }{\partial x_i}\Big|_{x_i^{\ast}} \right ) \cdot \left ( \frac{\partial z}{\partial x_j} \Big|_{x_j^{\ast}} \right )\cdot cov(x_i,x_j)\label{eq:prop_errori}
+\end{equation*}
+E' stato utilizzato il simbolo $\approx$ in quanto si è scelto di troncare al primo termine lo sviluppo in serie di Taylor.\\
+
+
+\textbf{Formula calcolo compatibilità}\\
+\begin{equation*}
+    \lambda=\frac{\left|a-b\right|}{\sqrt{\sigma^{2}_{a}+\sigma^{2}_{b}}}
+\end{equation*}\\
+\textbf{Coefficiente di correlazione di Pearson}\\
+\begin{equation*}
+    \rho=  \frac{\sum_{i=1}^{N}(x_i - \overline{x}
+    )(y_i - \overline{y})}{\sqrt{\sum_{i=1}^{N}(x_i -\overline{x})^2}\sqrt{\sum_{i=1}^{N}(y_i - \overline{y})^2}}
+\end{equation*}
+
+\textbf{t-Student su stima di $r$ di Pearson}\\
+\begin{equation*}
+    t=\frac{r \cdot \sqrt{N-2} }{\sqrt{1- r^2}}
+\end{equation*}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=15cm]{1100_zoom_primi_due_periodi_BUGGUTO.pdf}
+    \caption{Caption}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=15cm]{968_definitivo.pdf}
+    \caption{Caption}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=15cm]{Lorentziana_root.pdf}
+    \caption{Caption}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=15cm]{zoom_fit_root_966mHz.pdf}
+    \caption{Caption}
+    \label{fig:zoom_fit_root}
+\end{figure}
+
+
+\end{document}
