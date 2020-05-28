@@ -16,10 +16,13 @@ int main()
     vector<data_campione> campione;
     vector<data_campione> campione_decadimento;
     vector<x_y> tempi;
+    vector<x_y> tempi_forcing;
     vector<x_y> tempi_decay;
     vector<x_y> periodi;
+    vector<x_y> periodi_forcing;
     vector<x_y> periodi_decadimento;
     vector<x_y> media_periodi;
+    vector<x_y> media_periodi_forcing;
     vector<x_y> media_periodi_decadimento;
     vector<x_y> omega1;
     vector<x_y> omega2;
@@ -28,15 +31,20 @@ int main()
 
     string map_file = "../Dati/mappa.txt";
     load_data(map_file, campione);
+
+    /*Calcolo dei periodi con ampiezza e forcing*/
     get_zero_time(campione, tempi);           //calcolo di tutti tempi con interpolazione a 4 punti
     get_periods(tempi, periodi);              //calcolo di tutti i periodi
     get_periodi_medi(periodi, media_periodi); //calcola media dei periodi con errore
+    get_zero_time_forcing(campione, tempi_forcing);
+    get_periods(tempi_forcing, periodi_forcing);
+    get_periodi_medi(periodi_forcing, media_periodi_forcing);
 
     //Stampa file per verifica corrispondenza punti interpolazione con effettiva intercetta con asse x
     int num_file = 0;
     for (int j = 0; j < tempi.size(); j++)
     {
-        ofstream fout_time("../Dati/Zeros_Regime/zeroes_" + to_string(num_file) + ".csv");
+        ofstream fout_time("../Dati/Zeros_Regime/z_" + to_string(num_file) + "_amp.txt");
         for (int i = 0; i < tempi[j].time.size(); i++)
         {
             fout_time << tempi[j].time[i] << "\t" << tempi[j].amplitude[i] << "\t0" << endl;
@@ -44,48 +52,74 @@ int main()
         num_file++;
     }
 
-    //Stampa tempi
-    //for(int i=0;i<tempi.size();i++)
-    //{
-    //    cout<<endl<<"Pendolo "<<i+1<<endl;
-    //    for(int j=0;j<tempi[i].time.size();j++)
-    //    {
-    //        cout<<tempi[i].time[j]<<",  ";
-    //    }
-    //}
+    int num_file_f = 0;
+    for (int j = 0; j < tempi_forcing.size(); j++)
+    {
+        ofstream fout_time_f("../Dati/Zeros_Regime/z_" + to_string(num_file_f) + "_forcing.txt");
+        for (int i = 0; i < tempi_forcing[j].time.size(); i++)
+        {
+            fout_time_f << tempi_forcing[j].time[i] << "\t0" << endl;
+        }
+        num_file_f++;
+    }
 
-    //Stampa per prova dei periodi
+    //Stampa per prova dei periodi sia da dati puri che da forcing
     for (int k = 0; k < periodi.size(); k++)
     {
-        ofstream fout("../Dati/Periodi/periodi_" + to_string(k + 1) + ".txt");
+        ofstream fout_a("../Dati/Periodi/periodi_" + to_string(k) + "_amp.txt");
         for (int i = 0; i < periodi[k].time.size(); i++)
         {
-            fout << periodi[k].time[i] << endl;
+            fout_a << periodi[k].time[i] << endl;
+        }
+    }
+    for (int k = 0; k < periodi_forcing.size(); k++)
+    {
+        ofstream fout_f("../Dati/Periodi/periodi_" + to_string(k) + "_for.txt");
+        for (int i = 0; i < periodi_forcing[k].time.size(); i++)
+        {
+            fout_f << periodi_forcing[k].time[i] << endl;
         }
     }
 
-    //Stampa media periodi
-    //for (auto d : media_periodi)
-    //{
-    //    cout << d.avg_time << "+/-" << d.err_avg_time << endl;
-    //}
+    //Stampa media periodi con errore, sia di grezzi che da forzante
+    ofstream fout_media_tempi("../Dati/Periodi/periodi_medi.txt");
+    ofstream fout_media_tempi_f("../Dati/Periodi/periodi_medi_forzante.txt");
+    for (int i = 0; i < media_periodi.size(); i++)
+    {
+        fout_media_tempi << i + 1 << "\t" << media_periodi[i].avg_time << "\t" << media_periodi[i].err_avg_time << "\t" << media_periodi[i].err_time << endl;
+    }
+    for (int i = 0; i < media_periodi_forcing.size(); i++)
+    {
+        fout_media_tempi_f << i + 1 << "\t" << media_periodi_forcing[i].avg_time << "\t" << media_periodi_forcing[i].err_avg_time << "\t" << media_periodi_forcing[i].err_time << endl;
+    }
 
-    //cout << "OmegaMedia1"
-    //     << "\t"
-    //     << "ErrOmegaMedia1"
-    //     << "\t"
-    //     << "OmegaMedia2"
-    //     << "\t"
-    //     << "ErrOmegaMedia2" << endl;
-    //for (int i = 0; i < omega1.size(); i++)
-    //{
-    //    cout << omega1[i].omega_media1 << "\t" << omega1[i].err_omega_media1 << "\t" << omega2[i].omega_media2 << "\t" << omega2[i].err_omega_media2 << endl;
-    //}
+    //Stampa gli istogrammi dei periodi sia grezzi che forcing
+    vector<vettoredoppio> hist_tempi;
+    vector<vettoredoppio> hist_tempi_f;
+    vector<double> bin_tempi(20, 25.0);
+    gauss_hist_tempi(periodi, hist_tempi, bin_tempi);
+    gauss_hist_tempi(periodi_forcing, hist_tempi_f, bin_tempi);
+
+    for (int j = 0; j < hist_tempi.size(); j++)
+    {
+        ofstream fout_hist_tempi("../Dati/Hist_tempi/" + to_string(j) + "-hist.txt");
+        for (int k = 0; k < hist_tempi[j].vettore2.size(); k++)
+        {
+            fout_hist_tempi << hist_tempi[j].vettore2[k] << "\t" << hist_tempi[j].vettore3[k] << endl;
+        }
+    }
+    for (int j = 0; j < hist_tempi_f.size(); j++)
+    {
+        ofstream fout_hist_tempi_f("../Dati/Hist_tempi/" + to_string(j) + "-hist_for.txt");
+        for (int k = 0; k < hist_tempi_f[j].vettore2.size(); k++)
+        {
+            fout_hist_tempi_f << hist_tempi_f[j].vettore2[k] << "\t" << hist_tempi_f[j].vettore3[k] << endl;
+        }
+    }
 
     //Genrea vettore con le posizioni dei massimi
     vector<vettoredoppio> indici_dei_massimi;
     get_index_maxima(campione, tempi, indici_dei_massimi);
-
 
     for (int j = 0; j < indici_dei_massimi.size(); j++)
     {
@@ -105,28 +139,28 @@ int main()
                  << " \t " << campione[i].time[indici_dei_massimi[i].vettore2[j] + 9] << endl;
         }
     }
-    //Genera vettore di strutture con
+    //Genera vettore di strutture con punti di massimo
     vector<punti_massimo> punti_di_massimo_mv;
     vector<punti_massimo> punti_di_massimo_ass;  //usati sia per mv che per assoluta
     vector<punti_massimo> punti_di_massimo_root; //solo per root
     get_maxima_mv(campione, indici_dei_massimi, punti_di_massimo_mv);
     get_maxima_ass(campione, indici_dei_massimi, punti_di_massimo_ass);
-
     lettura_parametri(parametri);
     get_maxima_root(parametri, punti_di_massimo_root);
-    //cout << parametri[0].coeff_c.size();
 
-    //for (int i = 0; i < punti_di_massimo_root.size(); i++)
-    //{
-    //    ofstream fout_temp("../Dati/Punti_max/punti_max_" + to_string(punti_di_massimo_root[i].freq_ref) + ".txt");
-    //    for (int j = 0; j < punti_di_massimo_root[i].t_max.size(); j++)
-    //    {
-    //        fout_temp << punti_di_massimo_root[i].t_max[j] << "\t" << punti_di_massimo_root[i].ampl_max[j] << "\t" << punti_di_massimo_root[i].coeff_a[j] << "\t" << punti_di_massimo_root[i].coeff_b[j] << "\t" << punti_di_massimo_root[i].coeff_c[j] << endl;
-    //    }
-    //}
+    for (int i = 0; i < punti_di_massimo_root.size(); i++)
+    {
+        ofstream fout_temp("../Dati/Maxima_root/punti_max_" + to_string(i + 1) + "_root.txt");
+        for (int j = 0; j < punti_di_massimo_root[i].t_max.size(); j++)
+        {
+            fout_temp << punti_di_massimo_root[i].t_max[j] << "\t" << punti_di_massimo_root[i].ampl_max[j] << endl;
+        }
+    }
 
     vector<x_y> valutaz_offset_ass;
+    vector<x_y> valutaz_offset_root;
     offset(punti_di_massimo_ass, valutaz_offset_ass);
+    offset(punti_di_massimo_root, valutaz_offset_root);
     for (auto d : valutaz_offset_ass)
     {
         ofstream fout_off("../Dati/Offset_regime/offset_" + to_string(d.freq) + ".txt");
@@ -134,6 +168,17 @@ int main()
         {
             fout_off << c << endl;
         }
+    }
+
+    int counter = 0;
+    for (auto d : valutaz_offset_root)
+    {
+        ofstream fout_off_ro("../Dati/Offset_regime/offset_" + to_string(counter) + "_root.txt");
+        for (auto c : d.offset)
+        {
+            fout_off_ro << c << endl;
+        }
+        counter++;
     }
 
     vector<x_y> picchi_picchi_assoluti;
@@ -157,34 +202,52 @@ int main()
     vector<punto_regime> campana_lorentziana_assoluta;
     vector<punto_regime> campana_lorentziana_mv;
     vector<punto_regime> campana_lorentziana_root;
+    vector<punto_regime> campana_lor_forzante;
 
     add_picco_medio(picchi_picchi_assoluti, campana_lorentziana_assoluta);
     add_picco_medio(picchi_picchi_mv, campana_lorentziana_mv);
     add_picco_medio(picchi_picchi_root, campana_lorentziana_root);
+    add_picco_medio(picchi_picchi_root, campana_lor_forzante);
 
     add_omega_2(periodi, campana_lorentziana_assoluta);
     add_omega_2(periodi, campana_lorentziana_mv);
     add_omega_2(periodi, campana_lorentziana_root);
+    add_omega_2(periodi_forcing, campana_lor_forzante);
+
+    //Prende i valori del fit di gnuplot con err a posteriori
+    vector<double> par_root = {1.82653, 6.06287, -0.0558678, -0.026352};
+    vector<double> par_ass = {1.84435, 6.0624, -0.0566001, 0.002301};
+    vector<double> par_mv = {1.82795, 6.06275, -0.0559494, -0.0265116};
+    vector<double> par_for = {};
+    double err_post_root = post_lor(campana_lorentziana_root, par_root);
+    double err_post_ass = post_lor(campana_lorentziana_assoluta, par_ass);
+    double err_post_mv = post_lor(campana_lorentziana_mv, par_mv);
 
     //STAMPA LA LORENTZIANA
 
     ofstream fout_lor_mv("lore_mv.txt");
     ofstream fout_lor_ass("lore_ass.txt");
     ofstream fout_lor_root("lore_root.txt");
+    ofstream fout_lor_for("lore_for.txt");
 
     for (int i = 0; i < campana_lorentziana_mv.size(); i++)
     {
-        fout_lor_mv << campana_lorentziana_mv[i].omega << "\t" << campana_lorentziana_mv[i].theta << "\t" << campana_lorentziana_mv[i].err_omega << "\t" << campana_lorentziana_mv[i].err_theta << "\t 1" << endl;
+        fout_lor_mv << campana_lorentziana_mv[i].omega << "\t" << campana_lorentziana_mv[i].theta << "\t" << campana_lorentziana_mv[i].err_omega << "\t" << campana_lorentziana_mv[i].err_theta << "\t" << err_post_mv << endl;
     }
 
     for (int i = 0; i < campana_lorentziana_assoluta.size(); i++)
     {
-        fout_lor_ass << campana_lorentziana_assoluta[i].omega << "\t" << campana_lorentziana_assoluta[i].theta << "\t" << campana_lorentziana_assoluta[i].err_omega << "\t" << campana_lorentziana_assoluta[i].err_theta << "\t 1" << endl;
+        fout_lor_ass << campana_lorentziana_assoluta[i].omega << "\t" << campana_lorentziana_assoluta[i].theta << "\t" << campana_lorentziana_assoluta[i].err_omega << "\t" << campana_lorentziana_assoluta[i].err_theta << "\t" << err_post_ass << endl;
     }
 
     for (int i = 0; i < campana_lorentziana_root.size(); i++)
     {
-        fout_lor_root << campana_lorentziana_root[i].omega << "\t" << campana_lorentziana_root[i].theta << "\t" << campana_lorentziana_root[i].err_omega << "\t" << campana_lorentziana_root[i].err_theta << "\t 1" << endl;
+        fout_lor_root << campana_lorentziana_root[i].omega << "\t" << campana_lorentziana_root[i].theta << "\t" << campana_lorentziana_root[i].err_omega << "\t" << campana_lorentziana_root[i].err_theta << "\t" << err_post_root << endl;
+    }
+
+    for (int i = 0; i < campana_lor_forzante.size(); i++)
+    {
+        fout_lor_for << campana_lor_forzante[i].omega << "\t" << campana_lor_forzante[i].theta << "\t" << campana_lor_forzante[i].err_omega << "\t" << campana_lor_forzante[i].err_theta << "\t" << err_post_mv << endl;
     }
 
     vector<vettoredoppio> hist_root;
@@ -201,21 +264,47 @@ int main()
         fout_disp << j << "\t" << hist_root[j].dispersione_amp << endl;
     }
 
+    vector<vettoredoppio> hist_ass;
+    vector<double> n_bin_ass(20, 10.0); //definisce il numero di bin, cambia il secondo valore
+    gauss_hist_root(punti_di_massimo_ass, hist_ass, n_bin_ass);
+    ofstream fout_disp_ass("../Histogram/dispersione_sigma_ass.txt");
+    for (int j = 0; j < hist_ass.size(); j++)
+    {
+        ofstream fout_hist_ass("../Histogram/" + to_string(j + 10) + "-hist_ass.txt");
+        for (int k = 0; k < hist_ass[j].vettore2.size(); k++)
+        {
+            fout_hist_ass << hist_ass[j].vettore2[k] << "\t" << hist_ass[j].vettore3[k] << endl;
+        }
+        fout_disp_ass << j << "\t" << hist_ass[j].dispersione_amp << endl;
+    }
+
+
+
     vector<double> compatibilty_ass;
-    vector<double> compatibilty_mv;
-    vector<double> compatibilty_root;
+    vector<double> compatibilty_for;
     compatibilita_omega(campana_lorentziana_assoluta, campione, compatibilty_ass);
-    compatibilita_omega(campana_lorentziana_assoluta, campione, compatibilty_mv);
-    compatibilita_omega(campana_lorentziana_assoluta, campione, compatibilty_root);
+    compatibilita_omega(campana_lor_forzante, campione, compatibilty_for);
 
     //cout << "Compatiblità omega sper root con omega th";
 
-    ofstream fout_com("../Dati/Compatib/comp.txt");
-    for (int i = 0; i < campana_lorentziana_root.size(); i++) //sono tutte uguali, non cambia un cazzo con le altre
+    ofstream fout_com_ass("../Dati/Compatib/comp_ass.txt");
+    ofstream fout_com_for("../Dati/Compatib/comp_for.txt");
+    double sum_comp_squared = 0;
+    double sum_comp_squared_for = 0;
+    for (int i = 0; i < campana_lorentziana_assoluta.size(); i++) //sono tutte uguali, non cambia un cazzo con le altre
     {
-        fout_com << i + 1 << "\t" << campana_lorentziana_root[i].omega << "\t" << campana_lorentziana_root[i].err_omega << "\t" << campione[i].data_file_freq * 2. * M_PI / 1000. << "\t" << sigma_dist_uni(0.001, 1) << "\t" << compatibilty_root[i] << endl;
+        fout_com_ass << i + 1 << "\t" << campana_lorentziana_assoluta[i].omega << "\t" << campana_lorentziana_assoluta[i].err_omega << "\t" << campione[i].data_file_freq * 2. * M_PI / 1000. << "\t" << sigma_dist_uni(0.001, 1) << "\t"
+                     << "\t" << compatibilty_ass[i] << endl;
+        sum_comp_squared += pow(compatibilty_ass[i], 2);
     }
-
+    for (int i = 0; i < campana_lor_forzante.size(); i++) //sono tutte uguali, non cambia un cazzo con le altre
+    {
+        fout_com_for << i + 1 << "\t" << campana_lor_forzante[i].omega << "\t" << campana_lor_forzante[i].err_omega << "\t" << campione[i].data_file_freq * 2. * M_PI / 1000. << "\t" << sigma_dist_uni(0.001, 1) << "\t"
+                     << "\t" << compatibilty_for[i] << endl;
+        sum_comp_squared_for += pow(compatibilty_for[i], 2);
+    }
+    cout << "Somma comp squared: " << sum_comp_squared << endl;
+    cout << "Somma comp squared for: " << sum_comp_squared_for << endl;
     //*******************************************************SMORZAMENTO*****************************************************************************************************
     load_data_decay(campione_decadimento);
     get_zero_time(campione_decadimento, tempi_decay);
@@ -291,7 +380,7 @@ int main()
     for (int j = 0; j < indici_dei_massimi_decadimento.size(); j++)
     {
         ofstream smorz("../Dati/periodo_smorzamento" + to_string(j) + ".txt");
-    
+
         for (int i = 0; i < indici_dei_massimi_decadimento[j].vettore2.size(); i++)
         {
             smorz << campione_decadimento[j].time[indici_dei_massimi_decadimento[j].vettore2[i] - 9] << ",\t" << campione_decadimento[j].time[indici_dei_massimi_decadimento[j].vettore2[i] + 9] << ",\t" << endl;
@@ -313,14 +402,6 @@ int main()
     vector<punti_massimo> punti_min_ln_ass;
     vector<punti_massimo> punti_max_ln_mv;
     vector<punti_massimo> punti_min_ln_mv;
-
-    //Prende i valori del fit di gnuplot con err a posteriori
-    vector<double> par_root = {1.82653, 6.06287, -0.0558678, -0.026352};
-    vector<double> par_ass = {1.84435, 6.0624, -0.0566001, 0.002301};
-    vector<double> par_mv = {1.82795, 6.06275, -0.0559494, -0.0265116};
-    double err_post_root = post_lor(campana_lorentziana_root, par_root);
-    double err_post_ass = post_lor(campana_lorentziana_assoluta, par_ass);
-    double err_post_mv = post_lor(campana_lorentziana_mv, par_mv);
 
     //Linearizza trovando i massimi/minimi pronti per essere plottati con gli err a posteriori precedentemente calclati e poi propagati
     linearize_max(massimi_decadimento_root, punti_max_ln_root, err_post_root);
@@ -380,26 +461,24 @@ int main()
     return 0;
 }
 
-
 /*
 COSE DA STAMPARE
 
 Miglior stima di
 - T_f (regime) -> media periodi scorrelati
 - omega_f sperimentale -> media di omega scorrelate, ex secondo metodo
+- confronto omega_f con quella teorica (compatibilità)
 - theta_part_sper -> media mezzo picco-picco scorrelati
 - Lorentziana
 - paramteri fit con attenzione a omega_reisonanza ed errore
+    - err a posteriori
 
 - T_s (smorzamento)
 - omega_s smorazmanto
 - Gamma da linearizzazione -> errori a posteriori su lorentz
+    - massimi e minimi assoluti o con root/mv/ass
 - omega_0=sqrt(omega_s^2+gamma^2)
-- omega_r=sqrt(omega_s^2-gammma^2) <->
+- omega_r=sqrt(omega_s^2-gammma^2)
 - confronto omega_r con omega_r risonanza fit lorentz
-
-
-
-
 
 */
