@@ -40,6 +40,8 @@ struct x_y
     double picco_medio;
     double err_picco_medio;
     vector<double> offset;
+    double err_time;
+    double num_misure;
 };
 
 struct punti_massimo
@@ -198,7 +200,7 @@ double get_root(int &i, data_campione &d)
 double get_root_per_0(int &i, data_campione &d)
 {
     vector<double> x = {d.time[i - 2], d.time[i - 1], d.time[i], d.time[i + 1], d.time[i + 2], d.time[i + 3]};
-    vector<double> y = {d.a[i - 2], d.a[i - 1], d.a[i], d.a[i + 1], d.a[i + 2], d.time[i + 3]};
+    vector<double> y = {d.a[i - 2], d.a[i - 1], d.a[i], d.a[i + 1], d.a[i + 2], d.a[i + 3]};
     double root = -a_intercetta_err_uguali(x, y) / b_angolare_err_uguali(x, y); //trova intersezione retta con asse x
     return root;
 }
@@ -252,6 +254,89 @@ void get_zero_time(vector<data_campione> &vec_data, vector<x_y> &time_amp)
         time_amp.push_back(zeros_campione);
     }
 }
+/*
+//Presa dei tempi su intercette di forzante
+*/
+double get_root_forcing(int &i, data_campione &d)
+{
+
+    vector<double> x; // = {d.time[i - 3], d.time[i - 2], d.time[i - 1], d.time[i], d.time[i + 1], d.time[i + 2], d.time[i + 3]};
+    vector<double> y; // = {d.a[i - 3], d.a[i - 2], d.a[i - 1], d.a[i], d.a[i + 1], d.a[i + 2], d.a[i + 3]};
+    if (i >= 1)
+    {
+        x = {d.time[i - 3], d.time[i - 2], d.time[i - 1], d.time[i], d.time[i + 1], d.time[i + 2], d.time[i + 3]};
+        y = {d.forcing[i - 3], d.forcing[i - 2], d.forcing[i - 1], d.forcing[i], d.forcing[i + 1], d.forcing[i + 2], d.forcing[i + 3]};
+    }
+    else
+    {
+        x = {d.time[i], d.time[i], d.time[i + 1], d.time[i + 2], d.time[i + 3], d.time[i + 4]};
+        y = {d.forcing[i], d.forcing[i], d.forcing[i + 1], d.forcing[i + 2], d.forcing[i + 3], d.forcing[i + 4]};
+    }
+
+    double root = -a_intercetta_err_uguali(x, y) / b_angolare_err_uguali(x, y); //trova intersezione retta con asse x
+    return root;
+}
+//Fa interpolazione per prendere la "radice", ovvero quando la sinusoide intercetta asse x ma prende 5 dati piuttosto che 4 poichè voglio come polo lo 0
+double get_root_per_0_forcing(int &i, data_campione &d)
+{
+    vector<double> x = {d.time[i - 2], d.time[i - 1], d.time[i], d.time[i + 1], d.time[i + 2], d.time[i + 3]};
+    vector<double> y = {d.forcing[i - 2], d.forcing[i - 1], d.forcing[i], d.forcing[i + 1], d.forcing[i + 2], d.forcing[i + 3]};
+    double root = -a_intercetta_err_uguali(x, y) / b_angolare_err_uguali(x, y); //trova intersezione retta con asse x
+    return root;
+}
+
+//Genera il vettore di struttura (una per campione) dove ciascuna strutura ha il vettore con il momento di intercetta della sinusoide con lo zero
+void get_zero_time_forcing(vector<data_campione> &vec_data, vector<x_y> &time_amp)
+{
+    for (auto d : vec_data)
+    {
+        x_y zeros_campione;
+        zeros_campione.freq = d.data_file_freq;
+        for (int i = 0; i < d.forcing.size() - 3; i++)
+        {
+            if (d.forcing[i] > 0)
+            {
+                if (d.forcing[i + 1] <= 0 && d.forcing[i + 2] <= 0 && d.forcing[i + 3] <= 0) //both of the opposite sign
+                {
+                    if (d.forcing[i + 1] == 0)
+                    {
+                        zeros_campione.time.push_back(get_root_per_0_forcing(i, d));
+                        zeros_campione.closest_index_zero.push_back(i);
+                        zeros_campione.amplitude.push_back(d.time[i]); //solo per testare su file
+                    }
+                    else
+                    {
+                        zeros_campione.time.push_back(get_root_forcing(i, d));
+                        zeros_campione.closest_index_zero.push_back(i);
+                        zeros_campione.amplitude.push_back(d.time[i]); //solo per testare su file
+                    }
+                }
+            }
+            else if (d.forcing[i] < 0)
+            {
+                if (d.forcing[i + 1] >= 0 && d.forcing[i + 2] >= 0 && d.forcing[i + 3] >= 0) //both of the opposite sign
+                {
+                    if (d.forcing[i + 1] == 0)
+                    {
+                        zeros_campione.time.push_back(get_root_per_0_forcing(i, d));
+                        zeros_campione.closest_index_zero.push_back(i);
+                        zeros_campione.amplitude.push_back(d.time[i]); //solo per testare su file
+                    }
+                    else
+                    {
+                        zeros_campione.time.push_back(get_root_forcing(i, d));
+                        zeros_campione.closest_index_zero.push_back(i);
+                        zeros_campione.amplitude.push_back(d.time[i]); //solo per testare su file
+                    }
+                }
+            }
+        }
+        time_amp.push_back(zeros_campione);
+    }
+}
+
+/*FINE USO DI FORCING
+*/
 
 //Genera tutti i periodi prendendo differenze indipendenti
 void get_periods(vector<x_y> &times, vector<x_y> &periods)
@@ -276,6 +361,8 @@ void get_periodi_medi(vector<x_y> &periodi, vector<x_y> &media_periodi)
         x_y temp;
         temp.avg_time = media(d.time);
         temp.err_avg_time = dstd_media(d.time);
+        temp.err_time = dstd(d.time);
+        temp.num_misure = d.time.size();
         media_periodi.push_back(temp);
     }
 }
@@ -533,12 +620,12 @@ void gauss_hist_root(vector<punti_massimo> &punti_max, vector<vettoredoppio> &hi
         double intervals = bins[i];
         vector<double> max_ass;
         vector<double> &massimi = punti_max[i].ampl_max;
-        vector<int> counts(intervals, 0);
+        vector<double> counts(intervals, 0);
         for (auto d : massimi)
         {
             if (d > 0)
             {
-                max_ass.push_back(d);
+                max_ass.push_back(d); //
             }
         }
         double max_val = *max_element(max_ass.begin(), max_ass.end());
@@ -564,8 +651,55 @@ void gauss_hist_root(vector<punti_massimo> &punti_max, vector<vettoredoppio> &hi
         for (int k = 0; k < counts.size(); k++)
         {
             temp_hist.vettore2.push_back(assex[k]);
-            temp_hist.vettore3.push_back(counts[k]);
-            temp_hist.dispersione_amp=dstd(max_ass)/media(max_ass)*100.;
+            temp_hist.vettore3.push_back(counts[k] / max_ass.size()); //fa ora le freq relative
+            temp_hist.dispersione_amp = dstd(max_ass) / media(max_ass) * 100.;
+        }
+        hist.push_back(temp_hist);
+    }
+}
+
+//Genera grafico istogramma per tempi
+void gauss_hist_tempi(vector<x_y> &tempi, vector<vettoredoppio> &hist, vector<double> bins)
+{
+    for (int i = 0; i < tempi.size(); i++)
+    {
+        vettoredoppio temp_hist;
+        double intervals = bins[i];
+        vector<double> max_ass;
+        vector<double> &massimi = tempi[i].time;
+        vector<double> counts(intervals, 0);
+        for (auto d : massimi)
+        {
+            if (d > 0)
+            {
+                max_ass.push_back(d); //
+            }
+        }
+        double max_val = *max_element(max_ass.begin(), max_ass.end());
+        double min_val = *min_element(max_ass.begin(), max_ass.end());
+        double ampiezza_bin = (max_val - min_val) / intervals;
+        vector<double> assex;
+        for (int j = 0; j < intervals; j++)
+        {
+            assex.push_back(min_val + ampiezza_bin * j);
+        }
+
+        for (auto c : max_ass)
+        {
+            for (int j = 0; j < intervals; j++)
+            {
+                if ((c <= min_val + ampiezza_bin * (j + 1)) && (c > min_val + ampiezza_bin * (j)))
+                {
+                    counts[j] = counts[j] + 1;
+                }
+            }
+        }
+        counts[0] += 1; //per tenere conto del minimo che non viene contato nel if sopra
+        for (int k = 0; k < counts.size(); k++)
+        {
+            temp_hist.vettore2.push_back(assex[k]);
+            temp_hist.vettore3.push_back(counts[k] / max_ass.size()); //fa ora le freq relative
+            temp_hist.dispersione_amp = dstd(max_ass) / media(max_ass) * 100.;
         }
         hist.push_back(temp_hist);
     }
@@ -598,7 +732,7 @@ void compatibilita_omega(vector<punto_regime> &camp_lorent, vector<data_campione
         double omega_sper = camp_lorent[i].omega;
         double err_omega_sper = camp_lorent[i].err_omega;
         double err_omega_th = sigma_dist_uni(0.001, 1); //dist uniforme su più piccola cifra degli Hz
-        compatib_omega.push_back(comp_3(omega_th, omega_sper, err_omega_th, err_omega_sper));
+        compatib_omega.push_back(comp_3(omega_th, omega_sper, err_omega_sper, err_omega_th));
     }
 }
 
