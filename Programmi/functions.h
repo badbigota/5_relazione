@@ -732,7 +732,18 @@ void compatibilita_omega(vector<punto_regime> &camp_lorent, vector<data_campione
         double omega_sper = camp_lorent[i].omega;
         double err_omega_sper = camp_lorent[i].err_omega;
         double err_omega_th = sigma_dist_uni(0.001, 1); //dist uniforme su più piccola cifra degli Hz
-        compatib_omega.push_back(comp_3(omega_th, omega_sper, err_omega_sper, err_omega_th));
+        compatib_omega.push_back(comp_3(omega_th, omega_sper, err_omega_sper, 0));
+    }
+}
+void compatibilita_omega_frozante_sperimentale(vector<punto_regime> &camp_for, vector<punto_regime> &camp_dati, vector<double> &compatib_omega)
+{
+    for (int i = 0; i < camp_for.size(); i++)
+    {
+        double omega_for = camp_for[i].omega; //convertita in Hz da mHz e in omega da freq
+        double omega_dati = camp_dati[i].omega;
+        double err_omega_for = camp_for[i].err_omega;
+        double err_omega_dati = camp_dati[i].err_omega; //dist uniforme su più piccola cifra degli Hz
+        compatib_omega.push_back(comp_3(omega_for, omega_dati, err_omega_for, err_omega_dati));
     }
 }
 
@@ -742,8 +753,7 @@ double y_th(double x, vector<double> parms)
     a = parms[0];
     b = parms[1];
     c = parms[2];
-    d = parms[3];
-    return a / sqrt(pow((pow(b, 2) + 2 * pow(c, 2) - pow(x, 2)), 2) + 4 * pow((c * x), 2)) + d;
+    return a / sqrt(pow((pow(b, 2) + 2 * pow(c, 2) - pow(x, 2)), 2) + 4 * pow((c * x), 2));
 }
 
 double post_lor(vector<punto_regime> &campana_lor, vector<double> parametri_fit_gnuplot)
@@ -822,5 +832,19 @@ void return_angolari(vector<punti_massimo> &ln_theta_max, vector<punti_massimo> 
 
         //salva tutto in vec
         parametri_intepolazioni.push_back(temp_gamma);
+    }
+}
+
+void reiezione(vector<x_y> &periodi, vector<x_y> &periodi_reiettati, vector<x_y> &periodi_medi){
+	for(int i=0;i<periodi.size();i++){
+        x_y vettore_reiezione;
+        for (int j=0;j<periodi[i].time.size();j++)
+	    {
+		    if ((periodi[i].time[j]>= periodi_medi[i].avg_time - 3 * periodi_medi[i].err_avg_time*sqrt(periodi[i].time.size())) && (periodi[i].time[j] <= periodi_medi[i].avg_time + 3 * periodi_medi[i].err_avg_time*sqrt(periodi[i].time.size())))
+		    {
+			    vettore_reiezione.time.push_back(periodi[i].time[j]);
+		    }
+	    }
+        periodi_reiettati.push_back(vettore_reiezione);
     }
 }
