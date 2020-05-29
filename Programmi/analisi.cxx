@@ -21,9 +21,11 @@ int main()
     vector<x_y> periodi;
     vector<x_y> periodi_forcing;
     vector<x_y> periodi_decadimento;
+    vector<x_y> periodi_decadimento_reiettati;
     vector<x_y> media_periodi;
     vector<x_y> media_periodi_forcing;
     vector<x_y> media_periodi_decadimento;
+    vector<x_y> media_periodi_decadimento_reiettati;
     vector<x_y> omega1;
     vector<x_y> omega2;
     vector<punti_massimo> parametri;
@@ -166,7 +168,7 @@ int main()
         ofstream fout_off("../Dati/Offset_regime/offset_" + to_string(d.freq) + ".txt");
         for (auto c : d.offset)
         {
-            fout_off << c << endl;
+            fout_off << c << "\t0" << endl;
         }
     }
 
@@ -176,7 +178,7 @@ int main()
         ofstream fout_off_ro("../Dati/Offset_regime/offset_" + to_string(counter) + "_root.txt");
         for (auto c : d.offset)
         {
-            fout_off_ro << c << endl;
+            fout_off_ro << c << "\t0" << endl;
         }
         counter++;
     }
@@ -215,9 +217,11 @@ int main()
     add_omega_2(periodi_forcing, campana_lor_forzante);
 
     //Prende i valori del fit di gnuplot con err a posteriori
-    vector<double> par_root = {1.82653, 6.06287, -0.0558678, -0.026352};
-    vector<double> par_ass = {1.84435, 6.0624, -0.0566001, 0.002301};
-    vector<double> par_mv = {1.82795, 6.06275, -0.0559494, -0.0265116};
+    //vector<double> par_root = {1.82653, 6.06287, -0.0558678, -0.026352};
+
+    vector<double> par_root = {1.78062, 6.06001, -0.0542075}; //aggiornato e corretto ora, non con il d
+    vector<double> par_ass = {1.85208, 6.05963, -0.0560454};  //aggiormato
+    vector<double> par_mv = {1.78114, 6.05996, -0.0542634};   //aggiornato
     vector<double> par_for = {};
     double err_post_root = post_lor(campana_lorentziana_root, par_root);
     double err_post_ass = post_lor(campana_lorentziana_assoluta, par_ass);
@@ -229,6 +233,12 @@ int main()
     ofstream fout_lor_ass("lore_ass.txt");
     ofstream fout_lor_root("lore_root.txt");
     ofstream fout_lor_for("lore_for.txt");
+    ofstream fout_omega_par("omega_par_root_ass.txt");
+
+    for (int i = 0; i < campana_lorentziana_assoluta.size(); i++)
+    {
+        fout_omega_par << i + 1 << "&&$" << campana_lorentziana_root[i].theta << " \\pm " << campana_lorentziana_root[i].err_theta << "$ && $" << campana_lorentziana_assoluta[i].theta << " \\pm " << campana_lorentziana_assoluta[i].err_theta << "$ \\\\" << endl;
+    }
 
     for (int i = 0; i < campana_lorentziana_mv.size(); i++)
     {
@@ -278,19 +288,23 @@ int main()
         fout_disp_ass << j << "\t" << hist_ass[j].dispersione_amp << endl;
     }
 
-
-
     vector<double> compatibilty_ass;
     vector<double> compatibilty_for;
+    vector<double> compatibilty_rel;
     compatibilita_omega(campana_lorentziana_assoluta, campione, compatibilty_ass);
     compatibilita_omega(campana_lor_forzante, campione, compatibilty_for);
+    compatibilita_omega_frozante_sperimentale(campana_lor_forzante, campana_lorentziana_root, compatibilty_rel);
 
     //cout << "Compatiblità omega sper root con omega th";
 
     ofstream fout_com_ass("../Dati/Compatib/comp_ass.txt");
     ofstream fout_com_for("../Dati/Compatib/comp_for.txt");
+    ofstream fout_com_rel("../Dati/Compatib/comp_rel.txt");
+
     double sum_comp_squared = 0;
     double sum_comp_squared_for = 0;
+    double sum_comp_squared_rel = 0;
+
     for (int i = 0; i < campana_lorentziana_assoluta.size(); i++) //sono tutte uguali, non cambia un cazzo con le altre
     {
         fout_com_ass << i + 1 << "\t" << campana_lorentziana_assoluta[i].omega << "\t" << campana_lorentziana_assoluta[i].err_omega << "\t" << campione[i].data_file_freq * 2. * M_PI / 1000. << "\t" << sigma_dist_uni(0.001, 1) << "\t"
@@ -303,8 +317,17 @@ int main()
                      << "\t" << compatibilty_for[i] << endl;
         sum_comp_squared_for += pow(compatibilty_for[i], 2);
     }
+
+    for (int i = 0; i < campana_lor_forzante.size(); i++) //sono tutte uguali, non cambia un cazzo con le altre
+    {
+        fout_com_rel << i + 1 << "\t" << campana_lor_forzante[i].omega << "\t" << campana_lor_forzante[i].err_omega << "\t" << campana_lorentziana_root[i].omega << "\t" << campana_lorentziana_root[i].err_omega << "\t"
+                     << "\t" << compatibilty_rel[i] << endl;
+        sum_comp_squared_rel += pow(compatibilty_rel[i], 2);
+    }
     cout << "Somma comp squared: " << sum_comp_squared << endl;
     cout << "Somma comp squared for: " << sum_comp_squared_for << endl;
+    cout << "Somma comp squared rel: " << sum_comp_squared_rel << endl;
+
     //*******************************************************SMORZAMENTO*****************************************************************************************************
     load_data_decay(campione_decadimento);
     get_zero_time(campione_decadimento, tempi_decay);
@@ -322,14 +345,32 @@ int main()
 
     get_periods(tempi_decay, periodi_decadimento);
     get_periodi_medi(periodi_decadimento, media_periodi_decadimento); //#cavallo
+    reiezione(periodi_decadimento, periodi_decadimento_reiettati, media_periodi_decadimento);
+    get_periodi_medi(periodi_decadimento_reiettati, media_periodi_decadimento_reiettati);
+
+    for (int i = 0; i < periodi_decadimento_reiettati.size(); i++)
+    {
+        ofstream fout_periodis("../Dati/Periodi_smorzamento/pseudoperiodi_" + to_string(i + 1) + ".txt");
+        for (int j = 0; j < periodi_decadimento_reiettati[i].time.size(); j++)
+        {
+            fout_periodis << periodi_decadimento_reiettati[i].time[j] << endl;
+        }
+        fout_periodis << media_periodi_decadimento_reiettati[i].avg_time << " +/- " << media_periodi_decadimento_reiettati[i].err_avg_time << endl;
+    }
 
     vector<vettoredoppio> indici_dei_massimi_decadimento;
     vector<punti_massimo> massimi_decadimento_ass;
     vector<punti_massimo> massimi_decadimento_mv;
     get_index_maxima(campione_decadimento, tempi_decay, indici_dei_massimi_decadimento);
-    omega_s_scamorza(periodi_decadimento, omega_s_smorzamento);
+    omega_s_scamorza(periodi_decadimento_reiettati, omega_s_smorzamento);
     get_maxima_ass(campione_decadimento, indici_dei_massimi_decadimento, massimi_decadimento_ass);
     get_maxima_mv(campione_decadimento, indici_dei_massimi_decadimento, massimi_decadimento_mv);
+
+    for (int i = 0; i < omega_s_smorzamento.size(); i++)
+    {
+        ofstream fout_omegas("../Dati/Omega_smorzamento/omegas_" + to_string(i + 1) + ".txt");
+        fout_omegas << omega_s_smorzamento[i].omega_media2 << " +/- " << omega_s_smorzamento[i].err_omega_media2 << endl;
+    }
 
     vector<punti_massimo> parametri_smorzamento_root;
     vector<punti_massimo> massimi_decadimento_root;
@@ -450,13 +491,24 @@ int main()
     return_angolari(punti_max_ln_ass, punti_min_ln_ass, parametri_interpolazioni_ass);
     return_angolari(punti_max_ln_mv, punti_min_ln_mv, parametri_interpolazioni_mv);
 
-    // for (int i = 0; i < parametri_interpolazioni.size(); i++)
-    // {
-    //     cout<<"Massimi "<<i+1<<endl;
-    //     cout << parametri_interpolazioni[i].a_intercetta_gamma_max<<"\t"<< parametri_interpolazioni[i].b_angolare_gamma_max<<endl;
-    //     cout<< "Minimi "<<i+1 <<endl;
-    //     cout << parametri_interpolazioni[i].a_intercetta_gamma_min<<"\t"<< parametri_interpolazioni[i].b_angolare_gamma_min<<endl;
-    // }
+    //for (int i = 0; i < parametri_interpolazioni_root.size(); i++)
+    //{
+    //    cout<<"Massimi "<<i+1<<endl;
+    //    cout << parametri_interpolazioni_root[i].a_intercetta_gamma_max<<"+/-"<<parametri_interpolazioni_root[i].err_a_post_max<<"\t"<< parametri_interpolazioni_root[i].b_angolare_gamma_max<<"+/-"<<parametri_interpolazioni_root[i].err_b_post_max<<endl;
+    //    cout<< "Minimi "<<i+1 <<endl;
+    //    cout << parametri_interpolazioni_root[i].a_intercetta_gamma_min<<"+/-"<<parametri_interpolazioni_root[i].err_a_post_min<<"\t"<< parametri_interpolazioni_root[i].b_angolare_gamma_min<<"+/-"<<parametri_interpolazioni_root[i].err_b_post_min<<endl;
+    //}
+
+    vector<double> omega_o;
+    vector<double> omega_r;
+    for (int i = 0; i < omega_s_smorzamento.size(); i++)
+    {
+        double gamma_ponderata = ((abs(parametri_interpolazioni_root[i].b_angolare_gamma_max) * parametri_interpolazioni_root[i].err_b_post_max + abs(parametri_interpolazioni_root[i].b_angolare_gamma_min) * parametri_interpolazioni_root[i].err_b_post_min) / (parametri_interpolazioni_root[i].err_b_post_max + parametri_interpolazioni_root[i].err_b_post_min));
+        omega_o.push_back(sqrt(pow(omega_s_smorzamento[i].omega_media2, 2) + pow(gamma_ponderata, 2)));
+        cout << omega_o[i] << endl;
+        omega_r.push_back(sqrt(pow(omega_s_smorzamento[i].omega_media2, 2) /*+ pow(gamma_ponderata, 2)*/));
+        cout << omega_r[i] << endl;
+    }
 
     return 0;
 }
