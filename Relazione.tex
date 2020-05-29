@@ -85,9 +85,9 @@ Si sono inoltre raccolti dati per 3 campioni di misurazioni riferiti ad un moto 
     \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
         \hline
         \textbf{N Campione} & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$ & $9$ & $10$ \\ \hline
-        \textbf{Frequenza} & $910.0$ & $920.0$ & $930.0$ & $940.0$ & $950.0$ & $961.0$ & $962.0$ & $963.0$ & $964.0$ & $964.5$\\ \hline \hline
+        \textbf{Frequenza [\si{\milli\hertz}]} & $910.0$ & $920.0$ & $930.0$ & $940.0$ & $950.0$ & $961.0$ & $962.0$ & $963.0$ & $964.0$ & $964.5$\\ \hline \hline
         \textbf{N Campione} & $11$ & $12$ & $13$ & $14$ & $15$ & $16$ & $17$ & $18$ & $19$ & $20$\\ \hline
-        \textbf{Frequenza} & $965.0$ & $966.0$ & $967.0$ & $968.0$ & $969.0$ & $975.0$ & $980.0$ & $990.0$ & $1000.0$ & $1100.0$\\ \hline
+        \textbf{Frequenza [\si{\milli\hertz}]} & $965.0$ & $966.0$ & $967.0$ & $968.0$ & $969.0$ & $975.0$ & $980.0$ & $990.0$ & $1000.0$ & $1100.0$\\ \hline
     \end{tabular}
     \caption{Corrispondenza Campione-Frequenza}
     \label{tab:corrispondenza_campione_frequenza}
@@ -102,30 +102,27 @@ In primo luogo si è studiato il moto nella fase di risonanza a forzante attiva 
 Si è dapprima proceduto ad una rapida visualizzazione dei dati a disposizione.
 Per alcuni campioni, in particolar modo quelli a frequenze più basse e più alte, si nota che i dati discostano maggiormente dalla sinusoide attesa in eccesso o in difetto rispetto ai campioni riferiti a frequenze intermedie.
 Questi fenomeni osservabili in Figura \ref{fig:esempio_buono} e \ref{fig:esempio_brutto} sono probabilmente imputabili ad errori casuali maggiormente percepiti dalla strumentazione di acquisizione dati in quanto l'ampiezza massima di oscillazione risulta globalmente minore per le frequenze lontane dalla risonanza.
-In ogni caso la componente di errore casuale dovuta ad errori casuali indotti da perturbazioni esterne come in particolar modo vibrazioni del piano di appoggio non possono essere in alcun modo escluse. È inoltre possibile che tali vibrazioni influiscano maggiormente nei campioni più lontani dalla risonanza ovvero quelli che oscillano con ampiezza minore.
+In ogni caso la componente di errore casuale indotta da perturbazioni esterne, come in particolar modo vibrazioni del piano di appoggio, non possono essere in alcun modo escluse. È inoltre possibile che tali vibrazioni influiscano maggiormente nei campioni più lontani dalla risonanza ovvero quelli che oscillano con ampiezza minore.
 
 
 
 \begin{figure}[h!]
     \centering
-    
     %\captionsetup[subfloat]{labelformat=empty}
     \caption*{}
     \makebox[\textwidth]{
     \subfloat[\small Grafico 964 mHz]{
-    \label{fig:esempio_brutto}
-    \includegraphics[width=10cm]{964_zoom_primi_due_periodi_PERFETTO.pdf}
+    \label{fig:esempio_bello}
+    \includegraphics[width=9cm]{964_zoom_primi_due_periodi_PERFETTO.pdf}
     }
-    
     \subfloat[\small Grafico 1100 mHz]{
     \label{fig:esempio_brutto}
-    \includegraphics[width=10cm]{1100_zoom_primi_due_periodi_BUGGUTO.pdf}
+    \includegraphics[width=9cm]{1100_zoom_primi_due_periodi_BUGGUTO.pdf}
     }}
 \end{figure}
 
 
-
-Per questa variabilità osservabile in alcuni campioni, si è optato di stimare i periodi di oscillazione non partendo dal punto più ragionevolmente vicino all'asse delle x corrispondente all'intersezione, bensì da una stima di tale istante a partire da alcuni punti in prossimità di essa. Si è optato infatti di eseguire un'interpolazione lineare sull'insieme di 2 punti sia precedenti che successivi al punto di ampiezza più prossimo a zero per ciascuna intersezione con l'asse delle ascisse.
+A causa di questa variabilità osservabile in alcuni campioni, si è optato di stimare i periodi di oscillazione non partendo dal punto più ragionevolmente vicino all'asse delle x corrispondente all'intersezione, bensì da una stima di tale istante a partire da alcuni punti in prossimità di essa. Si è optato infatti di eseguire un'interpolazione lineare sull'insieme di 2 punti sia precedenti che successivi al punto di ampiezza più prossimo a zero per ciascuna intersezione con l'asse delle ascisse.
 
 %Tale scelta deriva dall'esigenza di evitare un erroneo riconoscimento di uno zero in corrispondenza di alcuni casi osservati, come multipli zeri consecutivi o oscillazioni dovute a fluttuazioni statistiche in prossimità dello zero.
 
@@ -183,18 +180,15 @@ Sono poi state calcolate le medie dei periodi ottenuti, associandovi come errore
     \label{tab:periodi_medi}
 \end{table}
 
-Come si può osservare nella Tabella \ref{tab:periodi_medi} il dodicesimo e tredicesimo campione presentano un'incertezza sul periodo significativamente minore rispetto agli altri campioni. Ciò è ragionevolmente attribuibile al fatto che la stima di questi periodi sia stata di poco influenzata dalle fluttuazioni casuali citate. 
+Come si può osservare nella Tabella \ref{tab:periodi_medi} il sesto, il nono, il dodicesimo e tredicesimo campione presentano un'incertezza sul periodo significativamente minore rispetto agli altri campioni. Ciò è ragionevolmente attribuibile al fatto che la stima di questi periodi sia stata di poco influenzata dalle fluttuazioni casuali citate. 
 
 Sono inoltre stati realizzati gli istogrammi dei periodi, qui omessi, per verificare la loro distribuzione. Si è osservato che generalmente tali valori si distribuivano ben compatti intorno al valor medio rendendo superflua un'eventuale reiezione a $3 \sigma$.
 
+Analogo procedimento per la stima dei periodi è stato ripetuto considerando le oscillazioni della forzante. La scelta di avere entrambe queste stime trova spiegazione nel confronto successivamente compiuto, discusso nel prossimo paragrafo.
+
 \subsubsection{Stima $\omega_{f, sperimentale}$ e confronto con quella teorica}
-Si è proceduto al computo della pulsazione media $\omega_{f, sperimentale}$ per ciascun campione. Avendo a disposizione il campione di singoli periodi, si sono dapprima stimate le singole pulsazioni $\omega_{f, i}$ ad essi associate per poi stimare $\overline{\omega_{f}}\pm \sigma_{\overline{\omega_{f}}}$.
-
-Le pulsazioni risultanti sono state confrontate con quelle teoriche attese relative all'oscillazione della forzante. Assumendo che l'errore di omega attesa derivasse dalla distribuzione uniforme, e utilizzando come PTL $\SI{0.001}{mHz}$  si è eseguito un test del $\chi^{2}$ su tutte le $\omega_{f, sper}$ e $\omega_{f, th}$.
-I risultati ottenuti da tale test rivelano che con un livello di confidenza pari al $99\%$ viene rigettata l'ipotesi di compatibilità.
-
-
-Questo fatto non implica necessariamente una non appartenenza del campione delle $\omega_{f, sper}$ a quelle teoriche, ma potrebbe suggerire la presenza di un errore nella stima della sigma per le misure sperimentali e/o di quelle attese.
+Si è proceduto al computo della pulsazione media $\omega_{f, sperimentale}$ per ciascun campione. Avendo a disposizione il campione dei singoli periodi $T_{i}$, si sono dapprima stimate le singole pulsazioni $\omega_{f, i}$ ad essi associate tramite la formula $\omega_{f, i}=\frac{2\pi}{T_{i}}$ per poi stimare $\overline{\omega_{f}}\pm \sigma_{\overline{\omega_{f}}}$.
+Si riportano in Tabella \ref{tab:periodi_medi} i dati delle pulsazioni ottenute.
 
 \begin{table}[h!]
     \centering
@@ -203,64 +197,267 @@ Questo fatto non implica necessariamente una non appartenenza del campione delle
         \multirow{2}{*}{Campione} & $\omega_{f,sper}$ & $\omega_{f,th}$ & \multirow{2}{*}{$\lambda$} & \multirow{2}{*}{Campione} & $\omega_{f,sper}$ & $\omega_{f,th}$ & \multirow{2}{*}{$\lambda$}\\
          & $[\si{\per\second}]$&$[\si{\per\second}]$ &  & & $[\si{\per\second}]$&$[\si{\per\second}]$ &\\
         \hline
-        \rowcolor[rgb]{0.85,0.85,0.85}$1$ & $5.74\pm0.01$ & $5.72$ & $1.3$ & $11$ & $6.08\pm0.02$ & $6.06$ & $0.8$\\ \hline
-        $2$ & $5.76\pm0.01$ & $5.78$ & $1.7$ & $12$ & $6.067\pm0.001$ & $6.070$ & $2.0$\\ \hline
-        \rowcolor[rgb]{0.85,0.85,0.85}$3$ & $5.86\pm0.02$ & $5.84$ & $0.8$ & $13$ & $6.071\pm0.001$ & $6.076$ & $4.4$\\ \hline
-        $4$ & $5.91\pm0.01$ & $5.91$ & $0.4$ & $14$ & $6.05\pm0.02$ & $6.08$ & $1.4$\\ \hline
-        \rowcolor[rgb]{0.85,0.85,0.85}$5$ & $5.95\pm0.02$ & $5.97$ & $1.3$ & $15$ & $6.10\pm0.01$ & $6.09$ & $1.4$\\ \hline
-        $6$ & $6.044\pm0.008$ & $6.038$ & $0.8$ & $16$ & $6.12\pm0.02$ & $6.13$ & $0.4$\\ \hline
-        \rowcolor[rgb]{0.85,0.85,0.85}$7$ & $6.05\pm0.01$ & $6.04$ & $0.5$ & $17$ & $6.14\pm0.02$ & $6.16$ & $1.0$\\ \hline
-        $8$ & $6.06\pm0.01$ & $6.05$ & $0.6$ & $18$ & $6.21\pm0.02$ & $6.22$ & $0.5$\\ \hline
-        \rowcolor[rgb]{0.85,0.85,0.85}$9$ & $6.058\pm0.007$ & $6.057$ & $0.1$ & $19$ & $6.29\pm0.04$ & $6.28$ & $0.3$\\ \hline
-        $10$ & $6.06\pm0.01$ & $6.06$ & $0.3$ & $20$ & $6.90\pm0.03$ & $6.91$ & $0.2$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$1$ & $5.74\pm0.01$ & $5.720$ & $1.3$ & $11$ & $6.08\pm0.02$ & $6.060$ & $0.8$\\ \hline
+        $2$ & $5.76\pm0.01$ & $5.780$ & $1.7$ & $12$ & $6.067\pm0.001$ & $6.070$ & $2.0$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$3$ & $5.86\pm0.02$ & $5.840$ & $0.8$ & $13$ & $6.071\pm0.001$ & $6.076$ & $4.4$\\ \hline
+        $4$ & $5.91\pm0.01$ & $5.910$ & $0.4$ & $14$ & $6.05\pm0.02$ & $6.080$ & $1.4$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$5$ & $5.95\pm0.02$ & $5.970$ & $1.3$ & $15$ & $6.10\pm0.01$ & $6.090$ & $1.4$\\ \hline
+        $6$ & $6.044\pm0.008$ & $6.038$ & $0.8$ & $16$ & $6.12\pm0.02$ & $6.130$ & $0.4$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$7$ & $6.05\pm0.01$ & $6.040$ & $0.5$ & $17$ & $6.14\pm0.02$ & $6.160$ & $1.0$\\ \hline
+        $8$ & $6.06\pm0.01$ & $6.050$ & $0.6$ & $18$ & $6.21\pm0.02$ & $6.220$ & $0.5$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$9$ & $6.058\pm0.007$ & $6.057$ & $0.1$ & $19$ & $6.29\pm0.04$ & $6.280$ & $0.3$\\ \hline
+        $10$ & $6.06\pm0.01$ & $6.060$ & $0.3$ & $20$ & $6.90\pm0.03$ & $6.910$ & $0.2$\\ \hline
     \end{tabular}
-    \caption{Periodi medi}
+    \caption{Pulsazioni $\omega_{f, sperimentali}$ medie}
     \label{tab:periodi_medi}
 \end{table}
 
-Per un confronto diretto dei dati precedentemente ottenuti, si sono stimate nuovamente le $\omega_{f, sper}$ impiegando per la stima dei periodi i dati forniti dalle oscillazioni della forzante. Secondo quanto previsto dalla teoria, nella fase del moto a regime, la pulsazione della forzante coincide con quella di oscillazione del cilindro immerso nel fluido. Essendo i dati delle ampiezze della forzante molto meno influenzati da errori casuali e presentando un andamento molto più regolare, è stato possibile stimare i periodi con maggior precisione. Si è ripetuta l'analisi dati precedentemente descritta, valutando nuovamente la compatibilità tra i valori così ottenuti e i valori attesi.\\
-Il valore della variabile $\chi^{2}$ per i valori ottenuti dalla forzante risultava di molti ordini di grandezza maggiore rispetto a quanto ottenuto utilizzando le $\omega_{f, sper}$. Ciò è imputabile al fatto che gli errori della  $\omega_{f, forzante}$ risultano molti minori rispetto a quelli di $\omega_{f, sper}$, facendo così aumentare notevolmente il valore delle singole compatibilità e dunque del test del $\chi^2$. in quanto avente un errore molto inferiore rispetto a quella calcolata con l'oscillazione del cilindro.
+Per il sesto, nono, dodicesimo e tredicesimo campione la $\sigma_{\omega_{f, sper}}$ risulta essere circa un ordine di grandezza minore rispetto agli altri campioni, poiché in tali campioni la fluttuazione statistica dei periodi è molto inferiore in quanto in misura minore soggetti agli errori casuali di cui si è discusso precedentemente.
 
+Si è cercato un metodo per confrontare i campioni di dati ottenuti.
+%Per effettuare un confronto sui dati ottenuti,
+Si sono dapprima stimate le $\omega_{f, forzante}$ impiegando per la stima dei periodi i dati forniti dalle oscillazioni della forzante. Infatti secondo quanto previsto dalla teoria, nella fase del moto a regime, la pulsazione della forzante coincide con quella di oscillazione del cilindro immerso nel fluido. Essendo i dati delle ampiezze della forzante molto meno influenzati da errori casuali e presentando un andamento molto più regolare, è stato possibile stimare i periodi con maggior precisione. Gli errori della forzante sono stati stimati analogamente a quanto fatto per $\omega_{f, sper}$ e corrispondono a $\approx \SI{10e-5}{\second}$, circa due ordini di grandezza inferiori a quelli stimati per $\omega_{f, sper}$.\\
 
+Per valutare la coerenza fra le stime delle $\omega_{f,forzante}$, $\omega_{f, sper}$ e la pulsazione nominale fornita, si è effettuato un test del $\chi^2$. Analiticamente, il test corrisponde ad una compatibilità cumulativa in cui si sommano i quadrati dei singoli contributi delle compatibilità fra $\omega_{i, sper}$ e $\omega_{i, nominali}$, come riportato nella seguente equazione.
+
+\begin{equation*}
+    \chi^{2}= \sum\limits_{i=1}^{N} \left(\frac{O_i - A_i}{\sigma_{O_i}} \right) ^2 = \sum\limits_{i=1}^{N} \lambda_{i}^2
+\end{equation*}
+
+Nell'ipotesi nulla si è assunto che l'errore associato alla pulsazione nominale fosse nullo. Il valore ottenuto della variabile $\chi^{2}$ per le $\omega_{f, forzante}$ confrontate con quella nominale risulta di molti ordini di grandezza maggiore rispetto a quanto ottenuto utilizzando le $\omega_{f, sper}$. 
+Ciò è imputabile al fatto che gli errori della $\omega_{f, forzante}$ risultano molti minori rispetto a quelli di $\omega_{f, sper}$, facendo così aumentare notevolmente il valore delle singole compatibilità $\lambda_{i}$ e dunque del test del $\chi^2$. Inoltre l'assunzione di $\sigma_{\omega_{nominale}}$ pari a zero potrebbe non risultare coerente con le modalità di presa dati e con l'effettivo funzionamento della strumentazione.
+In entrambi i casi, a causa di quanto precedentemente enunciato, l'ipotesi di apparenza ad uno stesso campione viene rigettata con livelli di confidenza altissimi.
+
+Invece, dal confronto tra $\omega_{f, sper, i}$ e $\omega_{f, forzante, i}$, effettuato tramite il calcolo della compatibilità $\lambda$ è emerso che tutte le misurazioni i-esime risultano al più discrete affermando una loro appartenenza ad uno stesso campione.
+Si è fatto riferimento alle seguenti per valutare $\lambda$ e la sua bontà:
+\begin{equation*}%Comp
+    \label{eq:cases}
+    \begin{cases}
+    0<\lambda\leq 1, & \text{Ottima}\\
+    1<\lambda\leq2, & \text{Discreta}\\
+    2<\lambda\leq3, & \text{Pessima}\\
+    3<\lambda, & \text{Non compatibile}\\
+    \end{cases}
+\end{equation*}
+
+Queste considerazioni permettono di affermare la consistenza fra i campioni di $\omega_{f, sper}$ e $\omega_{f, forzante}$. Nonostante gli errori su $\omega_{f, forzante}$ risultino minori, nella successiva analisi si è considerata $\omega_{f, sperimentale}$ in quanto essa tiene meglio in considerazione della variabilità statistica delle misurazioni.
+Si è inoltre preferito effettuare l'analisi dati sulle ampiezze relative al cilindretto e non sulla forzante in quanto obiettivo fondamentale dell'esperienza è lo studio del moto del corpo e non della forzante stessa.
 
 \subsubsection{Stima $\theta_{part, 0}(\omega_{sper})$}
-Avendo osservato una forte irregolarità nell'andamento delle ampiezze, in particolare per alcuni campioni, si è stimata la massima ampiezza dell'oscillazione impiegando due diverse metodologie. 
+Avendo osservato una forte irregolarità nell'andamento delle ampiezze, in particolare per alcuni campioni, si è stimata la massima ampiezza dell'oscillazione impiegando due diverse metodologie.\newline
 
-%metodo root
-Il primo metodo se è avvalso di uno smoothing dei dati impiegando un fit parabolico in corrispondenza dei punti stazionari di ciascun semi-periodo. Questa scelta si è resa necessaria poiché in alcuni campioni si assiste ad un andamento a zig-zag dei dati (cfr. Figura \ref{fig:esempio_brutto}). Si sono dapprima valutati gli intervalli entro i quali la sinusoide teorica potesse essere approssimata dalla parabola. Tale assunzione è giustificata dall'espansione in serie di Taylor della funzione seno in corrispondenza del suo massimo.
-Tali intervalli sono stati stimati entro 9 punti a destra e 9 a sinistra rispetto al punto di ampiezza massima in ciascun semi-periodo. 
+%\paragraph{Smoothing parabolico}
+Il primo metodo si è avvalso di uno smoothing dei dati impiegando un fit parabolico in corrispondenza dei punti di massimo assoluti di ciascun semi-periodo. Questa scelta si è resa necessaria poiché in alcuni campioni si assiste ad un andamento a zig-zag dei dati e dunque la stima di $\theta_{max}$ del semi-periodo tramite ricerca del massimo assoluto sarebbe risultata molto probabilmente una sovrastima di $\theta_{max}$ effettiva. (cfr. Figura \ref{fig:esempio_brutto}).
+Si è pertanto ipotizzato che negli intervalli della sinusoide teorica intorno al suo picco, essa possa essere ben approssimata da una parabola. Tali intervalli sono stati stimati prendendo in considerazione 9 punti a destra e 9 a sinistra rispetto al punto di ampiezza massima in ciascun semi-periodo. Inoltre l'assunzione del fit parabolico $y = a x^2 + b x + c$ è giustificata dall'espansione in serie di Taylor della funzione seno in corrispondenza del suo massimo.
 
-Per la stima dei parametri delle parabole si è impiegato un algoritmo di minimizzazione del $\chi^{2}$ implementato nel software di analisi dati ROOT. In figura vengono presentati alcuni dei fit ottenuti tramite tale procedura (Figura \ref{fig:zoom_fit_root}).
-Dai coefficienti restituiti si sono valutati i valori dei punti di massimo di ciascuna parabola, corrispondenti all'ampiezza massima stimata per ciascuna oscillazione. 
-Per valutare l'effettiva ampiezza $\theta_{part,0}$, evitando eventuali errori di offset dei dati causati da errori sistematici, si è valutata la distanza picco-picco media definita come media aritmetica fra coppie di valori consecutivi di massimi precedentemente calcolati, prestando attenzione ad evitare eventuali correlazioni statistiche.
-La scelta di stimare l'ampiezza $\theta{part, 0}$ mediante la media fra picchi consecutivi si è rivelata efficace nel contrastare gli effetti di distorsione della stima altrimenti introdotti dall'offset generato durante l'acquisizione del segnale. Sebbene l'operatore durante l'acquisizione dati abbia provveduto alla riduzione di offset tramite l'interfaccia di controllo, una piccola componente rimane comunque presente. In particolare per i campioni 5, 14, 15, 19 è possibile riscontrare un andamento dell'offset costante nel segno e mai maggiore in modulo di $\SI{0,1}{\radian}$
+Per la stima dei parametri $a$, $b$, $c$ delle parabole si è impiegato un algoritmo di minimizzazione del $\chi^{2}$ implementato nel software di analisi dati ROOT. In figura vengono presentati alcuni dei fit ottenuti tramite tale procedura (Figura \ref{fig:zoom_fit_root}).
 
-In modo analogo si è scelto di ricalcolare le stime di $\theta_{part, 0}$ usando le ampiezze massime in valore assoluto per ciascun semi-periodo. Si sono ricalcolate queste grandezze per avere un campione simile con cui confrontare i dati precedentemente ottenuti e verificare quale dei due metodi avrebbe dato risultati migliori.
-Come atteso, l'andamento dell'offset è risultato analogo a quello dei campioni ottenuti tramite smoothing. La sostanziale differenza tra i metodi è il fatto che i massimi ricavati da ROOT risultano sempre inferiori in valore assoluto rispetto a quelli ricavati dal metodo che considera i massimi. Questo fenomeno è facilmente spiegabile osservando che il fit parabolico considera un maggior numero di punti per ricavare una stima del massimo, mentre questo secondo metodo valuta il contributo di un solo punto.
+\begin{wrapfigure}{l}{9cm}
+    \includegraphics[width=9cm]{zoom_fit_root_966mHz.pdf}
+    \caption{Esempio interpolazione parabolica}
+    \label{fig:zoom_fit_root}
+\end{wrapfigure}
 
-Come ulteriore analisi, prima di fornire un'unica stima di $\theta_{part}$ si è valutata la dispersione dei valori massimi positivi dei campioni di $\theta_{part}$ derivati da questi due metodi, dapprima osservando il loro errore percentuale ed successivamente tracciando un istogramma. Di tutte le misure delle ampiezze massime per entrambi i metodi si riscontrano mediamente errori percentuali sempre inferiori al 4\% ad eccezione dei primi quattro e degli ultimi tre campioni dove l'errore percentuale arriva ad un massimo di $\approx 15,5\%$. Questi valori che si discostano dalla tendenza generale sono sia l'effetto della variabilità del segnale che ha reso necessario l'impiego della tecnica dello smoothing sia la lontananza dalla frequenza di risonanza che comporta un ampiezza di oscillazione inferiore e parità di $\sigma$ un maggior errore percentuale. 
+Dai coefficienti restituiti si sono valutati i valori di ordinata del vertice di ciascuna parabola, corrispondenti all'ampiezza massima stimata per ciascun semi-periodo. Non si sono stimati gli errori delle singole ampiezze mediante la propagazione degli errori casuali sulle incertezze dei parametri forniti da ROOT, in quanto superflui in questa fase di analisi dati.
 
-%metodo assoluto
-Il primo metodo è consistito nella stima di $\theta_{part,0}$ considerando le ampiezze massime appartenenti a ciascun semi-periodo.  
-%offset SPIEGARE  fanno schifo questi -> 4 13 14 18 
-%picco picco medio e perchè  SOLUZIONE OFFSET
-%istogrammi 
-%err % ampiezze 
+Dato l'andamento dei dati e l'ipotetica condizione di offset ai quali sono sottoposti gli stessi, si è deciso di valutare l'effettiva ampiezza di $\theta_{part,0}$ stimando la media fra picchi consecutivi, prestando attenzione ad eventuali correlazioni statistiche. Si è ottenuto dunque un campione secondo la seguente formula: ${\{(\theta_{i}+\theta_{i+1})/2\}}_{i=2n+1}$, dove i  $\theta_{i}$ rappresentano i massimi/minimi precedentemente stimati.
+
+La scelta di stimare l'ampiezza $\theta_{part, 0}$ mediante la media fra picchi consecutivi si è rivelata efficace nel contrastare gli effetti di distorsione della stima altrimenti indotti dall'offset generato durante l'acquisizione del segnale. Sebbene l'operatore durante l'acquisizione dati abbia provveduto alla riduzione di offset tramite l'interfaccia di controllo, una componente rimane comunque presente. In particolare per i campioni 5, 14, 15, 19 è possibile riscontrare un andamento dell'offset costante nel segno e mai maggiore in modulo di $\approx \SI{0,1}{\radian}$\newline
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=15cm]{Offset_1100mHz.pdf}
+    \caption{Stima dell'offset per il campione a $\SI{1100}{\milli\hertz}$}
+    \label{fig:offset}
+\end{figure}
+%con massimo 
+In modo analogo si è scelto di ricalcolare le stime di $\theta_{part, 0}$ usando le ampiezze massime in valore assoluto per ciascun semi-periodo. Con il termine ampiezze massime si intendono i punti sperimentali aventi valore assoluto dell'ampiezza di oscillazione più grande fra tutti quelli all'interno dello stesso semi-periodo. Si sono calcolate tali grandezze al fine di avere un campione generalmente compatibile al precedente con cui confrontare i dati ottenuti e verificare quale dei due metodi avesse restituito risultati migliori.\\
+
+Come atteso, l'andamento dell'offset, stimato mediante il medesimo procedimento, è risultato analogo a quello dei campioni ottenuti tramite smoothing. L'unica differenza significativa tra i metodi è segnata dal fatto che i $\theta_{max, ROOT}$ risultano sempre inferiori in valore assoluto rispetto a quelli ricavati dal metodo che considera $\theta_{max, ASSOL}$. Questo fenomeno è spiegabile osservando che il fit parabolico considera un maggior numero di punti per ricavare una stima del massimo, non risentendo di eventuali fluttuazioni statistiche dovute alla presa dati, a differenza del secondo metodo che valuta il contributo di un solo punto, facilmente soggetto a sovrastime dovute agli errori nell'acquisizione dati.\newline
+
+Prima di fornire un'unica stima di $\theta_{part, 0}$ si è valutata la dispersione dei valori massimi positivi di tutti i campioni di $\theta_{part}$ derivati da questi due metodi considerando il loro errore percentuale. Di tutte le misure delle ampiezze massime per entrambi i metodi si riscontrano mediamente errori percentuali sempre inferiori al 4\% ad eccezione dei primi quattro e degli ultimi tre campioni dove l'errore percentuale arriva ad un massimo di $\approx 15,5\%$. Questi valori che si discostano dalla tendenza generale sono dovuti sia all'effetto della variabilità del segnale che ha reso necessario l'impiego della tecnica dello smoothing sia alla lontananza dalla frequenza di risonanza che comporta un ampiezza di oscillazione inferiore e a parità di $\sigma$ un errore percentuale maggiore.\newline
+
+Per verificare l'andamento delle ampiezze in ogni campione e per mostrare quanto affermato precedentemente si sono generati degli istogrammi ottenuti contando quante volte un determinato valore di $\theta$ misurato appartenesse ad un determinato intervallo, nello specifico ad ogni bin degli istogrammi rappresentati. L'ampiezza $\Delta \theta$ del singolo bin è stata calcolata tramite la seguente, considerando il numero di bin pari a $60$:
+\begin{equation*}
+    \Delta \theta=\frac{\mid\theta_{max} + \theta_{min}\mid}{N^{\degree} bin} 
+\end{equation*}
+
+\begin{figure}[h!]
+    \centering
+    \caption{Istogrammi ampiezze $\theta_{i}$}
+    \makebox[\textwidth]{
+    \subfloat[\SI{930}{\milli\hertz}]{
+        \includegraphics[width=6cm]{930_HISTO_ALL.pdf}
+        \label{fig:930_histo}
+    }
+    \subfloat[\SI{967}{\milli\hertz}]{
+        \includegraphics[width=6cm]{967_HISTO_ALL.pdf}
+        \label{fig:967_histo}
+    } 
+    \subfloat[\SI{1100}{\milli\hertz}]{
+        \includegraphics[width=6cm]{1100_HISTO_ALL.pdf}
+        \label{fig:1100_hist}
+    }}
+\end{figure}
+
+Osservando i Grafici \ref{fig:930_histo}, \ref{fig:967_histo} e  \ref{fig:1100_hist} e considerando l'andamento degli errori percentuali discusso, si conclude tali dati sono in accordo.
+
+Il Grafico \ref{fig:930_histo}, molto simile a quello relativo a quelli riferiti al primo e secondo campione, qui omessi, mostra una forte variabilità della $\theta_{part,0}$ in quanto le classi di frequenza esterne alle due mode presentano un significativo numero di dati, a differenza di quanto accade per il Grafico \ref{fig:967_histo}.
+
+I campioni dal quarto al diciottesimo dei quali si riporta l'andamento indicativo generale nel Grafico \ref{fig:967_histo}, la dispersione dei dati è minima in corrispondenza delle classi a frequenza massima e come atteso, le classi di frequenza più esterne alle mode presentano un numero esiguo di dati.
+
+Si osserva infine che l'istogramma generato per il campione $20$ ha un andamento che non rispetta le aspettative. A questo punto dell'analisi non si riesce a dare una spiegazione valida di tale fenomeno. Si ipotizza che, a causa della ridotta scala nella quale si svolgono le oscillazioni, l'apparato strumentale fallisca nell'acquisizione di determinati valori attribuendoli alla classe di frequenza precedente. Questa spiegazione è un'ipotesi alla presenza di classi di frequenza vuote subito precedute da classi di frequenza molto più elevate della media.\newline
+
+A seguito di queste considerazioni, si è comunque calcolata $\theta_{par,0}$ come media fra il campione di semisomme fra coppie di picchi consecutivi indipendenti, associandovi come incertezza l'errore sulla media. Si riportano tali stime in Tabella \ref{tab:theta_medie}.
 
 
+\begin{table}[h!]
+    \centering
+    \caption{Ampiezze $\theta_{part, 0}$ medie}
+    \label{tab:theta_medie}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \multirow{2}{*}{Campione} & $\theta_{part,root}$ & $\theta_{part,assolute}$ \\
+        & [$\si{\radian}$] & [$\si{\radian}$] \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$1$ & $0.393 \pm 0.005$ & $0.418 \pm 0.006$ \\ \hline
+        $2$ & $0.467 \pm 0.006$ & $0.492 \pm 0.006$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$3$ & $0.626 \pm 0.006$ & $0.651 \pm 0.005$ \\ \hline
+        $4$ & $0.889 \pm 0.006$ & $0.980 \pm 0.008$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$5$ & $1.390 \pm 0.006$ & $1.414 \pm 0.004$ \\ \hline
+        $6$ & $2.517 \pm 0.006$ & $2.538 \pm 0.005$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$7$ & $2.553 \pm 0.007$ & $2.576 \pm 0.005$ \\ \hline
+        $8$ & $2.663 \pm 0.007$ & $2.687 \pm 0.006$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$9$ & $2.698 \pm 0.008$ & $2.723 \pm 0.008$ \\ \hline
+        $10$ & $2.698 \pm 0.005$ & $2.716 \pm 0.004$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$11$ & $2.686 \pm 0.006$ & $2.701 \pm 0.005$ \\ \hline
+        $12$ & $2.654 \pm 0.004$ & $2.680 \pm 0.004$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$13$ & $2.588 \pm 0.009$ & $2.603 \pm 0.006$ \\ \hline
+        $14$ & $2.533 \pm 0.005$ & $2.559 \pm 0.007$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$15$ & $2.422 \pm 0.008$ & $2.456 \pm 0.008$ \\ \hline
+        $16$ & $1.723 \pm 0.005$ & $1.755 \pm 0.005$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$17$ & $1.363 \pm 0.006$ & $1.384 \pm 0.005$ \\ \hline
+        $18$ & $0.889 \pm 0.005$ & $0.908 \pm 0.005$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$19$ & $0.651 \pm 0.003$ & $0.681 \pm 0.003$ \\ \hline
+        $20$ & $0.179 \pm 0.009$ & $0.22 \pm 0.01$ \\ \hline
+    \end{tabular}
+\end{table}
 
 
-\subsubsection{Lorentziana e suo fit -> stima di $\omega_{risonanza}$ con errore da fit}
+\subsubsection{Fit non lineare sulla Lorentziana}
 %fit posteriori
+Avendo a disposizione per ciascun campione i valori di $\omega$ e $\theta$ caratteristici, si è realizzato il grafico della curva di risonanza. Secondo il modello teorico la curva di risonanza è descritta dalla seguente equazione
+\begin{equation*}
+    \theta_{part, 0}(\omega_{f}) \propto \frac{1}{\sqrt{(\omega_{r}^2+ 2\gamma^2-\omega_{f}^2)^2+4\gamma^2\omega_{f}^2}}
+\end{equation*}
+ove $\omega_{r}$ rappresenta la pulsazione per la quale si ha il massimo della risonanza, $\gamma$ il coefficiente di smorzamento associato al momento generato dalla forza di attrito e $\omega_{f}$ quella di ciascun punto sperimentale, mentre con $\theta_{part,0}$ l'ampiezza del moto associato a tale pulsazione.
+
+Al fine di effettuare il fit della curva Lorentziana precedentemente definita è stato necessario definire altri due parametri per identificare la stessa rispetto a i dati in possesso. E' stato definito il parametro A.
+
+Si è scelto di eseguire un primo fit della cura utilizzando errori unitari per tutti i dati e successivamente, ottenuti i parametri si è rieseguito il fit rendendo così possibile la stima dell' errore a posteriori, successivamente considerato come stima più ragionevole dell'incertezza su tutte le misurazioni di ampiezza del moto.
+Il fit è stato eseguito utilizzando l'algoritmo di minimizzazione del $\chi^2$ mediante il software per analisi dati Gnuplot.
+Viene riportato in seguito il grafico ottenuto  rappresentando la curva di risonanza generata coi i dati ottenuti da ROOT e vengono rappresentati i dati in possesso, ottenuti mediante due metodologie differenti,come precedentemente affermato.
+
+Si sono plottati i dati sia di root che di assoluti e differiscono solo per altezze sulle y, non sulla stima della omega di risonanza, si sono messi comunque per avere comunque un confronto. 
+
+Si è valutata l'entità dell'errore a posteriori tramite il fit non lineare secondo l'algoritmo di minimizzazione di marqardt
+
+Si è valutato l'errore sul parametro della omega risonanza. già di dafault risultava un errore molto piccolo è ciò è dovuto al fatto che facilmente il chi quadro schizza anche a piccole variazioni, risente molto di piccole variazioni.
+
+
+
+
+%Il fit effettutato tramite minimizzazio ne per lagoritmo ai seguenti parametri per quanto riguarda i dati derivanti dal metodo ad interpolazione parabolica e assoluto.
+%TABELLA CON I PARAMETRI DEL FIT CON ERRORI E UNITÀ DI MISURA CORRETTE
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=15cm]{Lorentziana_root.pdf}
+    \caption{Caption}
+    \label{fig:lorentziana_root}
+\end{figure}
+
+Per la stima del massimo della curva di risonanza,l'applicazione dei due metodi risulta ininfluente in quanto tutti i punti ottenuti utilizzando  $\theta_ {max,ASSOL}$ risultano essere traslati in alto rispetto a i punti ottenuti utilizzando  $\theta_ {max,ROOT}$.
+
+
+
+le compatibilità fra omega di risonanza con metodo root e assoluto, riportare il valore del chi quadro
+Non facciamo parabola perchè troppi dati intorno.
 %perchè no parabola
 %commento ad errori di parametri
 %mostrare assoluti sono maggiori di root
 %compatibilità omega risonanza root con ass
 
+
+
+
+
+
 \subsection{Analisi in smorzamento}
-\subsubsection{Stima pseudoperiodi}
+Analogamente a quanto descritto per il calcolo degli zeri per l'analisi a regime, si sono calcolate le intersezioni con l'asse x delle interpolazioni tra 2 punti precedenti e 2 successivi all'asse stesso per ciascuno zero.
+
+\subsubsection{Stima pseudo-periodi}
+
+\begin{wrapfigure}{r}{8cm}
+    \centering
+    \includegraphics[width=8cm]{Zoom_secondo_smorzamento.pdf}
+    \caption{Confronto pseudo-periodi - $2^o$ campione}
+    \label{fig:zoom_secondo_smorzamento}
+\end{wrapfigure}
+
+In modo simile a quanto fatto per i periodi, sono stati calcolati gli pseudo-periodi come differenza tra coppie di zeri che distano tra loro di un'oscillazione, avendo cura di considerare coppie non consecutive al fine di evitare dipendenze statistiche. Su tali valori è stata calcolata la media e la deviazione standard al fine di effettuare una reiezione a $3\sigma$ in modo da reiettare alcuni valori che non rappresentavano una stima accurata dello pseudo-periodo. In particolare è stato reiettato un solo valore del campione 2 in quanto forte sottostima, probabilmente dovuto a errori di lettura del software (si veda il grafico \ref{fig:zoom_secondo_smorzamento}, dove il secondo periodo è quello sottostimato confrontato con il precedente).
+A partire dai valori ottenuti con tale metodo si sono calcolati per ciascun campione  gli pseudo-periodi medi e gli errori associati, ricavati dalla deviazione standard della media. Tali valori sono riportati in Tabella \ref{tab:pseudo-periodi_medi}.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{N Campione} & $1$ & $2$ & $3$\\ \hline
+        \textbf{$\overline{T_s}$} & $1.0370\pm0.0007$ & $1.035\pm0.002$ & $1.0378\pm0.0006$\\ \hline
+    \end{tabular}
+    \caption{pseudo-periodi medi}
+    \label{tab:pseudo-periodi_medi}
+\end{table}
+
+Come si può notare da Tabella \ref{tab:pseudo-periodi_medi}, i campioni 1 e 3 hanno errori molto piccoli che risultano essere di un'ordine di grandezza inferiori a quello del campione 2: ciò è da imputare a una scarsa fluttuazione statistica dei singoli periodi.
+
 \subsubsection{Stima $\omega_s$ }
-\subsubsection{Stima coefficinte di smorzamento $\gamma$ tramite linearizzazione}
+In seguito sono state calcolate le $\omega_s$ per ciascun periodo tramite la seguente:
+\begin{equation*}
+    \omega_{s,i} = \frac{2\pi}{T_i}
+\end{equation*}
+Per ciascun campione è stata calcolata la media e la deviazione standard della media.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{N Campione} & $1$ & $2$ & $3$\\ \hline
+        \textbf{$\overline{\omega_s}$} & $6.059\pm0.004$ & $6.07\pm0.01$ & $6.054\pm0.003$\\ \hline
+    \end{tabular}
+    \caption{$\omega_s$ medie}
+    \label{tab:omega_s_medie}
+\end{table}
+
+
+\subsubsection{Stima coefficiente di smorzamento $\gamma$ tramite linearizzazione}
+Al fine di stimare $\gamma$ si sono ricavati i massimi e i minimi della funzione di oscillazione per ciascun campione. Sono stati impiegati due differenti metodi per stimare tali valori. Il primo consiste semplicemente nel prendere il valore massimo/minimo per ciascun intervallo tra uno zero della funzione e il successivo. Il secondo consiste invece nell'interpolazione parabolica tramite il software ROOT di un intervallo di 19 dati centrato nel punto di massimo/minimo locale (9 precedenti e 9 successivi). Come massimo/minimo dunque è stato preso il vertice di ciascuna parabola. Si è poi proceduto con la linearizzazione calcolando il logaritmo naturale di tali valori. I dati linearizzati sono stati poi interpolati da una retta separando adeguatamente $\theta_{max}$ e $\theta_{min}$ per metodo e per campione e se ne è ricavato $\gamma$ come coefficiente angolare della retta interpolante. A quest'ultimo è stato associato l'errore a posteriori ottenuto dalla minimizzazione del $\chi^2$.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{c|c|c|c|c|c|}
+    \cline{2-6}
+    & \multirow{2}{*}{Campione} & \multicolumn{2}{c|}{Massimi} & \multicolumn{2}{c|}{Minimi}\\ \cline{3-6}
+    & & Intercetta & Coeff. Angolare & Intercetta & Coeff. Angolare \\ \hline
+    \multicolumn{1}{|c|}{\multirow{3}{*}{\rotatebox[origin=c]{90}{Root}}} & \cellcolor[rgb]{0.85,0.85,0.85}$1$ & \cellcolor[rgb]{0.85,0.85,0.85}$0.43\pm0.01$ & \cellcolor[rgb]{0.85,0.85,0.85}$-0.0519\pm0.0005$ & \cellcolor[rgb]{0.85,0.85,0.85}$-0.45\pm0.01$ & \cellcolor[rgb]{0.85,0.85,0.85}$0.0494\pm0.0005$ \\ \cline{2-6}
+    \multicolumn{1}{|c|}{} & $2$ & $0.62\pm0.02$ & $-0.0522\pm0.0008$ & $-0.62\pm0.01$ & $0.0497\pm0.0007$ \\ \cline{2-6}
+    \multicolumn{1}{|c|}{} & \cellcolor[rgb]{0.85,0.85,0.85}$3$ & \cellcolor[rgb]{0.85,0.85,0.85}$0.72\pm0.01$ & \cellcolor[rgb]{0.85,0.85,0.85}$-0.0486\pm0.0006$ & \cellcolor[rgb]{0.85,0.85,0.85}$-0.74\pm0.01$ & \cellcolor[rgb]{0.85,0.85,0.85}$0.0505\pm0.0005$ \\ \hline \hline
+    \multicolumn{1}{|c|}{\multirow{3}{*}{\rotatebox[origin=c]{90}{Ass}}} & \cellcolor[rgb]{0.85,0.85,0.85}$1$ & \cellcolor[rgb]{0.85,0.85,0.85}$0.44\pm0.01$ & \cellcolor[rgb]{0.85,0.85,0.85}$-0.0515\pm0.0005$ & \cellcolor[rgb]{0.85,0.85,0.85}$-0.46\pm0.01$ & \cellcolor[rgb]{0.85,0.85,0.85}$0.0489\pm0.0005$ \\ \cline{2-6}
+    \multicolumn{1}{|c|}{} & $2$ & $0.635\pm0.009$ & $-0.0517\pm0.0005$ & $-0.64\pm0.01$ & $0.0498\pm0.0005$ \\ \cline{2-6}
+    \multicolumn{1}{|c|}{} & \cellcolor[rgb]{0.85,0.85,0.85}$3$ & \cellcolor[rgb]{0.85,0.85,0.85}$0.736\pm0.009$ & \cellcolor[rgb]{0.85,0.85,0.85}$-0.0490\pm0.0005$ & \cellcolor[rgb]{0.85,0.85,0.85}$-0.74\pm0.01$ & \cellcolor[rgb]{0.85,0.85,0.85}\cellcolor[rgb]{0.85,0.85,0.85}$0.0492\pm0.0005$ \\ \hline
+    \end{tabular}
+    \caption{Parametri linearizzazione}
+    \label{tab:parametri:linearizzazione}
+\end{table}
+
 \subsubsection{Ricavare $\omega_{risonanza}$ da $\omega_s$ e $\gamma$ e confronto con quella della prima parte}
 \subsubsection{Ricavare $\omega_o$ da $\omega_s$ e $\gamma$ e confronto con la prima parte}
 
@@ -336,38 +533,9 @@ E' stato utilizzato il simbolo $\approx$ in quanto si è scelto di troncare al p
     )(y_i - \overline{y})}{\sqrt{\sum_{i=1}^{N}(x_i -\overline{x})^2}\sqrt{\sum_{i=1}^{N}(y_i - \overline{y})^2}}
 \end{equation*}
 
-\textbf{t-Student su stima di $r$ di Pearson}\\
-\begin{equation*}
-    t=\frac{r \cdot \sqrt{N-2} }{\sqrt{1- r^2}}
-\end{equation*}
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=15cm]{1100_zoom_primi_due_periodi_BUGGUTO.pdf}
-    \caption{Caption}
-    \label{fig:my_label}
-\end{figure}
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=15cm]{968_definitivo.pdf}
-    \caption{Caption}
-    \label{fig:my_label}
-\end{figure}
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=15cm]{Lorentziana_root.pdf}
-    \caption{Caption}
-    \label{fig:my_label}
-\end{figure}
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=15cm]{zoom_fit_root_966mHz.pdf}
-    \caption{Caption}
-    \label{fig:zoom_fit_root}
-\end{figure}
 
 
 \end{document}
