@@ -74,13 +74,6 @@ Non sono state specificate le grandezze caratteristiche delle componenti della s
 \section{Presa Dati}
 Tutti i dati sono stati acquisiti dallo stesso pendolo a torsione, variando accuratamente i parametri del moto del motore servo tramite un'apposita interfaccia software. Si specifica che non è stato possibili eseguire una diretta acquisizione di dati da parte di alcun operatore e che tutti i dati necessari sono stati forniti tramite file.\newline
 
-Le grandezze fornite rappresentano il tempo di acquisizione, l'ampiezza di oscillazione del motore servo, da qui in poi chiamata l'ampiezza della forzante, e l'ampiezza di oscillazione del cilindro immerso. Si specifica che i tempi di acquisizione sono in secondi, le ampiezze della forzante in millesimi di giro e le ampiezze del cilindro in giri, poi oppotunamente modificate per l'analisi dati e la realizzazione dei grafici.\\
-Si sono realizzati in totale 20 campioni differenti per impostazioni di moto fornite al  motore servo. Ciascun campione ha immagazzinato dati per un periodo di circa $\approx \SI{40}{\second}$.\\
-Si sono inoltre raccolti dati per 3 campioni di misurazioni riferiti ad un moto in assenza dell'effetto del momento forzante. Tali misurazioni sono state compiute per un intervallo di $\approx  \SI{35}{\second}$.
-Di seguito viene riportato un grafico esemplificativo dell'andamento delle misurazioni.
-
-
-%sistemare tabella con numero campione e freq associata, fare la trasposta
 \begin{table}[h!]
     \centering
     \caption{Corrispondenza Campione-Frequenza}
@@ -94,6 +87,16 @@ Di seguito viene riportato un grafico esemplificativo dell'andamento delle misur
         \textbf{Frequenza [\si{\milli\hertz}]} & $965.0$ & $966.0$ & $967.0$ & $968.0$ & $969.0$ & $975.0$ & $980.0$ & $990.0$ & $1000.0$ & $1100.0$\\ \hline
     \end{tabular}}
 \end{table}
+
+\newpage
+Le grandezze fornite rappresentano il tempo di acquisizione, l'ampiezza di oscillazione del motore servo, da qui in poi chiamata l'ampiezza della forzante, e l'ampiezza di oscillazione del cilindro immerso. Si specifica che i tempi di acquisizione sono in secondi, le ampiezze della forzante in millesimi di giro e le ampiezze del cilindro in giri, poi oppotunamente modificate per l'analisi dati e la realizzazione dei grafici.\\
+Si sono realizzati in totale 20 campioni differenti per impostazioni di moto fornite al  motore servo. Ciascun campione ha immagazzinato dati per un periodo di circa $\approx \SI{40}{\second}$.\\
+Si sono inoltre raccolti dati per 3 campioni di misurazioni riferiti ad un moto in assenza dell'effetto del momento forzante. Tali misurazioni sono state compiute per un intervallo di $\approx  \SI{35}{\second}$.
+Di seguito viene riportato un grafico esemplificativo dell'andamento delle misurazioni.
+
+
+%sistemare tabella con numero campione e freq associata, fare la trasposta
+
 
 \begin{figure}[h!]
     \centering
@@ -323,35 +326,26 @@ A seguito di queste considerazioni, si è comunque calcolata $\theta_{par,0}$ co
     \centering
     \caption{Ampiezze $\theta_{part, 0}$ medie}
     \label{tab:theta_medie}
-    \begin{tabular}{|c|c|c|}
+    \begin{tabular}{|c|c|c||c|c|c|}
         \hline
-        \multirow{2}{*}{Campione} & $\theta_{part,root}$ & $\theta_{part,assolute}$ \\
-        & [$\si{\radian}$] & [$\si{\radian}$] \\ \hline
-        \rowcolor[rgb]{0.85,0.85,0.85}$1$ & $0.393 \pm 0.005$ & $0.418 \pm 0.006$ \\ \hline
-        $2$ & $0.467 \pm 0.006$ & $0.492 \pm 0.006$ \\ \hline
-        \rowcolor[rgb]{0.85,0.85,0.85}$3$ & $0.626 \pm 0.006$ & $0.651 \pm 0.005$ \\ \hline
-        $4$ & $0.889 \pm 0.006$ & $0.980 \pm 0.008$ \\ \hline
-        \rowcolor[rgb]{0.85,0.85,0.85}$5$ & $1.390 \pm 0.006$ & $1.414 \pm 0.004$ \\ \hline
-        $6$ & $2.517 \pm 0.006$ & $2.538 \pm 0.005$ \\ \hline
-        \rowcolor[rgb]{0.85,0.85,0.85}$7$ & $2.553 \pm 0.007$ & $2.576 \pm 0.005$ \\ \hline
-        $8$ & $2.663 \pm 0.007$ & $2.687 \pm 0.006$ \\ \hline
-        \rowcolor[rgb]{0.85,0.85,0.85}$9$ & $2.698 \pm 0.008$ & $2.723 \pm 0.008$ \\ \hline
-        $10$ & $2.698 \pm 0.005$ & $2.716 \pm 0.004$ \\ \hline
-        \rowcolor[rgb]{0.85,0.85,0.85}$11$ & $2.686 \pm 0.006$ & $2.701 \pm 0.005$ \\ \hline
-        $12$ & $2.654 \pm 0.004$ & $2.680 \pm 0.004$ \\ \hline
-        \rowcolor[rgb]{0.85,0.85,0.85}$13$ & $2.588 \pm 0.009$ & $2.603 \pm 0.006$ \\ \hline
-        $14$ & $2.533 \pm 0.005$ & $2.559 \pm 0.007$ \\ \hline
-        \rowcolor[rgb]{0.85,0.85,0.85}$15$ & $2.422 \pm 0.008$ & $2.456 \pm 0.008$ \\ \hline
-        $16$ & $1.723 \pm 0.005$ & $1.755 \pm 0.005$ \\ \hline
-        \rowcolor[rgb]{0.85,0.85,0.85}$17$ & $1.363 \pm 0.006$ & $1.384 \pm 0.005$ \\ \hline
-        $18$ & $0.889 \pm 0.005$ & $0.908 \pm 0.005$ \\ \hline
-        \rowcolor[rgb]{0.85,0.85,0.85}$19$ & $0.651 \pm 0.003$ & $0.681 \pm 0.003$ \\ \hline
-        $20$ & $0.179 \pm 0.009$ & $0.22 \pm 0.01$ \\ \hline
+        \multirow{2}{*}{Campione} & $\theta_{part,root}$ & $\theta_{part,assolute}$ & \multirow{2}{*}{Campione} & $\theta_{part,root}$ & $\theta_{part,assolute}$\\
+        & [$\si{\radian}$] & [$\si{\radian}$] & & [$\si{\radian}$] & [$\si{\radian}$]\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$1$ & $0.393 \pm 0.005$ & $0.418 \pm 0.006$ & \rowcolor[rgb]{0.85,0.85,0.85}$11$ & $2.686 \pm 0.006$ & $2.701 \pm 0.005$ \\ \hline
+        $2$ & $0.467 \pm 0.006$ & $0.492 \pm 0.006$ & $12$ & $2.654 \pm 0.004$ & $2.680 \pm 0.004$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$3$ & $0.626 \pm 0.006$ & $0.651 \pm 0.005$ & \rowcolor[rgb]{0.85,0.85,0.85}$13$ & $2.588 \pm 0.009$ & $2.603 \pm 0.006$ \\ \hline
+        $4$ & $0.889 \pm 0.006$ & $0.980 \pm 0.008$ & $14$ & $2.533 \pm 0.005$ & $2.559 \pm 0.007$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$5$ & $1.390 \pm 0.006$ & $1.414 \pm 0.004$ & \rowcolor[rgb]{0.85,0.85,0.85}$15$ & $2.422 \pm 0.008$ & $2.456 \pm 0.008$ \\ \hline
+        $6$ & $2.517 \pm 0.006$ & $2.538 \pm 0.005$ & $16$ & $1.723 \pm 0.005$ & $1.755 \pm 0.005$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$7$ & $2.553 \pm 0.007$ & $2.576 \pm 0.005$ & \rowcolor[rgb]{0.85,0.85,0.85}$17$ & $1.363 \pm 0.006$ & $1.384 \pm 0.005$ \\ \hline
+        $8$ & $2.663 \pm 0.007$ & $2.687 \pm 0.006$ & $18$ & $0.889 \pm 0.005$ & $0.908 \pm 0.005$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$9$ & $2.698 \pm 0.008$ & $2.723 \pm 0.008$ & \rowcolor[rgb]{0.85,0.85,0.85}$19$ & $0.651 \pm 0.003$ & $0.681 \pm 0.003$ \\ \hline
+        $10$ & $2.698 \pm 0.005$ & $2.716 \pm 0.004$ & $20$ & $0.179 \pm 0.009$ & $0.22 \pm 0.01$ \\ \hline
     \end{tabular}
 \end{table}
 
 
 \subsubsection{Fit non lineare sulla Lorentziana}
+\label{sec:lorentziana}
 %si ha la formula con cui fare fit
 % su quale grafico viene effettutato il fit e perchè ci aono anche quelli assoluti, è aprossimabile ad una sola traslazione in verticale
 %si fa il fit e si riportano i parametri spiegando il loro significato
@@ -370,6 +364,13 @@ ove $\omega_{r}$ rappresenta la pulsazione per la quale si ha il massimo della a
 Si è eseguito il fit non lineare della curva di risonanza tramite l' algoritmo Marquardt-Levenberg di minimizzazione dei minimi quadrati tramite il software di analisi dati Gnuplot.
 La curva ottenuta è raffigurata nel Grafico \ref{fig:lorentziana_root} ed i valori dei parametri ottenuti con i relativi standard error a CL 68\% vengono riportati in Tabella \ref{tab:parametri_fit_lorentziana}. \newline
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=12cm]{Lorentziana_root.pdf}
+    \caption{Fit Lorentziana}
+    \label{fig:lorentziana_root}
+\end{figure}
+
 \begin{table}[h!]
     \centering
     \begin{tabular}{|c|c|c|c|c|}
@@ -383,60 +384,49 @@ La curva ottenuta è raffigurata nel Grafico \ref{fig:lorentziana_root} ed i val
     \label{tab:parametri_fit_lorentziana}
 \end{table}
 
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=15cm]{Lorentziana_root.pdf}
-    \caption{Fit Lorentziana}
-    \label{fig:lorentziana_root}
-\end{figure}
-
-Per la stima della $\omega_{r}$, l'applicazione dei due metodi risulta ininfluente in quanto tutti i punti ottenuti utilizzando  $\theta_ {max, ASSOL}$ risultano essere solo traslati in alto rispetto a i punti ottenuti utilizzando  $\theta_{max, ROOT}$, come si può facilmente verificare dal Grafico \ref{fig:lorentziana_root}. Si osserva che il comportamento descritto veniva già previsto precedentemente, nel calcolo dei $\theta_{max}$ di ogni campione.\\
+Per la stima della $\omega_{r}$, l'applicazione dei due metodi risulta ininfluente in quanto tutti i punti ottenuti utilizzando  $\theta_ {max, ASS}$ risultano essere solo traslati in alto rispetto a i punti ottenuti utilizzando  $\theta_{max, ROOT}$, come si può facilmente verificare dal Grafico \ref{fig:lorentziana_root}. Si osserva che il comportamento descritto veniva già previsto precedentemente, nel calcolo dei $\theta_{max}$ di ogni campione.\\
 A conferma di ciò si è valutata la compatibilità fra $\omega_{r, ROOT}$ e $\omega_{r, ASS}$, che risulta ottima e pari $0.2$, verificando l'equivalente efficacia fra i due metodi. 
 D'ora in avanti pertanto per l' analisi dati si considereranno le stime ottenute dal metodo di smoothing.\\
 
 Al fine di generare una più corretta stima dei parametri e dei loro errori associati alla curva di risonanza si è scelto di eseguire un primo fit utilizzando errori unitari per tutti i dati ottenendo i parametri $A^{\ast}$, $\omega_{r}^{\ast}$ e $\gamma^{\ast}$. Si è dunque proceduto al calcolo dell'errore a posteriori su $\theta$ secondo la seguente:
 \begin{equation*}
-    \sigma_{\theta_{post}}=\sqrt{\frac{\sum_{i=1}^{N} \theta(\omega_{i})-\theta(\omega_{i} ; A^{\ast}, \omega_{r}^{\ast}, \gamma^{\ast})}{N-\nu}}
+    \sigma_{\theta_{post}}=\sqrt{\frac{\sum_{i=1}^{N} (\theta(\omega_{i})-\theta(\omega_{i} ; A^{\ast}, \omega_{r}^{\ast}, \gamma^{\ast}))^{2}}{N-\nu}}
 \end{equation*}
 in cui $N$ è il numero di dati e $\nu$ il numero di vincoli, in questo caso pari a $3$.
 
 Si è rieseguito il fit considerando stavolta gli errori a posteriori ottenendo così il valore di $\chi^{(2)}$ atteso, ovvero $N-\nu$, nel caso specifico apri a $17$. Questo ragionamento conferma la validità della stima dei parametri ottenuti. 
 
-Osservando criticamente le stime degli standard error fornite dall'algoritmo si è dubitato di $\sigma_{\omega_{r}}$ in quanto l'errore percentuale risulta $\approx 0.02 \%$ e che dunque esso fosse una sottostima dell'effettivo errore.
+Osservando criticamente le stime degli standard error fornite dall'algoritmo si è dubitato di $\sigma_{\omega_{r}}$ in quanto l'errore percentuale risulta $\approx 0.02 \%$ e che dunque esso fosse una sottostima dell'effettivo errore.\\
+\begin{wrapfigure}{r}{8.5cm}
+    \vspace{-0.5cm}
+    \centering
+    \includegraphics[width=8.5cm]{Chi_finito_dio_cane_ladro_porco_cane.pdf}
+    \caption{Grafico \chi^2}
+    \label{fig:grafico_chi}
+    \vspace{-10pt}
+\end{wrapfigure}
+Per verificare tale stima si è scelto di far variare il parametro $\omega_r$ e di ricercare per ogni sua singola variazione $\omega_{4, i}$ i nuovi parametri $A^{'}$, e $\gamma^{'}$ che minimizzassero la variabile ${\chi^{(2)}}^{'}$. Si è poi realizzato il Grafico \ref{fig:grafico_chi} nel quale in ascissa si riportano tutti i valori di $\omega_{r, i}$ ed in ordinata il valore $\Delta\chi^{(2)}_{i}=\chi^{(2)}_{i}-\chi^{(2)}^{\ast}$ dove $\chi^{(2)}_{i}$ è calcolato dai parametri minimizzati in dipendenza da $\omega_{r, i}$ e invece  $\chi^{(2)}^{\ast}$  rappresenta quello associato ai parametri $A^{\ast}$, $\omega_{r}^{\ast}$ e $\gamma^{\ast}$.
 
-Per verificare tale stima si è scelto di far variare il parametro $\omega_r$ e di ricercare per ogni sua singola variazione $\omega_{4, i}$ i nuovi parametri $A^{'}$, e $\gamma^{'}$ che minimizzassero la variabile ${\chi^{(2)}}^{'}$. Si è poi realizzato il Grafico \ref{fig:GRAFICO CHI} nel quale in ascissa si riportano tutti i valori di $\omega_{r, i}$ ed in ordinata il valore $\Delta\chi^{(2)}_{i}=\chi^{(2)}_{i}-\chi^{(2)}^{\ast}$ dove $\chi^{(2)}_{i}$ è calcolato dai parametri minimizzati in dipendenza da $\omega_{r, i}$ e invece  $\chi^{(2)}^{\ast}$  rappresenta quello associato ai parametri $A^{\ast}$, $\omega_{r}^{\ast}$ e $\gamma^{\ast}$.
 
-Vista la rapidità di crescita del $\Delta\chi^{(2)}$, una variazione di un unità  quest'ultimo , in corrispondenza del minimo della curva, fa corrispondere una variazione della $\omega_{r}$ pari a quello fornito dall'algoritmo per l'errore.
+
+Vista la rapidità di crescita del $\Delta\chi^{(2)}$, una variazione di un unità  quest'ultimo, in corrispondenza del minimo della curva, fa corrispondere una variazione della $\omega_{r}$ pari a quello fornito dall'algoritmo per l'errore.
 Da quest'analisi qualitativa si deduce che l'errore fornito sia ragionevole.
-Infine si ipotizza che la così repentina crescita del $\Delta \chi^{(2)}$ sia dovuta ad un'alta suscettibilità del
+Infine si ipotizza che la così repentina crescita del $\Delta \chi^{(2)}$ sia dovuta ad un'alta suscettibilità del modello di fit a piccole variazioni del parametro $\omega_{r}$.
 
-
-
-Commentare err a posteriori dicendo che è ragionevole associarlo a err a priori e vedere il confronto con quello a priori, quanto grandi sono con tabella err percentuali
-
-
-Riportare parametri del fit con errori in tabella
-
-
-
-
-%Il fit effettutato tramite minimizzazio ne per lagoritmo ai seguenti parametri per quanto riguarda i dati derivanti dal metodo ad interpolazione parabolica e assoluto.
-
-
-, riportare il valore del chi quadro
-
-
-
-
-
-\newpage
+Disponendo ora di una stima degli errori a posteriori, è stato possibile associare un valore corretto alle incertezze sulle ampiezze $\theta$. È ragionevole attribuire quest'incertezza sia alle ampiezze $\theta_{part}$ dei singoli punti della campana di risonanza che alle ampiezze analizzate nella successiva parte di analisi.
 
 \subsection{Analisi in smorzamento}
-Conseguentemente ad una visualizzazione grafica dei dati ottenuti, si è proceduto al calcolo del tempo impiegato dal cilindretto per compiere un oscillazione completa, definito in questa sezione con il termine pseudo-periodi.
-Analogamente a quanto descritto nella prima parte dell'analisi dati a regime, si sono calcolate in primo luogo le interpolazioni lineari di 2 punti precedenti e 2 successivi alla misurazione di $\theta_i$ più vicino allo zero e, conseguentemente, si è cercata l'intersezione di tale retta con l'asse delle x.
+Si è proceduto al calcolo del tempo impiegato dal cilindretto immerso per compiere un oscillazione completa, definito in questa sezione con il termine pseudo-periodo. Di seguito viene riportato un grafico esemplificativo dell'andamento delle misurazioni effettuate.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=15cm]{1_campione_smorzamento.pdf}
+    \caption{Campione smorzamento esemplificativo}
+    \label{fig:campione_smorzamento_esemplificativo}
+\end{figure}
 
 \subsubsection{Stima pseudo-periodi}
+In seguito ad una rappresentazione grafica dei dati, di cui si riporta un esempio in Figura \ref{fig:campione_smorzamento_esemplificativo}, si è compiuta un'analisi dati simile a quella eseguita nella fase di moto a regime, calcolando in primo luogo i momenti in cui l'ampiezza di oscillazione è zero, ovvero le radici della sinusoide associata, tramite interpolazioni lineari dei 2 punti precedenti e dei 2 successivi alla misurazione di $\theta_i$ più vicina in valore assoluto allo zero calcolando l'intersezione di tale interpolazione con l'asse delle x.
 
 \begin{wrapfigure}{r}{8cm}
     \centering
@@ -445,15 +435,18 @@ Analogamente a quanto descritto nella prima parte dell'analisi dati a regime, si
     \label{fig:zoom_secondo_smorzamento}
 \end{wrapfigure}
 
-In modo simile a quanto fatto per i periodi nella prima parte dell'analisi dati a regime, sono stati calcolati gli pseudo-periodi come differenza tra coppie di zeri che distano tra loro di un'oscillazione, avendo cura di considerare coppie non consecutive al fine di evitare dipendenze statistiche. Su tali valori è stata calcolata la media e la deviazione standard ed è stata effettuata una reiezione a $3\sigma$ in modo da evitare alcuni valori che non rappresentavano una stima accurata dello pseudo-periodo stesso. In particolare è stato reiettato un solo valore del campione 2 in quanto fortemente sottostimato, probabilmente dovuto a errori di lettura del software (cfr. \ref{fig:zoom_secondo_smorzamento}), dove il secondo periodo, rappresentato in rosso nella parte destra del grafico, mostra il dato reiettato.
-A partire dai valori ottenuti con tale metodo si sono calcolati per ciascun campione  gli pseudo-periodi medi e gli errori associati, ricavati dalla deviazione standard della media. Tali valori sono riportati in Tabella \ref{tab:pseudo-periodi_medi}.
+In modo simile a quanto fatto per la stima dei periodi per l'analisi dati a regime, sono stati calcolati gli pseudo-periodi come differenza tra coppie di zeri che distano tra loro un'oscillazione completa, avendo cura di considerare coppie non consecutive al fine di evitare dipendenze statistiche. Su tali valori è stata calcolata la media e la deviazione standard ed è stata effettuata una reiezione a $3\sigma$ in modo da scartare i valori che non rappresentavano una stima accurata dello pseudo-periodo stesso.
+
+In particolare è stato reiettato un solo pseudo-periodo del campione 2 in quanto fortemente sottostimato, probabilmente dovuto a errori di lettura del software di acquisizione dati (cfr. \ref{fig:zoom_secondo_smorzamento}, dove il secondo periodo, rappresentato in rosso nella parte destra del grafico, mostra il dato reiettato).
+
+A partire dai valori ottenuti con tale metodo si sono calcolati per ciascun campione gli pseudo-periodi medi e gli errori associati, ricavati dalla deviazione standard della media. Tali valori sono riportati in Tabella \ref{tab:pseudo-periodi_medi}.
 
 \begin{table}[h!]
     \centering
     \begin{tabular}{|c|c|c|c|}
         \hline
         \textbf{N Campione} & $1$ & $2$ & $3$\\ \hline
-        \textbf{$\overline{T_s}$} & $1.0370\pm0.0007$ & $1.035\pm0.002$ & $1.0378\pm0.0006$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}\textbf{$\overline{T_{s}}\pm \sigma_{\overline{T_{s}}} [\si{\second}]$} & $1.0370\pm0.0007$ & $1.035\pm0.002$ & $1.0378\pm0.0006$\\ \hline
     \end{tabular}
     \caption{pseudo-periodi medi}
     \label{tab:pseudo-periodi_medi}
@@ -462,18 +455,18 @@ A partire dai valori ottenuti con tale metodo si sono calcolati per ciascun camp
 Come si può notare da Tabella \ref{tab:pseudo-periodi_medi}, i campioni 1 e 3 hanno errori molto piccoli che risultano essere di un'ordine di grandezza inferiori a quello del campione 2: ciò è da imputare a una scarsa fluttuazione statistica dei singoli periodi.
 
 \subsubsection{Stima $\overline{\omega_s}$}
-In seguito sono state calcolate le $\omega_s$ per ciascun periodo tramite la seguente:
+Avendo a disposizione il campione di $T_{i}$, si sono state calcolate le $\omega_s$ per ciascun periodo tramite la seguente:
 \begin{equation*}
     \omega_{s,i} = \frac{2\pi}{T_i}
 \end{equation*}
-Per ciascun campione è stata calcolata la media e la deviazione standard della media.
+Per ciascun campione è stata infine calcolata la media e la deviazione standard della media.
 
 \begin{table}[h!]
     \centering
     \begin{tabular}{|c|c|c|c|}
         \hline
         \textbf{N Campione} & $1$ & $2$ & $3$\\ \hline
-        \textbf{$\overline{\omega_s}$} & $6.059\pm0.004$ & $6.07\pm0.01$ & $6.054\pm0.003$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}\textbf{$\overline{\omega_s}\pm \sigma_{\overline{_{s}}} [\si{\radian\per\second}]$} & $6.059\pm0.004$ & $6.07\pm0.01$ & $6.054\pm0.003$\\ \hline
     \end{tabular}
     \caption{$\omega_s$ medie}
     \label{tab:omega_s_medie}
@@ -481,14 +474,29 @@ Per ciascun campione è stata calcolata la media e la deviazione standard della 
 
 
 \subsubsection{Stima coefficiente di smorzamento $\gamma$ tramite linearizzazione}
-Al fine di stimare $\gamma$ si sono ricavati i massimi e i minimi della funzione di oscillazione per ciascun campione. Sono stati impiegati due differenti metodi per stimare tali valori. Il primo consiste semplicemente nel prendere il valore massimo/minimo per ciascun intervallo tra uno zero della funzione e il successivo. Il secondo consiste invece nell'interpolazione parabolica tramite il software ROOT di un intervallo di 19 dati centrato nel punto di massimo/minimo locale (9 precedenti e 9 successivi). Come massimo/minimo dunque è stato preso il vertice di ciascuna parabola. Si è poi proceduto con la linearizzazione calcolando il logaritmo naturale di tali valori. I dati linearizzati sono stati poi interpolati da una retta separando adeguatamente $\theta_{max}$ e $\theta_{min}$ per metodo e per campione e se ne è ricavato $\gamma$ come coefficiente angolare della retta interpolante. A quest'ultimo è stato associato l'errore a posteriori ottenuto dalla minimizzazione del $\chi^2$.
+L'equazione del moto nella fase di smorzamento è
+\begin{equation*}
+    \theta_{smorz}(t)=\sin{(\omega_{s}\cdot t + \phi )} e^{-\gamma t}
+\end{equation*}
+pertanto, scegliendo accuratamente dei valori $t^{\ast}_{i}$ per cui $| \sin{(\omega_{s} \cdot t^{\ast} + \phi)} |=1$, è possibile ricavare la convoluzione che corrisponde esattamente alla funzione esponenziale
+
+\begin{equation*}
+\theta(t_{i}^{\ast})=\pm \theta_{omog, 0} e^{-\gamma t}
+\end{equation*}
+da cui ricavare il coefficiente di smorzamento $\gamma$.\newline
+
+Nell'analisi dati in smorzamento sono stati applicati gli stessi procedimenti impiegati per l'analisi del moto a regime, ricercando i massimi ed i minimi delle ampiezze per ciascun campione in ogni semi-periodo. Analogamente alla prima parte dell'esperienza sono stati impiegati due differenti metodi per stimare i valori di $\theta(t^{\ast}_{i, Max})$ e $\theta(t^{\ast}_{i, Min})$. Il primo consiste semplicemente nel prendere il valore massimo/minimo per ciascun intervallo tra uno zero della funzione e il successivo. Il secondo consiste invece nell'interpolazione parabolica tramite il software ROOT in un intervallo di 19 dati centrato nel punto di massimo/minimo locale. La stima del massimo/minimo dunque è stata ottenuta ricercando il vertice di ciascuna parabola. 
+A differenza di quanto svolto nella fase a regime, si è avuto cura di tenere separati i valori per cui $\theta(t^{\ast})$ risultasse massimo o minimo, in quanto nel primo caso la convoluzione sarebbe risultata $\theta^{\ast}_{i, Max}=+\theta_{omog, 0}\cdot e^{- \gamma t^{\ast}_{i, Max}}$, mentre nel caso con $\theta^{\ast}_{i, Min}=-\theta_{omog, 0}\cdot e^{-\gamma t^{\ast}_{i, Min}}$.\\
+
+Si è poi proceduto con la linearizzazione calcolando il logaritmo naturale di $\theta_{omog, 0} e^{- \gamma t}$. I dati linearizzati sono stati poi interpolati da una retta separando adeguatamente $\theta_{Max}$ e $\theta_{Min}$ per metodo e per campione. Per ciascuna retta si è poi ricavato $\gamma$ come valore assoluto del coefficiente angolare della retta interpolante associandovi l'errore a posteriori.
 
 \begin{table}[h!]
     \centering
     \begin{tabular}{c|c|c|c|c|c|}
     \cline{2-6}
-    & \multirow{2}{*}{Campione} & \multicolumn{2}{c|}{Massimi} & \multicolumn{2}{c|}{Minimi}\\ \cline{3-6}
-    & & Intercetta & Coeff. Angolare & Intercetta & Coeff. Angolare \\ \hline
+    & \multirow{3}{*}{Campione} & \multicolumn{2}{c|}{Massimi} & \multicolumn{2}{c|}{Minimi}\\ \cline{3-6}
+    & & Intercetta & Coeff. Angolare $\gamma$ & Intercetta & Coeff. Angolare $\gamma$ \\ 
+    & & & [$\si{\radian\per\second}$] & & [$\si{\radian\per\second}$] \\ \hline
     \multicolumn{1}{|c|}{\multirow{3}{*}{\rotatebox[origin=c]{90}{Root}}} & \cellcolor[rgb]{0.85,0.85,0.85}$1$ & \cellcolor[rgb]{0.85,0.85,0.85}$0.43\pm0.01$ & \cellcolor[rgb]{0.85,0.85,0.85}$-0.0519\pm0.0005$ & \cellcolor[rgb]{0.85,0.85,0.85}$-0.45\pm0.01$ & \cellcolor[rgb]{0.85,0.85,0.85}$0.0494\pm0.0005$ \\ \cline{2-6}
     \multicolumn{1}{|c|}{} & $2$ & $0.62\pm0.02$ & $-0.0522\pm0.0008$ & $-0.62\pm0.01$ & $0.0497\pm0.0007$ \\ \cline{2-6}
     \multicolumn{1}{|c|}{} & \cellcolor[rgb]{0.85,0.85,0.85}$3$ & \cellcolor[rgb]{0.85,0.85,0.85}$0.72\pm0.01$ & \cellcolor[rgb]{0.85,0.85,0.85}$-0.0486\pm0.0006$ & \cellcolor[rgb]{0.85,0.85,0.85}$-0.74\pm0.01$ & \cellcolor[rgb]{0.85,0.85,0.85}$0.0505\pm0.0005$ \\ \hline \hline
@@ -500,70 +508,116 @@ Al fine di stimare $\gamma$ si sono ricavati i massimi e i minimi della funzione
     \label{tab:parametri:linearizzazione}
 \end{table}
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=10cm]{linearize_1.pdf}
-    \caption{Caption}
-    \label{fig:my_label}
-\end{figure}
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=10cm]{linearize_2.pdf}
-    \caption{Caption}
-    \label{fig:my_label}
+    \makebox[\textwidth]{
+    \subfloat[Linearizzazione campione 1]{
+        \label{fig:lin_1}
+        \includegraphics[width=7.5cm]{linearize_1.pdf}
+    }
+    \subfloat[Linearizzazione campione 2]{
+        \label{fig:lin_2}
+        \includegraphics[width=7.5cm]{linearize_2.pdf}
+    }}
+    \newline
+    \subfloat[Linearizzazione campione 3]{
+        \label{fig:lin_3}
+        \includegraphics[width=7.5cm]{linearize_3.pdf}
+    }
+    \caption*{}
 \end{figure}
+Vengono riportati i tre grafici ottenuti dai dati linearizzando $\theta_{max}$ e $\theta_{min}$.
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=10cm]{linearize_3.pdf}
-    \caption{Caption}
-    \label{fig:my_label}
-\end{figure}
-
-\subsubsection{Ricavare $\omega_o$ da $\overline{\omega_s}$ e $\gamma$ e confronto con quella della prima parte}
-Al fine di stimare $\omega_o$ è stata calcolata $\gamma_{pond}$ come media ponderata tra i valori assoluti delle $\gamma$ ottenute dalla linearizzazione dei massimi e dei minimi per ciascun campione. Successivamente $\omega_o$ è stata calcolata tramite la seguente formula:
+Gli errori attribuiti ai singoli punti dei grafici derivano dalla propagazione degli errori:
 \begin{equation*}
-    \omega_{o} = \sqrt{(\overline{\omega_{s}}^2+\gamma_{pond}^2)}
+ \sigma_{\ln (\theta_i)}\approx \sqrt{\left (\frac{\partial \ln (\theta_i)}{\partial \theta_i} \Big|_{\theta_i^{\ast}} \right )^{2} \cdot \sigma_{\theta_{post}}^2}
+\end{equation*}
+Dove $\sigma_{\theta_{post}}$ rappresenta la stima dell'errore sul parametro $\theta$ ottenuto mediante il fit non lineare della Lorentziana al paragrafo \ref{sec:lorentziana}.
+Come si osserva facilmente dal grafico, all'aumentare di $\ln({\theta_{Max/Min}})$, aumenta la grandezza della barra di errore del grafico. La spiegazione di tale fenomeno è di natura analitica, intrinseca al calcolo della propagazione degli errori precedentemente riportata.
+
+Vengono riportati in Tabella \ref{tab:quantificatori} i quantificatori di bontà dei fit riportati nei Grafici. Per tutti i casi, con un livello di confidenza pari al $99.5\%$ il test del $\chi^{2}$  si accetta l'ipotesi nulla, ovvero che i dati seguano un andamento lineare. Il coefficiente di correlazione $\rho$ è prossimo a $1$ e a $-1$ mostrando la correlazione e l'anti-correlazione dei dati.
+
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \multicolumn{2}{|c|}{Campione} & $\chi^2$ & $\rho$ \\ \hline
+        \multirow{2}{*}{$1$} & \cellcolor[rgb]{0.85,0.85,0.85}Max & \cellcolor[rgb]{0.85,0.85,0.85}$2.9$ & \cellcolor[rgb]{0.85,0.85,0.85}$-0.998$ \\ \cline{2-4}
+        & Min & $7.1$ & $0.999$\\ \hline
+        \multirow{2}{*}{$2$} & \cellcolor[rgb]{0.85,0.85,0.85}Max & \cellcolor[rgb]{0.85,0.85,0.85}$9.7$ & \cellcolor[rgb]{0.85,0.85,0.85}$-0.996$ \\ \cline{2-4}
+        & Min & $21.0$ & $0.997$\\ \hline
+        \multirow{2}{*}{$3$} & \cellcolor[rgb]{0.85,0.85,0.85}Max & \cellcolor[rgb]{0.85,0.85,0.85}$8.0$ & \cellcolor[rgb]{0.85,0.85,0.85}$-0.997$ \\ \cline{2-4}
+        & Min & $8.3$ & $0.998$\\ \hline
+    \end{tabular}
+    \caption{Quantificatori}
+    \label{tab:quantificatori}
+\end{table}
+
+
+\subsubsection{Stima di $\omega_{0}$, $\omega_{r, attesa}$}
+%Ricavare $\omega_o$ da $\overline{\omega_s}$ e $\gamma$ e confronto con quella della prima parte}
+Al fine di stimare $\omega_{0}$ è stata calcolata $\gamma_{pond}$ come media ponderata tra i valori assoluti delle $\gamma$ ottenute dalla linearizzazione dei massimi e dei minimi per ciascun campione. Successivamente $\omega_o$ è stata calcolata tramite la seguente formula:
+\begin{equation*}
+    \omega_{0} = \sqrt{\overline{\omega_{s}}^2+\gamma_{pond}^2}
 \end{equation*}
 dove i è il numero del campione.
 L'errore associato è stato ricavato tramite propagazione degli errori casuali.
 Inoltre è stato calcolato $\overline{\omega_o}$ come media ponderata tra gli $\omega_o$ di ciascun campione.
 
-\subsubsection{Ricavare $\omega_{risonanza, attesa}$ da $\overline{\omega_s}$ e $\gamma$ e confronto con la prima parte}
-Analogamente a quanto fatto per $\omega_o$, $\omega_{risonanza,attesa}$ è stato ottenuto a partire da $\overline{\omega_s}$ e da $\gamma_{pond}$ per ciascun campione tramite la seguente: 
+%\subsubsection{Ricavare $\omega_{r, attesa}$ da $\overline{\omega_s}$ e $\gamma$ e confronto con la prima parte}
+Analogamente a quanto fatto per $\omega_o$, $\omega_{r,attesa}$ è stato ottenuto a partire da $\overline{\omega_s}$ e da $\gamma_{pond}$ per ciascun campione tramite la seguente: 
 \begin{equation*}
-    \omega_{risonanza,attesa} = \sqrt{(\overline{\omega_{s}}^2-\gamma_{pond}^2)}
+    \omega_{r,attesa} = \sqrt{(\overline{\omega_{s}}^2-\gamma_{pond}^2)}
 \end{equation*}
 L'errore è stato ottenuto dalla propagazione degli errori causali come per $\omega_o$. 
+
+Successivamente sono state calcolate le compatibilità tra i valori di $\gamma_{pond}$, $\omega_o$ e $\omega_{r,attesa}$ ottenute a partire dai vari campioni. Tutti i valori risultano avere una compatibilità ottima o discreta
+
 Infine è stata calcolata la media ponderata tra i valori appena ottenuti. Tutti i valori ottenuti sono riportati in Tabella \ref{tab:valori_gamma_omega}
 
 \begin{table}[h!]
     \centering
     \begin{tabular}{|c|c|c|c|}
         \hline
-        Campione & $\gamma_{pond}$ & $\omega_o$ & $\omega_{risonanza,attesa}$ \\ \hline
+        Campione & $\gamma_{pond}$ & $\omega_o$ & $\omega_{r,attesa}$ \\ \hline
         \rowcolor[rgb]{0.85,0.85,0.85}$1$ & $0.0505\pm0.0003$ & $6.059\pm0.004$ & $6.059\pm0.004$ \\ \hline
         $2$ & $0.0508\pm0.0005$ & $6.07\pm0.01$ & $6.07\pm0.01$ \\ \hline
         \rowcolor[rgb]{0.85,0.85,0.85}$3$ & $0.0497\pm0.0004$ & $6.055\pm0.003$ & $6.054\pm0.003$ \\ \hline \hline
         Riassuntive & $0.0503\pm0.0002$ & $6.057\pm0.003$ & $6.057\pm0.003$ \\ \hline
     \end{tabular}
-    \caption{Valori di $\gamma_{pond}$, $\omega_o$ e $\omega_{risonanza}$}
+    \caption{Valori di $\gamma_{pond}$, $\omega_o$ e $\omega_{r,attesa}$}
     \label{tab:valori_gamma_omega}
 \end{table}
+
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+        Campioni & $\lambda_{\gamma_{pond}}$ & $\lambda_{\omega_o}$ & $\lambda_{\omega_{r,attesa}}$\\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$1-2$ & $0.4$ & $0.8$ & $0.8$ \\ \hline
+        $1-3$ & $1.6$ & $0.9$ & $0.9$ \\ \hline
+        \rowcolor[rgb]{0.85,0.85,0.85}$2-3$ & $1.7$ & $1.2$ & $1.2$ \\ \hline
+    \end{tabular}
+    \caption{Compatibilità}
+    \label{tab:comp_gamma_omega}
+\end{table}
+
 
 \begin{wraptable}{r}{5cm}
     \centering
     \begin{tabular}{c|c|c|}
         \cline{2-3}
-        & $\omega_{risonanza}$ & $\lambda$ \\ \hline
+        & $\omega_{r}$ & $\lambda$ \\ \hline
         \multicolumn{1}{|c|}{Fit} & $6.060\pm0.001$ & \multirow{2}{*}{1.3} \\ \cline{1-2}
         \multicolumn{1}{|c|}{Atteso} & $6.057\pm0.003$ &\\ \hline
     \end{tabular}
-    \caption{Confronto $\omega_{risonanza}$}
+    \caption{Confronto $\omega_{r}$}
     \label{tab:confronto_omega_r}
 \end{wraptable}
-E' stato realizzato poi un confronto tra la stima di $\omega_{risonanza}$ ottenuta dal fit della lorentziana nell'analisi del moto a regime (vedi Tabella \ref{tab:parametri_fit_lorentziana}) e quella ottenuta a partire dalla linearizzazione dei massimi e dei minimi come precedentemente descritto. Con lo scopo di determinare la compatibilità tra le due stime, si è calcolata $\lambda$ tra le due stime. Esse risultano compatibili dato il valore di $\lambda = 1.3$. Conseguentemente a ciò è possibile affermare 
+E' stato realizzato poi un confronto tra la stima di $\omega_{r}$ ottenuta dal fit della lorentziana nell'analisi del moto a regime (vedi Tabella \ref{tab:parametri_fit_lorentziana}) e quella ottenuta a partire dalla linearizzazione dei massimi e dei minimi come precedentemente descritto. Con lo scopo di determinare la compatibilità tra le due stime, si è calcolata $\lambda$ tra le due stime. Esse risultano compatibili dato il valore di $\lambda = 1.3$. Conseguentemente a ciò è possibile affermare 
 
 
 
