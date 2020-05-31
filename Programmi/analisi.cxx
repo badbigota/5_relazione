@@ -7,10 +7,6 @@
 #include "functions.h"
 using namespace std;
 
-/*
-void funzione(lettura, scrittura)
-*/
-
 int main()
 {
     vector<data_campione> campione;
@@ -191,7 +187,6 @@ int main()
     picco_picco_mv(punti_di_massimo_mv, picchi_picchi_mv);
     picco_picco_chi(punti_di_massimo_root, picchi_picchi_root);
 
-    //cout << picchi_picchi_assoluti.size() << endl;
     for (auto d : picchi_picchi_assoluti)
     {
         ofstream fout_picco("../Dati/Picchi_ass/pic_pic_mezz_ass_" + to_string(d.freq) + ".txt");
@@ -217,29 +212,28 @@ int main()
     add_omega_2(periodi_forcing, campana_lor_forzante);
 
     //Prende i valori del fit di gnuplot con err a posteriori
-    //vector<double> par_root = {1.82653, 6.06287, -0.0558678, -0.026352};
 
-    vector<double> par_root = {1.78062, 6.06001, -0.0542075}; //aggiornato e corretto ora, non con il d
-    vector<double> par_ass = {1.85208, 6.05963, -0.0560454};  //aggiormato
-    vector<double> par_mv = {1.78114, 6.05996, -0.0542634};   //aggiornato
+    vector<double> par_root = {1.78062, 6.06001, -0.0542075}; 
+    vector<double> par_ass = {1.85208, 6.05963, -0.0560454};  
+    vector<double> par_mv = {1.78114, 6.05996, -0.0542634};   
     vector<double> par_for = {};
     double err_post_root = post_lor(campana_lorentziana_root, par_root);
     double err_post_ass = post_lor(campana_lorentziana_assoluta, par_ass);
     double err_post_mv = post_lor(campana_lorentziana_mv, par_mv);
 
     //STAMPA LA LORENTZIANA
-
     ofstream fout_lor_mv("lore_mv.txt");
     ofstream fout_lor_ass("lore_ass.txt");
     ofstream fout_lor_root("lore_root.txt");
     ofstream fout_lor_for("lore_for.txt");
     ofstream fout_omega_par("omega_par_root_ass.txt");
 
-    for (int i = 0; i < campana_lorentziana_assoluta.size(); i++)
+    for (int i = 0; i < campana_lorentziana_assoluta.size(); i++) 
     {
         fout_omega_par << i + 1 << "&&$" << campana_lorentziana_root[i].theta << " \\pm " << campana_lorentziana_root[i].err_theta << "$ && $" << campana_lorentziana_assoluta[i].theta << " \\pm " << campana_lorentziana_assoluta[i].err_theta << "$ \\\\" << endl;
     }
 
+    //salva tutti i file la lorentiana
     for (int i = 0; i < campana_lorentziana_mv.size(); i++)
     {
         fout_lor_mv << campana_lorentziana_mv[i].omega << "\t" << campana_lorentziana_mv[i].theta << "\t" << campana_lorentziana_mv[i].err_omega << "\t" << campana_lorentziana_mv[i].err_theta << "\t" << err_post_mv << endl;
@@ -291,34 +285,43 @@ int main()
     vector<double> compatibilty_ass;
     vector<double> compatibilty_for;
     vector<double> compatibilty_rel;
+    vector<double> compatibilty_root;
     compatibilita_omega(campana_lorentziana_assoluta, campione, compatibilty_ass);
     compatibilita_omega(campana_lor_forzante, campione, compatibilty_for);
+    compatibilita_omega(campana_lorentziana_root, campione, compatibilty_root);
     compatibilita_omega_frozante_sperimentale(campana_lor_forzante, campana_lorentziana_root, compatibilty_rel);
 
-    //cout << "Compatiblità omega sper root con omega th";
 
     ofstream fout_com_ass("../Dati/Compatib/comp_ass.txt");
     ofstream fout_com_for("../Dati/Compatib/comp_for.txt");
     ofstream fout_com_rel("../Dati/Compatib/comp_rel.txt");
+    ofstream fout_com_root("../Dati/Compatib/comp_root.txt");
 
     double sum_comp_squared = 0;
     double sum_comp_squared_for = 0;
     double sum_comp_squared_rel = 0;
+    double sum_comp_squared_root = 0;
 
-    for (int i = 0; i < campana_lorentziana_assoluta.size(); i++) //sono tutte uguali, non cambia un cazzo con le altre
+    for (int i = 0; i < campana_lorentziana_assoluta.size(); i++) 
     {
         fout_com_ass << i + 1 << "\t" << campana_lorentziana_assoluta[i].omega << "\t" << campana_lorentziana_assoluta[i].err_omega << "\t" << campione[i].data_file_freq * 2. * M_PI / 1000. << "\t" << sigma_dist_uni(0.001, 1) << "\t"
                      << "\t" << compatibilty_ass[i] << endl;
         sum_comp_squared += pow(compatibilty_ass[i], 2);
     }
-    for (int i = 0; i < campana_lor_forzante.size(); i++) //sono tutte uguali, non cambia un cazzo con le altre
+    for (int i = 0; i < campana_lorentziana_root.size(); i++) 
+    {
+        fout_com_root << i + 1 << "\t" << campana_lorentziana_root[i].omega << "\t" << campana_lorentziana_root[i].err_omega << "\t" << campione[i].data_file_freq * 2. * M_PI / 1000. << "\t" << sigma_dist_uni(0.001, 1) << "\t"
+                      << "\t" << compatibilty_root[i] << endl;
+        sum_comp_squared_root += pow(compatibilty_root[i], 2);
+    }
+    for (int i = 0; i < campana_lor_forzante.size(); i++) 
     {
         fout_com_for << i + 1 << "\t" << campana_lor_forzante[i].omega << "\t" << campana_lor_forzante[i].err_omega << "\t" << campione[i].data_file_freq * 2. * M_PI / 1000. << "\t" << sigma_dist_uni(0.001, 1) << "\t"
                      << "\t" << compatibilty_for[i] << endl;
         sum_comp_squared_for += pow(compatibilty_for[i], 2);
     }
 
-    for (int i = 0; i < campana_lor_forzante.size(); i++) //sono tutte uguali, non cambia un cazzo con le altre
+    for (int i = 0; i < campana_lor_forzante.size(); i++) 
     {
         fout_com_rel << i + 1 << "\t" << campana_lor_forzante[i].omega << "\t" << campana_lor_forzante[i].err_omega << "\t" << campana_lorentziana_root[i].omega << "\t" << campana_lorentziana_root[i].err_omega << "\t"
                      << "\t" << compatibilty_rel[i] << endl;
@@ -327,6 +330,7 @@ int main()
     cout << "Somma comp squared: " << sum_comp_squared << endl;
     cout << "Somma comp squared for: " << sum_comp_squared_for << endl;
     cout << "Somma comp squared rel: " << sum_comp_squared_rel << endl;
+    cout << "Somma comp squared root: " << sum_comp_squared_root << endl;
 
     //*******************************************************SMORZAMENTO*****************************************************************************************************
     load_data_decay(campione_decadimento);
@@ -344,7 +348,7 @@ int main()
     }
 
     get_periods(tempi_decay, periodi_decadimento);
-    get_periodi_medi(periodi_decadimento, media_periodi_decadimento); //#cavallo
+    get_periodi_medi(periodi_decadimento, media_periodi_decadimento); 
     reiezione(periodi_decadimento, periodi_decadimento_reiettati, media_periodi_decadimento);
     get_periodi_medi(periodi_decadimento_reiettati, media_periodi_decadimento_reiettati);
 
@@ -404,20 +408,6 @@ int main()
         }
     }
 
-    //Stampa/controllo righe precendenti
-    /*int h = 1;
-    for (int j = 0; j < periodi_decadimento.size(); j++)
-    {
-        cout << h << endl;
-        h++;
-        for (int i = 0; i < periodi_decadimento[j].time.size(); i++)
-        {
-            cout << periodi_decadimento[j].time[i] << endl;
-        }
-        cout << "Periodo medio: " << media_periodi_decadimento[j].avg_time << "+/-" << media_periodi_decadimento[j].err_avg_time << endl;
-    }*/
-
-    //TUTTA ROBA CHE SERVE A FABIO - intervalli per max root
     for (int j = 0; j < indici_dei_massimi_decadimento.size(); j++)
     {
         ofstream smorz("../Dati/periodo_smorzamento" + to_string(j) + ".txt");
@@ -429,13 +419,14 @@ int main()
         smorz << endl;
     }
 
-    /*int h = 1;
+cout<<"OMEGAS"<<endl;
+    int h = 1;
     for (auto c : omega_s_smorzamento)
     {
         cout << h << endl;
         h++;
         cout << c.omega_media2 << "+/-" << c.err_omega_media2 << endl;
-    }*/
+    }
 
     vector<punti_massimo> punti_max_ln_root;
     vector<punti_massimo> punti_min_ln_root;
@@ -491,46 +482,65 @@ int main()
     return_angolari(punti_max_ln_ass, punti_min_ln_ass, parametri_interpolazioni_ass);
     return_angolari(punti_max_ln_mv, punti_min_ln_mv, parametri_interpolazioni_mv);
 
-    //for (int i = 0; i < parametri_interpolazioni_root.size(); i++)
-    //{
-    //    cout<<"Massimi "<<i+1<<endl;
-    //    cout << parametri_interpolazioni_root[i].a_intercetta_gamma_max<<"+/-"<<parametri_interpolazioni_root[i].err_a_post_max<<"\t"<< parametri_interpolazioni_root[i].b_angolare_gamma_max<<"+/-"<<parametri_interpolazioni_root[i].err_b_post_max<<endl;
-    //    cout<< "Minimi "<<i+1 <<endl;
-    //    cout << parametri_interpolazioni_root[i].a_intercetta_gamma_min<<"+/-"<<parametri_interpolazioni_root[i].err_a_post_min<<"\t"<< parametri_interpolazioni_root[i].b_angolare_gamma_min<<"+/-"<<parametri_interpolazioni_root[i].err_b_post_min<<endl;
-    //}
+    for (int i = 0; i < parametri_interpolazioni_root.size(); i++)
+    {
+        //cout<<"Massimi "<<i+1<<endl;
+        //cout << parametri_interpolazioni_root[i].a_intercetta_gamma_max<<"+/-"<<parametri_interpolazioni_root[i].err_a_post_max<<"\t"<< parametri_interpolazioni_root[i].b_angolare_gamma_max<<"+/-"<<parametri_interpolazioni_root[i].err_b_post_max<<endl;
+        //cout<< "Minimi "<<i+1 <<endl;
+        //cout << parametri_interpolazioni_root[i].a_intercetta_gamma_min<<"+/-"<<parametri_interpolazioni_root[i].err_a_post_min<<"\t"<< parametri_interpolazioni_root[i].b_angolare_gamma_min<<"+/-"<<parametri_interpolazioni_root[i].err_b_post_min<<endl;
+        cout << i << "Max" << parametri_interpolazioni_root[i].chi_q_max << "\t" << parametri_interpolazioni_root[i].r_max << "\t" << parametri_interpolazioni_root[i].t_max << endl;
+        cout << i << "Min" << parametri_interpolazioni_root[i].chi_q_min << "\t" << parametri_interpolazioni_root[i].r_min << "\t" << parametri_interpolazioni_root[i].t_min << endl;
+    }
 
+    //calcolo di omega r e omega o a partire da omega smorzamento e gamma
     vector<double> omega_o;
     vector<double> omega_r;
+    vector<double> err_omega_o;
+    vector<double> err_omega_r;
+    vector<double> gamma_ponderata;
+    vector<double> err_gamma_ponderata;
     for (int i = 0; i < omega_s_smorzamento.size(); i++)
     {
-        double gamma_ponderata = ((abs(parametri_interpolazioni_root[i].b_angolare_gamma_max) * parametri_interpolazioni_root[i].err_b_post_max + abs(parametri_interpolazioni_root[i].b_angolare_gamma_min) * parametri_interpolazioni_root[i].err_b_post_min) / (parametri_interpolazioni_root[i].err_b_post_max + parametri_interpolazioni_root[i].err_b_post_min));
-        omega_o.push_back(sqrt(pow(omega_s_smorzamento[i].omega_media2, 2) + pow(gamma_ponderata, 2)));
-        cout << omega_o[i] << endl;
-        omega_r.push_back(sqrt(pow(omega_s_smorzamento[i].omega_media2, 2) /*+ pow(gamma_ponderata, 2)*/));
-        cout << omega_r[i] << endl;
+        double omega_s = omega_s_smorzamento[i].omega_media2;
+        double err_omega_s = omega_s_smorzamento[i].err_omega_media2;
+        double gamma_min = parametri_interpolazioni_root[i].b_angolare_gamma_min;
+        double gamma_max = parametri_interpolazioni_root[i].b_angolare_gamma_max;
+        double err_gamma_min = parametri_interpolazioni_root[i].err_b_post_min;
+        double err_gamma_max = parametri_interpolazioni_root[i].err_b_post_max;
+        vector<double> gamma_pon = {abs(gamma_min), abs(gamma_max)};
+        vector<double> err_gamma_pon = {err_gamma_min, err_gamma_max};
+        gamma_ponderata.push_back(media_ponderata(gamma_pon, err_gamma_pon));
+        err_gamma_ponderata.push_back(errore_media_ponderata(err_gamma_pon));
+        cout << "Gamma ponderata:\t" << gamma_ponderata[i] << "+/-" << err_gamma_ponderata[i] << endl;
+
+        double dp_s_o = omega_s / sqrt(pow(omega_s, 2) + pow(gamma_ponderata[i], 2));
+        double dp_g_o = gamma_ponderata[i] / sqrt(pow(omega_s, 2) + pow(gamma_ponderata[i], 2));
+        double dp_s_r = omega_s / sqrt(pow(omega_s, 2) - pow(gamma_ponderata[i], 2));
+        double dp_g_r = gamma_ponderata[i] / sqrt(pow(omega_s, 2) - pow(gamma_ponderata[i], 2));
+        omega_o.push_back(sqrt(pow(omega_s, 2) + pow(gamma_ponderata[i], 2))); 
+        omega_r.push_back(sqrt(pow(omega_s, 2) - pow(gamma_ponderata[i], 2)));
+        err_omega_o.push_back(sqrt(pow(dp_s_o * err_omega_s, 2) + pow(dp_g_o * err_gamma_ponderata[i], 2)));
+        err_omega_r.push_back(sqrt(pow(dp_s_r * err_omega_s, 2) + pow(dp_g_r * err_gamma_ponderata[i], 2)));
+        cout << "Omega_o:\t" << omega_o[i] << "+/-" << err_omega_o[i] << endl;
+        cout << "Omega_r:\t" << omega_r[i] << "+/-" << err_omega_r[i] << endl;
     }
+    double mp_omega_r_riass = media_ponderata(omega_r, err_omega_r);
+    double err_mp_omega_r_riass = errore_media_ponderata(err_omega_r);
+    cout << "Gamma_pond_riassuntiva:\t" << media_ponderata(gamma_ponderata, err_gamma_ponderata) << "+/-" << errore_media_ponderata(err_gamma_ponderata) << endl;
+    cout << "Omega_o_riassuntivo:\t" << media_ponderata(omega_o, err_omega_o) << "+/-" << errore_media_ponderata(err_omega_o) << endl;
+    cout << "Omega_r_riassuntivo:\t" << mp_omega_r_riass << "+/-" << err_mp_omega_r_riass << endl;
+    cout << "Comp_r_fit_decad:\t" << comp_3(mp_omega_r_riass, par_root[1], err_mp_omega_r_riass, 0.001032) << endl;
+
+    cout << endl;
+    cout << "Comp gamma 1 2: " << comp(gamma_ponderata[0], gamma_ponderata[1], err_gamma_ponderata[0], err_gamma_ponderata[1]) << endl;
+    cout << "Comp gamma 1 3: " << comp(gamma_ponderata[0], gamma_ponderata[2], err_gamma_ponderata[0], err_gamma_ponderata[2]) << endl;
+    cout << "Comp gamma 2 3: " << comp(gamma_ponderata[1], gamma_ponderata[2], err_gamma_ponderata[1], err_gamma_ponderata[2]) << endl;
+    cout << "Comp omega_o 1 2: " << comp(omega_o[0], omega_o[1], err_omega_o[0], err_omega_o[1]) << endl;
+    cout << "Comp omega_o 1 3: " << comp(omega_o[0], omega_o[2], err_omega_o[0], err_omega_o[2]) << endl;
+    cout << "Comp omega_o 2 3: " << comp(omega_o[1], omega_o[2], err_omega_o[1], err_omega_o[2]) << endl;
+    cout << "Comp omega_r 1 2: " << comp(omega_r[0], omega_r[1], err_omega_r[0], err_omega_r[1]) << endl;
+    cout << "Comp omega_r 1 3: " << comp(omega_r[0], omega_r[2], err_omega_r[0], err_omega_r[2]) << endl;
+    cout << "Comp omega_r 2 3: " << comp(omega_r[1], omega_r[2], err_omega_r[1], err_omega_r[2]) << endl;
 
     return 0;
 }
-
-/*
-COSE DA STAMPARE
-
-Miglior stima di
-- T_f (regime) -> media periodi scorrelati
-- omega_f sperimentale -> media di omega scorrelate, ex secondo metodo
-- confronto omega_f con quella teorica (compatibilità)
-- theta_part_sper -> media mezzo picco-picco scorrelati
-- Lorentziana
-- paramteri fit con attenzione a omega_reisonanza ed errore
-    - err a posteriori
-
-- T_s (smorzamento)
-- omega_s smorazmanto
-- Gamma da linearizzazione -> errori a posteriori su lorentz
-    - massimi e minimi assoluti o con root/mv/ass
-- omega_0=sqrt(omega_s^2+gamma^2)
-- omega_r=sqrt(omega_s^2-gammma^2)
-- confronto omega_r con omega_r risonanza fit lorentz
-
-*/

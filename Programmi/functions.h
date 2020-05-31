@@ -90,6 +90,8 @@ struct interpolazione_gamma
     double err_b_post_max;
     double err_a_post_min;
     double err_b_post_min;
+    double chi_q_max;
+    double chi_q_min;
 };
 
 //Carica tutti i dati grezzi in strutture contenute in un vettore
@@ -829,6 +831,10 @@ void return_angolari(vector<punti_massimo> &ln_theta_max, vector<punti_massimo> 
         temp_gamma.t_min = student(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max);
         temp_gamma.err_a_post_min = sigma_a_posteriori(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max);
         temp_gamma.err_b_post_min = sigma_b_posteriori(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max);
+
+
+        temp_gamma.chi_q_max=test_chi(ln_theta_max[i].t_max, ln_theta_max[i].ampl_max, ln_theta_max[i].err_ampl_max);
+        temp_gamma.chi_q_min=test_chi(ln_theta_min[i].t_max, ln_theta_min[i].ampl_max, ln_theta_min[i].err_ampl_max);
 
         //salva tutto in vec
         parametri_intepolazioni.push_back(temp_gamma);
